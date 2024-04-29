@@ -47,3 +47,29 @@ public abstract class Sun {
         this.sun = sun;
     }
 }
+
+// ini main nya
+
+// import java.util.Random;
+// import java.util.Timer;
+// import java.util.TimerTask;
+
+// public class Main extends MySun {
+    
+//     public static void main(String[] args) {
+//         Timer timer = new Timer();
+//         // Create an instance of MySun
+//         MySun mySun = new MySun();
+
+//         System.out.println(mySun.getSun());
+
+//         // Call addSunMorning method
+//         mySun.addSunMorning();
+        
+//         timer.scheduleAtFixedRate(new TimerTask() {
+//             public void run() {
+//                 System.out.println(mySun.getSun());
+//             }
+//         }, 0000, 1000);
+//     }
+// }
