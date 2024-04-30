@@ -1,9 +1,9 @@
 package src.entity;
 
 public class Inventory {
-    private static Plant[] plants = new Plant[6];
-    private static Plant[] shadowPlants = new Plant[6]; // menjaga posisi null plants + buat gui, plant yg di idx shadowPlants jadi abu2
-    private static Plant[] deck = new Plant[3];
+    private static Plant[] plants = new Plant[10];
+    private static Plant[] shadowPlants = new Plant[10]; // menjaga posisi null plants + buat gui, plant yg di idx shadowPlants jadi abu2
+    private static Plant[] deck = new Plant[10];
 
     public Inventory() {
 
