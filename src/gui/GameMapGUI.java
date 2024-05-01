@@ -1,4 +1,4 @@
-package src.entity;
+package gui;
 import javax.swing.*;
 import java.awt.*;
 

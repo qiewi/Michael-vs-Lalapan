@@ -1,4 +1,4 @@
-package src.entity;
+package entity;
 
 public class Inventory {
     private static Plant[] plants = new Plant[10];
