@@ -74,6 +74,8 @@ public class GameMapGUI extends JFrame {
         }
     }
 
+    
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(GameMapGUI::new);
     }
