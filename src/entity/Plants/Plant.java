@@ -2,6 +2,7 @@ package entity.Plants;
 
 import entity.Action;
 import entity.Entity;
+import entity.Zombies.Zombie;
 
 public abstract class Plant extends Entity implements Action {
     private int cost;
@@ -22,7 +23,6 @@ public abstract class Plant extends Entity implements Action {
     }
 
     public void action() {
-
     }
 
     public int getCost() {

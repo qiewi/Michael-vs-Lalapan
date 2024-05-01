@@ -12,7 +12,7 @@ public abstract class Entity {
         this.attack_damage = attack_damage;
         this.attack_speed =  attack_speed;
     }
-
+    
     public String getName() { 
         return this.name;
     }

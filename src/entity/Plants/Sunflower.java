@@ -27,4 +27,7 @@ public class Sunflower extends Plant {
     public void setSun(int sun) {
         this.sun = sun;
     }
+
+    public void action() {
+    }
 }
