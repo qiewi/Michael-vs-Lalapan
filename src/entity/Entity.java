@@ -6,13 +6,17 @@ public abstract class Entity {
     private int attack_damage;
     private int attack_speed;
 
-    public Entity() {
-        this.name = "";
-        this.health = 0;
-        this.attack_damage = 0;
-        this.attack_speed = 0;
+    public Entity(String name, int health, int attack_damage, int attack_speed) {
+        this.name = name;
+        this.health = health;
+        this.attack_damage = attack_damage;
+        this.attack_speed = attack_speed;
     }
-
+    public Entity(int health, int attack_damage, int attack_speed) {
+        this.health = health;
+        this.attack_damage = attack_damage;
+        this.attack_speed = attack_speed;
+    }
     public String getName() { 
         return this.name;
     }
