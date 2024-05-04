@@ -9,9 +9,10 @@ public class InventoryGUI extends JFrame {
     private Inventory inventory;
     private JButton[] inventoryButtons;
     private JButton[] deckButtons;
-    // private JButton[] shadowButtons;
-    private JButton[] panelButtons;
-    private Plant selectedPlant = null;    
+    private JButton[] panelButtons;   
+    private boolean selectedSelect = false;
+    private boolean selectedClear = false;
+    private boolean selectedSwap = false;
 
     public InventoryGUI() {
         inventory = new Inventory();
@@ -40,11 +41,6 @@ public class InventoryGUI extends JFrame {
         deckPanel.setLayout(new GridLayout(3, 2));
         deckPanel.setBorder(BorderFactory.createTitledBorder("Deck"));
 
-        // // Shadow Panel
-        // JPanel shadowPanel = new JPanel();
-        // shadowPanel.setLayout(new GridLayout(5, 2));
-        // shadowPanel.setBorder(BorderFactory.createTitledBorder("Shadow"));
-
         // topPanel.add(shadowPanel);
         topPanel.add(deckPanel);
         topPanel.add(inventoryPanel);
@@ -70,7 +66,6 @@ public class InventoryGUI extends JFrame {
 
         inventoryButtons = new JButton[10];
         deckButtons = new JButton[10];
-        // shadowButtons = new JButton[10];
         panelButtons = new JButton[4];
 
         // Initialize inventory buttons
@@ -85,12 +80,6 @@ public class InventoryGUI extends JFrame {
             deckPanel.add(deckButtons[i]);
         }
 
-        // Initialize shadow buttons
-        // for (int i = 0; i < 10; i++) {
-        //     shadowButtons[i] = new JButton();
-        //     shadowPanel.add(shadowButtons[i]);
-        // }
-
         // Initialize panel buttons
         panelButtons[0] = new JButton("Clear");
         panelButtons[1] = new JButton("Select");
@@ -103,40 +92,22 @@ public class InventoryGUI extends JFrame {
         // Add action listeners to panel buttons
         panelButtons[0].addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                try {
-                    for (int i = 0; i < deckButtons.length; i++) {
-                        if (deckButtons[i] != null) {
-                            inventory.removeDeck(inventory.getDeck()[i]);
-                        }
-                    }
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, ex.getMessage());
-                }
+                selectedClear = true;
                 refreshInventoryAndDeck();
             }
         });
 
         panelButtons[1].addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // Code for select button
-                if (selectedPlant != null) {
-                    try {
-                        inventory.addDeck(selectedPlant);
-                        refreshInventoryAndDeck();
-                        selectedPlant = null; // Reset selected plant
-                    } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(null, ex.getMessage());
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(null, "No plant selected!");
-                }
+                selectedSelect = !selectedSelect;
+                refreshInventoryAndDeck();
             }
         });
 
         panelButtons[2].addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // Code for swap button
-                JOptionPane.showMessageDialog(null, "Swap button clicked!");
+                selectedSwap = !selectedSwap;
+                refreshInventoryAndDeck();
             }
         });
 
@@ -150,18 +121,28 @@ public class InventoryGUI extends JFrame {
         refreshInventoryAndDeck();
     }
 
+    private int firstIndexSwap = -1;
+
     private void refreshInventoryAndDeck() {
-        Border border = BorderFactory.createLineBorder(Color.YELLOW, 2);
+        Border border = BorderFactory.createLineBorder(Color.YELLOW, 3);
+        Border border2 = BorderFactory.createLineBorder(Color.RED, 3);
         Border borderDef = BorderFactory.createLineBorder(Color.GRAY, 1);
         Plant[] inventoryPlants = inventory.getPlants();
         Plant[] shadowPlants = inventory.getShadowPlants();
         Plant[] deckPlants = inventory.getDeck();
 
-        // Update inventory buttons
         for (int i = 0; i < 10; i++) {
             if (inventoryPlants[i] != null) {
                 inventoryButtons[i].setText(inventoryPlants[i].getName());
                 inventoryButtons[i].setEnabled(true);
+                if (selectedSelect || selectedSwap) {
+                    inventoryButtons[i].setBorder(border);
+                    if (firstIndexSwap != -1) {
+                        inventoryButtons[firstIndexSwap].setBorder(border2);
+                    }
+                } else {
+                    inventoryButtons[i].setBorder(borderDef);
+                }
             } else if (shadowPlants[i] != null) {
                 inventoryButtons[i].setText(shadowPlants[i].getName());
                 inventoryButtons[i].setEnabled(false);
@@ -173,17 +154,25 @@ public class InventoryGUI extends JFrame {
             final int index = i;
             inventoryButtons[i].addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    if (selectedPlant != null) {
-                        for (int i = 0; i < inventoryButtons.length; i++) {
-                            if (inventoryButtons[i].getText().equals(selectedPlant.getName())) {
-                                inventoryButtons[i].setBorder(borderDef);
-                                break;
+                    try {
+                        if (selectedSelect && inventoryPlants[index] != null) {
+                            inventory.addDeck(inventoryPlants[index]);
+                            refreshInventoryAndDeck();
+                        } else if (selectedSwap && inventoryPlants[index] != null) {
+                            if (firstIndexSwap == -1) {
+                                firstIndexSwap = index;
+                            } if (index != firstIndexSwap && inventoryPlants[firstIndexSwap] != null && inventoryPlants[index] != null) {
+                                System.out.println(firstIndexSwap);
+                                System.out.println(index);
+                                System.out.println(inventoryPlants[firstIndexSwap].getName() + ", " + inventoryPlants[index].getName());
+                                inventory.swapPlants(firstIndexSwap, index, inventoryPlants);
+                                inventory.swapPlants(firstIndexSwap, index, shadowPlants);
                             }
+                            refreshInventoryAndDeck();
                         }
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(null, ex.getMessage());
                     }
-                    inventoryButtons[index].setBorder(border);
-                    // Set selected plant
-                    selectedPlant = inventoryPlants[index];
                 }
             });
         }
@@ -212,16 +201,32 @@ public class InventoryGUI extends JFrame {
             });
         }
 
-        // Update shadow buttons
-        // for (int i = 0; i < 10; i++) {
-        //     if (shadowPlants[i] != null) {
-        //         shadowButtons[i].setText(shadowPlants[i].getName());
-        //         shadowButtons[i].setEnabled(true);
-        //     } else {
-        //         shadowButtons[i].setText("Empty");
-        //         shadowButtons[i].setEnabled(false);
-        //     }
-        // }
+        if (selectedSelect == false) {
+            panelButtons[1].setText("Select");
+        } else {
+            panelButtons[1].setText("Unselect");
+        }
+
+        if (selectedClear == true) {
+            for (int i = 0; i < deckPlants.length; i++) {
+                if (deckPlants[i] != null) {
+                    try {
+                        inventory.removeDeck(deckPlants[i]);
+                        refreshInventoryAndDeck();
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(null, ex.getMessage());
+                    }
+                }
+            }
+            selectedClear = false;
+            refreshInventoryAndDeck();
+        }
+
+        if (selectedSwap == false) {
+            panelButtons[2].setText("Swap");
+        } else {
+            panelButtons[2].setText("Cancel");
+        }
 
         revalidate();
         repaint();

@@ -4,13 +4,15 @@ import java.awt.*;
 
 public class GameMapGUI extends JFrame {
     private char[][] map;
+    private final int ROWS = 6;
+    private final int COLS = 9;
 
     public GameMapGUI() {
         setTitle("Game Map");
-        setSize(600, 400);
+        setMinimumSize(new Dimension(600, 400));
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        map = new char[6][9];
+        map = new char[ROWS][COLS];
         initializeMap();
 
         JPanel mapPanel = new JPanel() {
@@ -20,16 +22,15 @@ public class GameMapGUI extends JFrame {
                 drawMap(g);
             }
         };
-        mapPanel.setPreferredSize(new Dimension(540, 300));
-
+        
         add(mapPanel);
         setVisible(true);
     }
 
     private void initializeMap() {
         // Area Map Keseluruhan
-        for (int i = 0; i < 6; i++) {
-            for (int j = 0; j < 9; j++) {
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
                 map[i][j] = '-';
             }
         }
@@ -40,28 +41,29 @@ public class GameMapGUI extends JFrame {
             }
         }
         // Area Aman
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < ROWS; i++) {
             map[i][0] = 'X';
         }
         // Area Zombie
-        for (int i = 0; i < 6; i++) {
-            map[i][8] = 'Z';
+        for (int i = 0; i < ROWS; i++) {
+            map[i][COLS - 1] = 'Z';
         }
     }
 
     private void drawMap(Graphics g) {
-        int tileSize = 60;
-        for (int i = 0; i < 6; i++) {
-            for (int j = 0; j < 9; j++) {
+        int tileSize = Math.min(getWidth() / COLS, getHeight() / (ROWS + 1));
+        
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
                 switch (map[i][j]) {
                     case 'X':
-                        g.setColor(Color.CYAN);
+                        g.setColor(Color.LIGHT_GRAY);
                         break;
                     case 'P':
-                        g.setColor(Color.BLUE);
+                        g.setColor(Color.CYAN);
                         break;
                     case 'Z':
-                        g.setColor(Color.RED);
+                        g.setColor(Color.PINK);
                         break;
                     default:
                         g.setColor(Color.GREEN);
@@ -73,8 +75,6 @@ public class GameMapGUI extends JFrame {
             }
         }
     }
-
-    
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(GameMapGUI::new);
