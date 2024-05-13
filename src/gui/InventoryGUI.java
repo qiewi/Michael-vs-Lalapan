@@ -7,10 +7,9 @@ import java.awt.event.*;
 
 public class InventoryGUI extends JFrame {
     private Inventory inventory;
-    private JButton[] inventoryButtons;
-    private JButton[] deckButtons;
-    private JButton[] panelButtons;   
-    private boolean selectedSelect = false;
+    private MyButton[] inventoryButtons;
+    private MyButton[] deckButtons;
+    private JButton[] panelButtons;
     private boolean selectedClear = false;
     private boolean selectedSwap = false;
 
@@ -19,7 +18,7 @@ public class InventoryGUI extends JFrame {
 
         setTitle("Plant Inventory");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(600, 300);
+        setSize(600, 600);
         setLocationRelativeTo(null);
 
         // Main Panel
@@ -34,7 +33,7 @@ public class InventoryGUI extends JFrame {
         // Inventory Panel
         JPanel inventoryPanel = new JPanel();
         inventoryPanel.setLayout(new GridLayout(5, 2));
-        inventoryPanel.setBorder(BorderFactory.createTitledBorder("Inventory"));
+        inventoryPanel.setBorder(BorderFactory.createTitledBorder("CHOOSE YOUR PLANTS!"));
 
         // Deck Panel
         JPanel deckPanel = new JPanel();
@@ -54,7 +53,7 @@ public class InventoryGUI extends JFrame {
 
         // panel Panel
         JPanel panelPanel = new JPanel();
-        panelPanel.setLayout(new GridLayout(1, 4));
+        panelPanel.setLayout(new GridLayout(1, 3));
         panelPanel.setBorder(BorderFactory.createTitledBorder("Panel"));
 
         bottomPanel.add(panelPanel);
@@ -64,28 +63,27 @@ public class InventoryGUI extends JFrame {
 
         getContentPane().add(mainPanel);
 
-        inventoryButtons = new JButton[10];
-        deckButtons = new JButton[10];
-        panelButtons = new JButton[4];
+        inventoryButtons = new MyButton[10];
+        deckButtons = new MyButton[6];
+        panelButtons = new JButton[3];
 
         // Initialize inventory buttons
         for (int i = 0; i < 10; i++) {
-            inventoryButtons[i] = new JButton();
+            inventoryButtons[i] = new MyButton();
             inventoryPanel.add(inventoryButtons[i]);
         }
 
         // Initialize deck buttons
         for (int i = 0; i < 6; i++) {
-            deckButtons[i] = new JButton();
+            deckButtons[i] = new MyButton();
             deckPanel.add(deckButtons[i]);
         }
 
         // Initialize panel buttons
         panelButtons[0] = new JButton("Clear");
-        panelButtons[1] = new JButton("Select");
-        panelButtons[2] = new JButton("Swap");
-        panelButtons[3] = new JButton("Start");
-        for (int i = 0; i < 4; i++) {
+        panelButtons[1] = new JButton("Swap");
+        panelButtons[2] = new JButton("Start");
+        for (int i = 0; i < 3; i++) {
             panelPanel.add(panelButtons[i]);
         }
 
@@ -99,21 +97,12 @@ public class InventoryGUI extends JFrame {
 
         panelButtons[1].addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                selectedSelect = !selectedSelect;
-                selectedSwap = false;
+                selectedSwap = !selectedSwap;
                 refreshInventoryAndDeck();
             }
         });
 
         panelButtons[2].addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                selectedSwap = !selectedSwap;
-                selectedSelect = false;
-                refreshInventoryAndDeck();
-            }
-        });
-
-        panelButtons[3].addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // Code for start button
                 JOptionPane.showMessageDialog(null, "Start button clicked!");
@@ -144,18 +133,19 @@ public class InventoryGUI extends JFrame {
                 inventoryButtons[i].removeActionListener(actionListeners[j]);
             }
             if (inventoryPlants[i] != null) {
-                inventoryButtons[i].setText(inventoryPlants[i].getName());
+                inventoryButtons[i].setIcon(inventoryPlants[i].getImage());
                 inventoryButtons[i].setEnabled(true);
-                if (selectedSelect || selectedSwap) {
-                    inventoryButtons[i].setBorder(border);
+                if (selectedSwap) {
+                    inventoryButtons[i].setBorder1(true);
                     if (firstIndexSwapInventory != -1) {
-                        inventoryButtons[firstIndexSwapInventory].setBorder(border2);
+                        inventoryButtons[firstIndexSwapInventory].setBorder2(true);
                     }
                 } else {
-                    inventoryButtons[i].setBorder(borderDef);
+                    inventoryButtons[i].setBorder1(false);
+                    inventoryButtons[i].setBorder2(false);
                 }
             } else if (shadowPlants[i] != null) {
-                inventoryButtons[i].setText(shadowPlants[i].getName());
+                inventoryButtons[i].setIcon(shadowPlants[i].getImage());
                 inventoryButtons[i].setEnabled(false);
                 inventoryButtons[i].setBorder(borderDef);
             } else {
@@ -166,27 +156,22 @@ public class InventoryGUI extends JFrame {
             inventoryButtons[i].addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     try {
-                        if (selectedSelect || selectedSwap) {
-                            if (selectedSelect && inventoryPlants[index] != null) {
-                                inventory.addDeck(inventoryPlants[index]);
-                                refreshInventoryAndDeck();
-                            } else if (selectedSwap && inventoryPlants[index] != null) {
-                                if (firstIndexSwapInventory == -1) {
-                                    if (firstIndexSwapDeck != -1) {
-                                        throw new Exception("Tidak bisa menukar tanaman antara deck dan inventory!");
-                                    } else {
-                                        firstIndexSwapInventory = index;
-                                    }
+                        if (selectedSwap) {
+                            if (firstIndexSwapInventory == -1) {
+                                if (firstIndexSwapDeck != -1) {
+                                    throw new Exception("Tidak bisa menukar tanaman antara deck dan inventory!");
                                 } else {
-                                    inventory.swapPlants(firstIndexSwapInventory, index, inventoryPlants);
-                                    inventory.swapPlants(firstIndexSwapInventory, index, shadowPlants);
-                                    selectedSwap = !selectedSwap;
+                                    firstIndexSwapInventory = index;
                                 }
-                                refreshInventoryAndDeck();
+                            } else {
+                                inventory.swapPlants(firstIndexSwapInventory, index, inventoryPlants);
+                                inventory.swapPlants(firstIndexSwapInventory, index, shadowPlants);
+                                selectedSwap = !selectedSwap;
                             }
                         } else {
-                            throw new Exception("Pilih perintah di bawah terlebih dahulu!");
+                            inventory.addDeck(inventoryPlants[index]);
                         }
+                        refreshInventoryAndDeck();
                     } catch (Exception ex) {
                         JOptionPane.showMessageDialog(null, ex.getMessage());
                     }
@@ -201,18 +186,19 @@ public class InventoryGUI extends JFrame {
                 deckButtons[i].removeActionListener(actionListeners[j]);
             }
             if (deckPlants[i] != null) {
-                deckButtons[i].setText(deckPlants[i].getName());
+                deckButtons[i].setIcon(deckPlants[i].getImage());
                 deckButtons[i].setEnabled(true);
                 if (selectedSwap) {
-                    deckButtons[i].setBorder(border);
+                    deckButtons[i].setBorder1(true);
                     if (firstIndexSwapDeck != -1) {
-                        deckButtons[firstIndexSwapDeck].setBorder(border2);
+                        deckButtons[firstIndexSwapDeck].setBorder2(true);
                     }
                 } else {
-                    deckButtons[i].setBorder(borderDef);
+                    deckButtons[i].setBorder1(false);
+                    deckButtons[i].setBorder2(false);
                 }
             } else {
-                deckButtons[i].setText("Empty");
+                deckButtons[i].setIcon(null);
                 deckButtons[i].setEnabled(false);
             }
             final int index = i;
@@ -243,12 +229,6 @@ public class InventoryGUI extends JFrame {
             });
         }
 
-        if (selectedSelect == false) {
-            panelButtons[1].setText("Select");
-        } else {
-            panelButtons[1].setText("Unselect");
-        }
-
         if (selectedClear == true) {
             for (int i = 0; i < deckPlants.length; i++) {
                 if (deckPlants[i] != null) {
@@ -265,9 +245,9 @@ public class InventoryGUI extends JFrame {
         }
 
         if (selectedSwap == false) {
-            panelButtons[2].setText("Swap");
+            panelButtons[1].setText("Swap");
         } else {
-            panelButtons[2].setText("Cancel");
+            panelButtons[1].setText("Cancel");
         }
 
         revalidate();
@@ -290,16 +270,16 @@ class Inventory {
     private static Plant[] deck = new Plant[6];
 
     public Inventory() {
-        plants[0] = new Plant("Sunflower");
-        plants[1] = new Plant("Peashooter");
-        plants[2] = new Plant("Cherry Bomb");
-        plants[3] = new Plant("Wall-nut");
-        plants[4] = new Plant("Potato Mine");
-        plants[5] = new Plant("Snow Pea");
-        plants[6] = new Plant("Repeater");
-        plants[7] = new Plant("Gatling Gun");
-        plants[8] = new Plant("Squash");
-        plants[9] = new Plant("Tall-nut");
+        plants[0] = new Plant("Sunflower", "Sunflower.png");
+        plants[1] = new Plant("Peashooter", "Peashooter.png");
+        plants[2] = new Plant("Cherry Bomb", "Cherry_Bomb.png");
+        plants[3] = new Plant("Wall-nut", "Wall-nut.png");
+        plants[4] = new Plant("Potato Mine", "Potato_Mine.png");
+        plants[5] = new Plant("Snow Pea", "Snow_Pea.png");
+        plants[6] = new Plant("Repeater", "Repeater.png");
+        plants[7] = new Plant("Gatling Pea", "Gatling_Pea.png");
+        plants[8] = new Plant("Squash", "Squash.png");
+        plants[9] = new Plant("Tall-nut", "Tall-nut.png");
     }
 
     public void addDeck(Plant plant) throws Exception {
@@ -319,7 +299,7 @@ class Inventory {
             }
         }
         if (!added) {
-            throw new Exception("Deck penuh atau tidak ada tanaman yang dipilih pada inventory!");
+            throw new Exception("Deck sudah penuh!");
         }
     }
 
@@ -376,12 +356,26 @@ class Inventory {
 
 class Plant {
     private String name;
+    private ImageIcon image;
 
-    public Plant(String name) {
+    public Plant(String name, String imageName) {
         this.name = name;
+        try {
+            String imagePath = "/gui/images/" + imageName;
+            ImageIcon originalIcon = new ImageIcon(getClass().getResource(imagePath));
+            Image originalImage = originalIcon.getImage();
+            Image resizedImage = originalImage.getScaledInstance(70, 70, Image.SCALE_SMOOTH);
+            this.image = new ImageIcon(resizedImage);
+        } catch (Exception e) {
+            System.out.println("Gambar tidak tersedia!");
+        }
     }
 
     public String getName() {
         return name;
+    }
+
+    public ImageIcon getImage() {
+        return image;
     }
 }
