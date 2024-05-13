@@ -3,6 +3,6 @@ package entity.Zombies;
 public class NewspaperZomB extends ShieldZomB {
 
     public NewspaperZomB() {
-        super(250, true);
+        super("Newspaper Zombie",250, true);
     }
 }
