@@ -2,8 +2,8 @@ package entity;
 
 public class Inventory {
     private static Plant[] plants = new Plant[10];
-    private static Plant[] shadowPlants = new Plant[10]; // menjaga posisi null plants + buat gui, plant yg di idx shadowPlants jadi abu2
-    private static Plant[] deck = new Plant[10];
+    private static Plant[] shadowPlants = new Plant[plants.length]; // menjaga posisi null plants + buat gui, plant yg di idx shadowPlants jadi abu2
+    private static Plant[] deck = new Plant[6];
 
     public Inventory() {
 
@@ -91,58 +91,58 @@ public class Inventory {
         }
     }
 
-    // public static void main(String[] args) {
-    //     Inventory inventory = new Inventory();
+    public static void main(String[] args) {
+        Inventory inventory = new Inventory();
         
-    //     // Adding plants to inventory
-    //     inventory.plants[0] = new Plant("Sunflower");
-    //     inventory.plants[1] = new Plant("Peashooter");
-    //     inventory.plants[2] = new Plant("Cherry Bomb");
-    //     inventory.plants[3] = new Plant("Wall-nut");
-    //     inventory.plants[4] = new Plant("Potato Mine");
-    //     inventory.plants[5] = new Plant("Snow Pea");
+        // Adding plants to inventory
+        Inventory.plants[0] = new Plant("Sunflower");
+        Inventory.plants[1] = new Plant("Peashooter");
+        Inventory.plants[2] = new Plant("Cherry Bomb");
+        Inventory.plants[3] = new Plant("Wall-nut");
+        Inventory.plants[4] = new Plant("Potato Mine");
+        Inventory.plants[5] = new Plant("Snow Pea");
 
-    //     // Displaying inventory
-    //     inventory.displayInventory();
-    //     inventory.displayDeck();
-    //     System.out.println();
+        // Displaying inventory
+        inventory.displayInventory();
+        inventory.displayDeck();
+        System.out.println();
         
-    //     // Adding plants to deck
-    //     try {
-    //         inventory.addDeck(inventory.plants[3]);
-    //         inventory.addDeck(inventory.plants[1]);
-    //         inventory.addDeck(inventory.plants[5]);
-    //     } catch (Exception e) {
-    //         System.out.println(e.getMessage());
-    //     }
+        // Adding plants to deck
+        try {
+            inventory.addDeck(Inventory.plants[3]);
+            inventory.addDeck(Inventory.plants[1]);
+            inventory.addDeck(Inventory.plants[5]);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
         
-    //     // // Displaying inventory & deck
-    //     inventory.displayInventory();
-    //     inventory.displayDeck();
-    //     System.out.println();
+        // // Displaying inventory & deck
+        inventory.displayInventory();
+        inventory.displayDeck();
+        System.out.println();
         
-    //     // Swapping plants in deck
-    //     try {
-    //         inventory.swapPlants(1, 2, inventory.deck);
-    //     } catch (Exception e) {
-    //         System.out.println(e.getMessage());
-    //     }
-    //     System.out.println("After swapping:");
-    //     inventory.displayInventory();
-    //     inventory.displayDeck();
-    //     System.out.println();
+        // Swapping plants in deck
+        try {
+            inventory.swapPlants(1, 2, Inventory.deck);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println("After swapping:");
+        inventory.displayInventory();
+        inventory.displayDeck();
+        System.out.println();
         
-    //     // Removing a plant from deck
-    //     try {
-    //         inventory.removeDeck(inventory.deck[1]);
-    //     } catch (Exception e) {
-    //         System.out.println(e.getMessage());
-    //     }
-    //     System.out.println("After removing:");
-    //     inventory.displayInventory();
-    //     inventory.displayDeck();
-    //     System.out.println();
-    // }
+        // Removing a plant from deck
+        try {
+            inventory.removeDeck(Inventory.deck[1]);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println("After removing:");
+        inventory.displayInventory();
+        inventory.displayDeck();
+        System.out.println();
+    }
 }
 
 class Plant {
