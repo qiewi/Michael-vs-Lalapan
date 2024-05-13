@@ -5,7 +5,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Sun {  
-    private int sun = 25;
+    private static int sun = 25;
     Timer timer = new Timer();
 
     public void addSunMorning() {
@@ -28,7 +28,7 @@ public class Sun {
     }
     
     public void setSun(int sun) {
-        this.sun = sun;
+        Sun.sun = sun;
     }
 }
 

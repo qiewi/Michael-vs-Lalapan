@@ -100,6 +100,7 @@ public class InventoryGUI extends JFrame {
         panelButtons[1].addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 selectedSelect = !selectedSelect;
+                selectedSwap = false;
                 refreshInventoryAndDeck();
             }
         });
@@ -107,6 +108,7 @@ public class InventoryGUI extends JFrame {
         panelButtons[2].addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 selectedSwap = !selectedSwap;
+                selectedSelect = false;
                 refreshInventoryAndDeck();
             }
         });
@@ -121,7 +123,8 @@ public class InventoryGUI extends JFrame {
         refreshInventoryAndDeck();
     }
 
-    private int firstIndexSwap = -1;
+    private int firstIndexSwapInventory;
+    private int firstIndexSwapDeck;
 
     private void refreshInventoryAndDeck() {
         Border border = BorderFactory.createLineBorder(Color.YELLOW, 3);
@@ -130,15 +133,23 @@ public class InventoryGUI extends JFrame {
         Plant[] inventoryPlants = inventory.getPlants();
         Plant[] shadowPlants = inventory.getShadowPlants();
         Plant[] deckPlants = inventory.getDeck();
+        if (!selectedSwap) {
+            firstIndexSwapInventory = -1;
+            firstIndexSwapDeck = -1;
+        }
 
         for (int i = 0; i < 10; i++) {
+            ActionListener[] actionListeners = inventoryButtons[i].getActionListeners();
+            for (int j = 0; j < actionListeners.length; j++) {
+                inventoryButtons[i].removeActionListener(actionListeners[j]);
+            }
             if (inventoryPlants[i] != null) {
                 inventoryButtons[i].setText(inventoryPlants[i].getName());
                 inventoryButtons[i].setEnabled(true);
                 if (selectedSelect || selectedSwap) {
                     inventoryButtons[i].setBorder(border);
-                    if (firstIndexSwap != -1) {
-                        inventoryButtons[firstIndexSwap].setBorder(border2);
+                    if (firstIndexSwapInventory != -1) {
+                        inventoryButtons[firstIndexSwapInventory].setBorder(border2);
                     }
                 } else {
                     inventoryButtons[i].setBorder(borderDef);
@@ -155,20 +166,26 @@ public class InventoryGUI extends JFrame {
             inventoryButtons[i].addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     try {
-                        if (selectedSelect && inventoryPlants[index] != null) {
-                            inventory.addDeck(inventoryPlants[index]);
-                            refreshInventoryAndDeck();
-                        } else if (selectedSwap && inventoryPlants[index] != null) {
-                            if (firstIndexSwap == -1) {
-                                firstIndexSwap = index;
-                            } if (index != firstIndexSwap && inventoryPlants[firstIndexSwap] != null && inventoryPlants[index] != null) {
-                                System.out.println(firstIndexSwap);
-                                System.out.println(index);
-                                System.out.println(inventoryPlants[firstIndexSwap].getName() + ", " + inventoryPlants[index].getName());
-                                inventory.swapPlants(firstIndexSwap, index, inventoryPlants);
-                                inventory.swapPlants(firstIndexSwap, index, shadowPlants);
+                        if (selectedSelect || selectedSwap) {
+                            if (selectedSelect && inventoryPlants[index] != null) {
+                                inventory.addDeck(inventoryPlants[index]);
+                                refreshInventoryAndDeck();
+                            } else if (selectedSwap && inventoryPlants[index] != null) {
+                                if (firstIndexSwapInventory == -1) {
+                                    if (firstIndexSwapDeck != -1) {
+                                        throw new Exception("Tidak bisa menukar tanaman antara deck dan inventory!");
+                                    } else {
+                                        firstIndexSwapInventory = index;
+                                    }
+                                } else {
+                                    inventory.swapPlants(firstIndexSwapInventory, index, inventoryPlants);
+                                    inventory.swapPlants(firstIndexSwapInventory, index, shadowPlants);
+                                    selectedSwap = !selectedSwap;
+                                }
+                                refreshInventoryAndDeck();
                             }
-                            refreshInventoryAndDeck();
+                        } else {
+                            throw new Exception("Pilih perintah di bawah terlebih dahulu!");
                         }
                     } catch (Exception ex) {
                         JOptionPane.showMessageDialog(null, ex.getMessage());
@@ -179,9 +196,21 @@ public class InventoryGUI extends JFrame {
 
         // Update deck buttons
         for (int i = 0; i < 6; i++) {
+            ActionListener[] actionListeners = deckButtons[i].getActionListeners();
+            for (int j = 0; j < actionListeners.length; j++) {
+                deckButtons[i].removeActionListener(actionListeners[j]);
+            }
             if (deckPlants[i] != null) {
                 deckButtons[i].setText(deckPlants[i].getName());
                 deckButtons[i].setEnabled(true);
+                if (selectedSwap) {
+                    deckButtons[i].setBorder(border);
+                    if (firstIndexSwapDeck != -1) {
+                        deckButtons[firstIndexSwapDeck].setBorder(border2);
+                    }
+                } else {
+                    deckButtons[i].setBorder(borderDef);
+                }
             } else {
                 deckButtons[i].setText("Empty");
                 deckButtons[i].setEnabled(false);
@@ -190,8 +219,21 @@ public class InventoryGUI extends JFrame {
             deckButtons[i].addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     try {
-                        if (deckPlants[index] != null) { // Check if deckPlants[index] is not null
-                            inventory.removeDeck(deckPlants[index]);
+                        if (deckPlants[index] != null) {
+                            if (selectedSwap) {
+                                if (firstIndexSwapDeck == -1) {
+                                    if (firstIndexSwapInventory != -1) {
+                                        throw new Exception("Tidak bisa menukar tanaman antara deck dan inventory!");
+                                    } else {
+                                        firstIndexSwapDeck = index;
+                                    }
+                                } else {
+                                    inventory.swapPlants(firstIndexSwapDeck, index, deckPlants);
+                                    selectedSwap = !selectedSwap;
+                                }
+                            } else {
+                                inventory.removeDeck(deckPlants[index]);
+                            }
                             refreshInventoryAndDeck();
                         }
                     } catch (Exception ex) {
@@ -309,9 +351,10 @@ class Inventory {
             throw new Exception("Tanaman tidak bisa ditukar dengan dirinya sendiri!");
         } else if (idx1 < 0 || idx1 >= array.length || idx2 < 0 || idx2 >= array.length) {
             throw new Exception("Indeks diluar batas!");
-        } else if (array[idx1] == null || array[idx2] == null) {
+        } else if (array != shadowPlants && (array[idx1] == null || array[idx2] == null)) {
             throw new Exception("Tanaman tidak bisa ditukar dengan posisi kosong!");
-        } else {
+        } 
+        else {
             Plant temp = array[idx1];
             array[idx1] = array[idx2];
             array[idx2] = temp;
