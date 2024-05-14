@@ -7,12 +7,12 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import objects.Tile;
+import objects.PlantCard;
 import scenes.Playing;
 
 import static main.GameStates.*;
 
-public class BottomBar {
+public class TopBar {
     
     private int x, y, width, height;
     private Playing playing;
@@ -20,7 +20,7 @@ public class BottomBar {
 
     private ArrayList<MyButton> tileButtons = new ArrayList<MyButton>();
 
-    public BottomBar(int x, int y, int width, int height, Playing playing) {
+    public TopBar(int x, int y, int width, int height, Playing playing) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -33,21 +33,21 @@ public class BottomBar {
     private void drawButtons(Graphics g) {
 		bMenu.draw(g);
 
-        drawTileButtons(g);
+        // drawTileButtons(g);
 	}
 
-    private void drawTileButtons(Graphics g) {
-        for (MyButton b: tileButtons) {
-            g.drawImage(getButtImg(b.getId()), b.x, b.y, b.width, b.height, null);
-        }
-    }
+    // private void drawTileButtons(Graphics g) {
+    //     for (MyButton b: tileButtons) {
+    //         g.drawImage(getButtImg(b.getId()), b.x, b.y, b.width, b.height, null);
+    //     }
+    // }
 
     public BufferedImage getButtImg(int id) {
         return playing.getTileManager().getSprite(id);
     }
 
     private void initButtons() {
-		bMenu = new MyButton("Menu", 2, 64 * 6 + 2, 60, 20);
+		bMenu = new MyButton("Menu", 1024 - 150, 2, 130, 40);
 
         int w = 40;
         int h = 40;
@@ -55,19 +55,19 @@ public class BottomBar {
         int yStart = 64 * 6 + 10;
         int xOffset = (int) (w * 1.1f);
 
-        int i = 0;
-        for (Tile tile : playing.getTileManager().tiles) {
-            tileButtons.add(new MyButton(tile.getName(), xStart + xOffset * i, yStart, w, h, i));
-            i++;
-        }
+        // int i = 0;
+        // for (Tile tile : playing.getTileManager().tiles) {
+        //     tileButtons.add(new MyButton(tile.getName(), xStart + xOffset * i, yStart, w, h, i));
+        //     i++;
+        // }
 
 	}
 
     public void draw(Graphics g) {
         
         // Background Color
-        g.setColor(new Color(92, 64, 51));
-        g.fillRect(x, y, width, height);
+        // g.setColor(new Color(92, 64, 51));
+        // g.fillRect(x, y, width, height);
 
         // Buttons
         drawButtons(g);

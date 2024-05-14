@@ -5,7 +5,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Random;
 
 import javax.imageio.ImageIO;
 import main.Game;
@@ -17,7 +16,7 @@ public class Menu extends GameScene implements SceneMethods {
 	private BufferedImage img;
 	private ArrayList<BufferedImage> sprites = new ArrayList<>();
 
-	private MyButton bPlaying, bSettings, bQuit;
+	private MyButton bPlaying, bPlantsList, bZombiesList, bQuit;
 
 	public Menu(Game game) {
 		super(game);
@@ -28,15 +27,16 @@ public class Menu extends GameScene implements SceneMethods {
 
 	private void initButtons() {
 
-		int w = 100;
-		int h = w / 3;
-		int x = 64 * 9 / 2 - w / 2;
-		int y = 100;
-		int yOffset = 80;
+		int w = 230;
+		int h = 40;
+		int x = 1024 / 2 - w / 2 + 250;
+		int y = 728 - 290;
+		int yOffset = 70;
 
 		bPlaying = new MyButton("Play", x, y, w, h);
-		bSettings = new MyButton("Settings", x, y + yOffset, w, h);
-		bQuit = new MyButton("Quit", x, y + yOffset * 2, w, h);
+		bPlantsList = new MyButton("Plants List", x, y + yOffset, w, h);
+		bZombiesList = new MyButton("Zombies List", x, y + yOffset * 2, w, h);
+		bQuit = new MyButton("Quit", x, y + yOffset * 3, w, h);
 
 	}
 
@@ -44,12 +44,35 @@ public class Menu extends GameScene implements SceneMethods {
 	public void render(Graphics g) {
 
 		drawButtons(g);
+		drawMenu(g);
 
+	}
+
+	private void drawMenu(Graphics g) {
+		BufferedImage img = null;
+		InputStream is = getClass().getResourceAsStream("resources/MainMenu.png");
+	
+		if (is == null) {
+			System.out.println("Stream is null. Check the file path.");
+		} else {
+			try {
+				img = ImageIO.read(is);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+	
+			if (img == null) {
+				System.out.println("Image is null. Check the file format and content.");
+			} else {
+				g.drawImage(img, 0, 0, null);
+			}
+		}
 	}
 
 	private void drawButtons(Graphics g) {
 		bPlaying.draw(g);
-		bSettings.draw(g);
+		bPlantsList.draw(g);
+		bZombiesList.draw(g);
 		bQuit.draw(g);
 
 	}
@@ -81,7 +104,7 @@ public class Menu extends GameScene implements SceneMethods {
 
 		if (bPlaying.getBounds().contains(x, y)) {
 			setGameState(PLAYING);
-		} else if (bSettings.getBounds().contains(x, y)) {
+		} else if (bPlantsList.getBounds().contains(x, y)) {
 			setGameState(SETTINGS);
 		} else if (bQuit.getBounds().contains(x, y))
 			System.exit(0);
@@ -90,13 +113,13 @@ public class Menu extends GameScene implements SceneMethods {
 	@Override
 	public void mouseMoved(int x, int y) {
 		bPlaying.setMouseHover(false);
-		bSettings.setMouseHover(false);
+		bPlantsList.setMouseHover(false);
 		bQuit.setMouseHover(false);
 
 		if (bPlaying.getBounds().contains(x, y)) {
 			bPlaying.setMouseHover(true);
-		} else if (bSettings.getBounds().contains(x, y)) {
-			bSettings.setMouseHover(true);
+		} else if (bPlantsList.getBounds().contains(x, y)) {
+			bPlantsList.setMouseHover(true);
 		} else if (bQuit.getBounds().contains(x, y)) {
 			bQuit.setMouseHover(true);
 		}
@@ -108,8 +131,8 @@ public class Menu extends GameScene implements SceneMethods {
 
 		if (bPlaying.getBounds().contains(x, y)) {
 			bPlaying.setMousePressed(true);
-		} else if (bSettings.getBounds().contains(x, y)) {
-			bSettings.setMousePressed(true);
+		} else if (bPlantsList.getBounds().contains(x, y)) {
+			bPlantsList.setMousePressed(true);
 		} else if (bQuit.getBounds().contains(x, y)) {
 			bQuit.setMousePressed(true);
 		}
@@ -123,7 +146,7 @@ public class Menu extends GameScene implements SceneMethods {
 
 	private void resetButtons() {
 		bPlaying.resetBooleans();
-		bSettings.resetBooleans();
+		bPlantsList.resetBooleans();
 		bQuit.resetBooleans();
 	}
 

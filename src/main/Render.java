@@ -27,6 +27,9 @@ public class Render {
 
                 game.getSettings().render(g);
                 break;
+                
+            default:
+                break;
         }
     }
 

@@ -6,15 +6,15 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import helpz.LoadSave;
-import objects.Tile;
+import objects.PlantCard;
 
-public class TileManager {
+public class CardManager {
     
-    public Tile GRASS, WATER, ROAD;
+    public PlantCard GRASS, WATER, ROAD;
     public BufferedImage atlas;
-    public ArrayList<Tile> tiles = new ArrayList<Tile>();
+    public ArrayList<PlantCard> tiles = new ArrayList<PlantCard>();
 
-    public TileManager() {
+    public CardManager() {
         
         loadAtlas();
         createTiles();
@@ -23,9 +23,9 @@ public class TileManager {
     private void createTiles() {
         
         int id = 0;
-        tiles.add(GRASS = new Tile(getSprite(8, 1), id++, "Grass"));
-        tiles.add(WATER = new Tile(getSprite(0, 6), id++, "Water"));
-        tiles.add(ROAD = new Tile(getSprite(9, 0), id++, "Road"));
+        tiles.add(GRASS = new PlantCard(getSprite(8, 1), id++, "Grass"));
+        tiles.add(WATER = new PlantCard(getSprite(0, 6), id++, "Water"));
+        tiles.add(ROAD = new PlantCard(getSprite(9, 0), id++, "Road"));
     }
 
     private void loadAtlas() {
