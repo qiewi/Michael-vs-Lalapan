@@ -6,6 +6,7 @@ import java.awt.*;
 class MyButton extends JButton {
     private Color hoverBackgroundColor;
     private Color pressedBackgroundColor;
+    private Color disabledBackgroundColor; // New color for disabled state
     private static boolean border1 = false;
     private static boolean border2 = false;
 
@@ -20,11 +21,16 @@ class MyButton extends JButton {
         setBorderPainted(false);
         setHoverBackgroundColor(new Color(220, 220, 220));
         setPressedBackgroundColor(new Color(200, 200, 200));
+        setDisabledBackgroundColor(new Color(139, 69, 19)); // Set the color for disabled state
+        setForeground(new Color(214, 158, 45));
+        setFont(new Font("Arial", Font.BOLD, 16)); // Set the specific font
     }
 
     @Override
     protected void paintComponent(Graphics g) {
-        if (getModel().isPressed()) {
+        if (!isEnabled()) {
+            g.setColor(disabledBackgroundColor);
+        } else if (getModel().isPressed()) {
             g.setColor(pressedBackgroundColor);
         } else if (getModel().isRollover()) {
             g.setColor(hoverBackgroundColor);
@@ -52,6 +58,12 @@ class MyButton extends JButton {
     public void setContentAreaFilled(boolean b) {
     }
 
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+        repaint();
+    }
+
     public Color getHoverBackgroundColor() {
         return hoverBackgroundColor;
     }
@@ -68,6 +80,14 @@ class MyButton extends JButton {
         this.pressedBackgroundColor = pressedBackgroundColor;
     }
 
+    public Color getDisabledBackgroundColor() {
+        return disabledBackgroundColor;
+    }
+
+    public void setDisabledBackgroundColor(Color disabledBackgroundColor) {
+        this.disabledBackgroundColor = disabledBackgroundColor;
+    }
+
     public void setBorder1(boolean bool) {
         MyButton.border1 = bool;
     }
@@ -77,18 +97,21 @@ class MyButton extends JButton {
     }
 }
 
-// public class CustomizedButtonExample {
-//     public static void main(String[] args) {
-//         JFrame frame = new JFrame();
-//         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//         frame.setLayout(new FlowLayout());
+// Uncomment the following lines to test the button in a frame
+/*
+public class CustomizedButtonExample {
+    public static void main(String[] args) {
+        JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(new FlowLayout());
 
-//         MyButton button = new MyButton("Custom Button");
-//         button.setPreferredSize(new Dimension(150, 50));
-//         frame.add(button);
+        MyButton button = new MyButton("Custom Button");
+        button.setPreferredSize(new Dimension(150, 50));
+        frame.add(button);
 
-//         frame.setSize(300, 200);
-//         frame.setLocationRelativeTo(null);
-//         frame.setVisible(true);
-//     }
-// }
+        frame.setSize(300, 200);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
+}
+*/

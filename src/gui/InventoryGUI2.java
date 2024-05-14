@@ -3,89 +3,112 @@ package gui;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+// import java.awt.event.ComponentAdapter;
+// import java.awt.event.ComponentEvent;
 
-public class InventoryGUI extends JFrame {
+public class InventoryGUI2 extends JFrame {
     private Inventory inventory;
     private MyButton[] inventoryButtons;
     private MyButton[] deckButtons;
-    private JButton[] panelButtons;
+    private MyButton[] panelButtons;
     private boolean selectedClear = false;
     private boolean selectedSwap = false;
 
+    // // Initialize inventory buttons
+    // private static int startX = 30;
+    // private static int startY = 150;
+    // private static int buttonWidth = 70;
+    // private static int buttonHeight = 70;
+    // private static int spacing = 10;
 
-    public InventoryGUI() {
+    // // Initialize deck buttons
+    // private static int startXDeck = 140;
+    // private static int startYDeck = 10;
+
+    // // Initialize panel buttons
+    // private static int startXPanel = 30;
+    // private static int startYPanel = 570;
+    // private static int buttonWidthPanel = 220;
+    // private static int buttonHeightPanel = 40;
+    // private static int spacingPanel = 5;
+
+    public InventoryGUI2() {
         inventory = new Inventory();
 
         setTitle("Plant Inventory");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(600, 600);
+        setSize(1440, 1080); // Adjusted size to better accommodate the background image
+        setMinimumSize(getSize());
         setLocationRelativeTo(null);
 
-        // Main Panel
-        JPanel mainPanel = new JPanel(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.fill = GridBagConstraints.BOTH;
-
-        // Top Panel
-        JPanel topPanel = new JPanel(new GridLayout(1, 2));
-
-        // Inventory Panel
-        JPanel inventoryPanel = new JPanel();
-        inventoryPanel.setLayout(new GridLayout(5, 2));
-        inventoryPanel.setBorder(BorderFactory.createTitledBorder("CHOOSE YOUR PLANTS!"));
-
-        // Deck Panel
-        JPanel deckPanel = new JPanel();
-        deckPanel.setLayout(new GridLayout(3, 2));
-        deckPanel.setBorder(BorderFactory.createTitledBorder("Deck"));
-
-        // topPanel.add(shadowPanel);
-        topPanel.add(deckPanel);
-        topPanel.add(inventoryPanel);
-        gbc.weightx = 1;
-        gbc.weighty = 0.8;
-        gbc.gridy = 0;
-        mainPanel.add(topPanel, gbc);
-
-        // Bottom Panel
-        JPanel bottomPanel = new JPanel(new GridLayout(1, 1));
-
-        // panel Panel
-        JPanel panelPanel = new JPanel();
-        panelPanel.setLayout(new GridLayout(1, 3));
-        panelPanel.setBorder(BorderFactory.createTitledBorder("Panel"));
-
-        bottomPanel.add(panelPanel);
-        gbc.weighty = 0.2;
-        gbc.gridy = 1;
-        mainPanel.add(bottomPanel, gbc);
+        // Main Panel with Background Image
+        JPanel mainPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                try {
+                    ImageIcon backgroundIcon = new ImageIcon(getClass().getResource("/gui/images/InventoryScene.png"));
+                    g.drawImage(backgroundIcon.getImage(), 0, 0, getWidth(), getHeight(), this);
+                } catch (Exception e) {
+                    System.out.println("Gambar tidak ditemukan!");
+                }
+            }
+        };
+        mainPanel.setLayout(null);
 
         getContentPane().add(mainPanel);
 
-        inventoryButtons = new MyButton[10];
+        inventoryButtons = new MyButton[16];
         deckButtons = new MyButton[6];
-        panelButtons = new JButton[3];
+        panelButtons = new MyButton[3];
 
         // Initialize inventory buttons
-        for (int i = 0; i < 10; i++) {
-            inventoryButtons[i] = new MyButton();
-            inventoryPanel.add(inventoryButtons[i]);
+        int startX = 30;
+        int startY = 150;
+        int buttonWidth = 70;
+        int buttonHeight = 70;
+        int spacing = 10;
+        // Initialize deck buttons
+        int startXDeck = 140;
+        int startYDeck = 10;
+        // Initialize panel buttons
+        int startXPanel = 30;
+        int startYPanel = 570;
+        int buttonWidthPanel = 220;
+        int buttonHeightPanel = 40;
+        int spacingPanel = 5;
+
+        // Initialize inventory buttons
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 8; j++) {
+                inventoryButtons[i*8+j] = new MyButton();
+                int x = startX + (j % 8) * (buttonWidth + spacing);
+                int y = startY + (j / 8) * (buttonHeight + spacing);
+                inventoryButtons[i*8+j].setBounds(x, y, buttonWidth, buttonHeight);
+                mainPanel.add(inventoryButtons[i*8+j]);
+            }
+            startX = 30;
+            startY = 150 + buttonHeight + spacing;
         }
 
         // Initialize deck buttons
         for (int i = 0; i < 6; i++) {
             deckButtons[i] = new MyButton();
-            deckPanel.add(deckButtons[i]);
+            int x = startXDeck + i * (buttonWidth + spacing);
+            deckButtons[i].setBounds(x, startYDeck, buttonWidth, buttonHeight);
+            mainPanel.add(deckButtons[i]);
         }
 
         // Initialize panel buttons
-        panelButtons[0] = new JButton("Clear");
-        panelButtons[1] = new JButton("Swap");
-        panelButtons[2] = new JButton("Start");
+        panelButtons[0] = new MyButton("Clear");
+        panelButtons[1] = new MyButton("Swap");
+        panelButtons[2] = new MyButton("Start");
         for (int i = 0; i < 3; i++) {
-            panelPanel.add(panelButtons[i]);
+            int x = startXPanel + i * (buttonWidthPanel + spacingPanel);
+            panelButtons[i].setBounds(x, startYPanel, buttonWidthPanel, buttonHeightPanel);
+            mainPanel.add(panelButtons[i]);
         }
 
         // Add action listeners to panel buttons
@@ -110,8 +133,53 @@ public class InventoryGUI extends JFrame {
             }
         });
 
+        // // Add ComponentListener to handle resizing
+        // addComponentListener(new ComponentAdapter() {
+        //     @Override
+        //     public void componentResized(ComponentEvent e) {
+        //         repositionComponents(mainPanel.getWidth(), mainPanel.getHeight());
+        //     }
+        // });
+
+        // // Initial positioning
+        // repositionComponents(getWidth(), getHeight());
+
         refreshInventoryAndDeck();
     }
+
+    // private void repositionComponents(int panelWidth, int panelHeight) {
+    //     int startX = panelWidth / 22;
+    //     int startY = panelHeight / 4;
+    //     int spacing = buttonWidth / 7;
+
+    //     // Position inventory buttons
+    //     for (int i = 0; i < 2; i++) {
+    //         for (int j = 0; j < 5; j++) {
+    //             int x = startX + (j % 5) * (buttonWidth + spacing);
+    //             int y = startY + i * (buttonHeight + spacing);
+    //             inventoryButtons[i * 5 + j].setBounds(x, y, buttonWidth, buttonHeight);
+    //         }
+    //     }
+
+    //     int startXDeck = panelWidth / 10;
+    //     int startYDeck = panelHeight / 48;
+
+    //     // Position deck buttons
+    //     for (int i = 0; i < 6; i++) {
+    //         int x = startXDeck + i * (buttonWidth + spacing);
+    //         deckButtons[i].setBounds(x, startYDeck, buttonWidth, buttonHeight);
+    //     }
+
+    //     int startXPanel = startX / 2;
+    //     int startYPanel = panelHeight - (buttonHeight);
+    //     int spacingPanel = spacing;
+
+    //     // Position panel buttons
+    //     for (int i = 0; i < 3; i++) {
+    //         int x = startXPanel + i * (buttonWidthPanel + spacingPanel);
+    //         panelButtons[i].setBounds(x, startYPanel, buttonWidthPanel, buttonHeightPanel);
+    //     }
+    // }
 
     private int firstIndexSwapInventory;
     private int firstIndexSwapDeck;
@@ -137,13 +205,13 @@ public class InventoryGUI extends JFrame {
                 inventoryButtons[i].setIcon(inventoryPlants[i].getImage());
                 inventoryButtons[i].setEnabled(true);
                 if (selectedSwap) {
-                    inventoryButtons[i].setBorder1(true);
+                    // inventoryButtons[i].setBorder1(true);
                     if (firstIndexSwapInventory != -1) {
-                        inventoryButtons[firstIndexSwapInventory].setBorder2(true);
+                        // inventoryButtons[firstIndexSwapInventory].setBorder2(true);
                     }
                 } else {
-                    inventoryButtons[i].setBorder1(false);
-                    inventoryButtons[i].setBorder2(false);
+                    // inventoryButtons[i].setBorder1(false);
+                    // inventoryButtons[i].setBorder2(false);
                 }
             } else if (shadowPlants[i] != null) {
                 inventoryButtons[i].setIcon(shadowPlants[i].getImage());
@@ -190,13 +258,13 @@ public class InventoryGUI extends JFrame {
                 deckButtons[i].setIcon(deckPlants[i].getImage());
                 deckButtons[i].setEnabled(true);
                 if (selectedSwap) {
-                    deckButtons[i].setBorder1(true);
+                    // deckButtons[i].setBorder1(true);
                     if (firstIndexSwapDeck != -1) {
-                        deckButtons[firstIndexSwapDeck].setBorder2(true);
+                        // deckButtons[firstIndexSwapDeck].setBorder2(true);
                     }
                 } else {
-                    deckButtons[i].setBorder1(false);
-                    deckButtons[i].setBorder2(false);
+                    // deckButtons[i].setBorder1(false);
+                    // deckButtons[i].setBorder2(false);
                 }
             } else {
                 deckButtons[i].setIcon(null);
@@ -254,12 +322,11 @@ public class InventoryGUI extends JFrame {
         revalidate();
         repaint();
     }
-    
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                new InventoryGUI().setVisible(true);
+                new InventoryGUI2().setVisible(true);
             }
         });
     }
@@ -365,7 +432,7 @@ class Plant {
             String imagePath = "/gui/images/" + imageName;
             ImageIcon originalIcon = new ImageIcon(getClass().getResource(imagePath));
             Image originalImage = originalIcon.getImage();
-            Image resizedImage = originalImage.getScaledInstance(70, 70, Image.SCALE_SMOOTH);
+            Image resizedImage = originalImage.getScaledInstance(90, 90, Image.SCALE_SMOOTH);
             this.image = new ImageIcon(resizedImage);
         } catch (Exception e) {
             System.out.println("Gambar tidak tersedia!");
