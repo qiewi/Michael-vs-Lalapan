@@ -3,10 +3,12 @@ package entity.Plants;
 import java.util.Timer;
 import java.util.TimerTask;
 
+
 public class Sunflower extends Plant {
 
-    public Sunflower() {
-        super("Sunflower", 50, 100, 0, 0, 0, 10, false);
+    public Sunflower(int x, int y) {
+        super("Sunflower", 50, 100, 0, 0, 0, 10, false, x, y);
+        this.setImage(getPlantImage("Sunflower"));
     }
 
     private int sun = 25;
