@@ -5,10 +5,10 @@ public abstract class Entity {
     private int health;
     private int attack_damage;
     private int attack_speed;
-    private int x, y;
+    private float x, y;
 
 
-    public Entity(String name, int health, int attack_damage, int attack_speed, int x, int y) {
+    public Entity(String name, int health, int attack_damage, int attack_speed, float x, float y) {
         this.name = name;
         this.health = health;
         this.attack_damage = attack_damage;
@@ -16,6 +16,11 @@ public abstract class Entity {
         this.x = x;
         this.y = y;
     }
+
+    public void move(float x, float y) {
+		this.x += x;
+		this.y += y;
+	}
     
     public String getName() { 
         return this.name;
@@ -49,11 +54,11 @@ public abstract class Entity {
         this.attack_speed = attack_speed;
     }
 
-    public int getX() {
+    public float getX() {
         return x;
     }
 
-    public int getY() {
+    public float getY() {
         return y;
     }
 }

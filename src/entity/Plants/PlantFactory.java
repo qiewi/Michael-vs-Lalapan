@@ -11,6 +11,12 @@ public class PlantFactory {
             plant = new Peashooter(x, y);
         } else if (name.equals("Snowpea")) {
             plant = new Snowpea(x, y);
+        } else if (name.equals("Gatlingpea")) {
+            plant = new Gatlingpea(x, y);
+        } else if (name.equals("WallNut")) {
+            plant = new WallNut(x, y);
+        } else if (name.equals("LilyPad")) {
+            plant = new Lilypad(x, y);
         }
             
         return plant;

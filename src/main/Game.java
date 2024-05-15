@@ -33,6 +33,7 @@ public class Game extends JFrame implements Runnable{
         initClasses();
 
         setResizable(false);
+        setTitle("Michael vs Lalapan");
         add(gameScreen);
         pack();
         
@@ -61,7 +62,17 @@ public class Game extends JFrame implements Runnable{
     }
 
     private void updateGame() {
-        // System.out.println("Game Updated!");
+        switch (GameStates.gameState) {
+            case MENU:
+                break;
+            case PLAYING:
+                playing.update();
+                break;
+            case SETTINGS:
+                break;
+            default:
+                break;
+            }
     }
 
     public static void main(String[] args) {
@@ -105,10 +116,7 @@ public class Game extends JFrame implements Runnable{
                 updateGame();
                 lastUpdate = now;
                 updates++;
-            } else {
-                repaint();
-            }
-
+            } 
             if (System.currentTimeMillis() - lastTimeCheck >= 1000) {
                 System.out.println("FPS: " + frames + " | UPS: " + updates);
                 frames = 0;

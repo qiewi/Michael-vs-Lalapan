@@ -1,9 +1,6 @@
 package scenes;
 
-import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -14,9 +11,11 @@ import javax.imageio.ImageIO;
 
 import entity.Plants.Plant;
 import entity.Plants.PlantFactory;
+import entity.Plants.Sunflower;
 import helpz.LevelBuild;
 import main.Game;
 import managers.CardManager;
+import managers.ZombiesManager;
 import ui.TopBar;
 
 import static main.GameStates.*;
@@ -24,8 +23,9 @@ import static main.GameStates.*;
 public class Playing extends GameScene implements SceneMethods {
 
 	private int[][] lvl;
-	private CardManager tileManager;
+	private CardManager plantManager;
 	private int xArrow, yArrow;
+	private ZombiesManager zombiesManager;
 
 	private static ArrayList<Plant> PlantsList = new ArrayList<Plant>();
 
@@ -37,7 +37,8 @@ public class Playing extends GameScene implements SceneMethods {
 		yArrow = 200;
 
 		lvl = LevelBuild.getLevelData();
-		tileManager = new CardManager();
+		plantManager = new CardManager();
+		zombiesManager = new ZombiesManager(this);
 		topBar = new TopBar(0, 0, 768, 100, this);
 
 	}
@@ -48,18 +49,19 @@ public class Playing extends GameScene implements SceneMethods {
 		drawMap(g);
 		topBar.draw(g);
 		drawPlants(g);
+		zombiesManager.draw(g);
 		drawSelectedTile(g);
 
 	}
 
+	public void update() {
+		updateTick();
+		zombiesManager.update();
+	}
+
 	private void drawPlants(Graphics g) {
 		for (Plant plant : PlantsList) {
-			BufferedImage img = plant.getImage();
-			int width = 90;
-			int height = (img.getHeight() * width) / img.getWidth(); // maintain aspect ratio
-			Image scaledImage = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-			img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-			g.drawImage(scaledImage, plant.getX() - 15, plant.getY(), null);
+			g.drawImage(plant.getImage(), (int) plant.getX() - 15, (int) plant.getY(), null);
 		}
 	}
 
@@ -80,12 +82,7 @@ public class Playing extends GameScene implements SceneMethods {
 				System.out.println("Image is null. Check the file format and content.");
 			} else {
 				// Per Tiles 80 x 90
-				int width = 50;
-				int height = (img.getHeight() * width) / img.getWidth(); // maintain aspect ratio
-				Image scaledImage = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-				img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-				g.drawImage(scaledImage, xArrow, yArrow, null);
-				g.dispose();
+				g.drawImage(img, xArrow, yArrow, null);
 			}
 		}
 	}
@@ -111,8 +108,17 @@ public class Playing extends GameScene implements SceneMethods {
 		}
 	}
 
-	public CardManager getTileManager () {
-		return tileManager;
+	public CardManager getPlantManager () {
+		return plantManager;
+	}
+
+	private boolean checkPool(Plant plant) {
+		if (plant.getAquaStatus()) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 
@@ -140,6 +146,10 @@ public class Playing extends GameScene implements SceneMethods {
 	@Override
 	public void mouseReleased(int x, int y) {	
 		topBar.mouseReleased(x, y);
+	}
+
+	public void clearPlants() {
+		PlantsList.clear();
 	}
 
 	public void keyPressed(KeyEvent e) {
@@ -176,11 +186,41 @@ public class Playing extends GameScene implements SceneMethods {
 
 		// Create Plants (Harus disesuain lg)
 		else if (e.getKeyCode() == KeyEvent.VK_1) {
-			PlantsList.add(PlantFactory.CreatePlant("Sunflower", xArrow, yArrow));
+			boolean isExist = false;
+			for (Plant plant : PlantsList) {
+				if (plant.getX() == xArrow && plant.getY() == yArrow) {
+					isExist = true;
+				}
+			}
+
+			if(isExist) {
+				return;
+			} else {
+				if (yArrow >= 380 && yArrow <= 470) {
+					if (checkPool(new Sunflower(xArrow, yArrow))) {
+						PlantsList.add(PlantFactory.CreatePlant("Sunflower", xArrow, yArrow));
+					}
+				} else {
+					PlantsList.add(PlantFactory.CreatePlant("Sunflower", xArrow, yArrow));
+				}
+			}
 		} else if (e.getKeyCode() == KeyEvent.VK_2) {
 			PlantsList.add(PlantFactory.CreatePlant("Peashooter", xArrow, yArrow));
 		} else if (e.getKeyCode() == KeyEvent.VK_3) {
 			PlantsList.add(PlantFactory.CreatePlant("Snowpea", xArrow, yArrow));
+		} else if (e.getKeyCode() == KeyEvent.VK_4) {
+			PlantsList.add(PlantFactory.CreatePlant("Gatlingpea", xArrow, yArrow));
+		} else if (e.getKeyCode() == KeyEvent.VK_5) {
+			PlantsList.add(PlantFactory.CreatePlant("WallNut", xArrow, yArrow));
+		} else if (e.getKeyCode() == KeyEvent.VK_6) {
+			PlantsList.add(PlantFactory.CreatePlant("LilyPad", xArrow, yArrow));
+		} else if (e.getKeyCode() == KeyEvent.VK_0) {
+			for (int i = 0; i < PlantsList.size(); i++) {
+				if (PlantsList.get(i).getX() == xArrow && PlantsList.get(i).getY() == yArrow) {
+					PlantsList.remove(i);
+					break;
+				}
+			}
 		}
     }
 

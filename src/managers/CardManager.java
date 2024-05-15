@@ -13,7 +13,7 @@ import helpz.LoadSave;
 
 public class CardManager {
     
-    public PlantCard SUNFLOWER, PEASHOOTER, SNOWPEA;
+    public PlantCard SUNFLOWER, PEASHOOTER, SNOWPEA, GATLINGPEA, WALLNUT, LILYPAD;
     public BufferedImage atlas;
     public ArrayList<PlantCard> cards = new ArrayList<PlantCard>();
 
@@ -28,6 +28,9 @@ public class CardManager {
         cards.add(SUNFLOWER = new PlantCard(getSprite("sunflower"), id++, "Sunflower"));
         cards.add(PEASHOOTER = new PlantCard(getSprite("peashooter"), id++, "Peashooter"));
         cards.add(SNOWPEA = new PlantCard(getSprite("snowpea"), id++, "SnowPea"));
+        cards.add(GATLINGPEA = new PlantCard(getSprite("gatlingpea"), id++, "GatlingPea"));
+        cards.add(WALLNUT = new PlantCard(getSprite("wallnut"), id++, "WallNut"));
+        cards.add(LILYPAD= new PlantCard(getSprite("lilypad"), id++, "LilyPad"));
         
     }
 
@@ -38,7 +41,7 @@ public class CardManager {
 
     public BufferedImage getSprite(String name) {
         BufferedImage img = null;
-        InputStream is = getClass().getResourceAsStream("PlantCards/card_" + name + ".png");
+        InputStream is = getClass().getResourceAsStream("PlantCards/card_" + name + ".jpg");
 
         try {
             img = ImageIO.read(is);
