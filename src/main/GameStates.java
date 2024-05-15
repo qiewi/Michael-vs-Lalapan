@@ -6,6 +6,7 @@ public enum GameStates {
     HELP,
     MENU,
     PLANTSLIST,
+    ZOMBIESLIST,
     SETTINGS;
 
     public static GameStates gameState = MENU;

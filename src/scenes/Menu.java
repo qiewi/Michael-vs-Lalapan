@@ -80,6 +80,8 @@ public class Menu extends GameScene implements SceneMethods {
 			setGameState(PLAYING);
 		} else if (bPlantsList.getBounds().contains(x, y)) {
 			setGameState(PLANTSLIST);
+		} else if (bZombiesList.getBounds().contains(x, y)) {
+			setGameState(ZOMBIESLIST);
 		} else if (bQuit.getBounds().contains(x, y)) {
 			System.exit(0);
 		} else if (bHelp.getBounds().contains(x, y)) {
@@ -98,6 +100,8 @@ public class Menu extends GameScene implements SceneMethods {
 			bPlaying.setMouseHover(true);
 		} else if (bPlantsList.getBounds().contains(x, y)) {
 			bPlantsList.setMouseHover(true);
+		} else if (bZombiesList.getBounds().contains(x, y)) {
+			bZombiesList.setMouseHover(true);
 		} else if (bQuit.getBounds().contains(x, y)) {
 			bQuit.setMouseHover(true);
 		} else if (bHelp.getBounds().contains(x, y)) {
@@ -113,7 +117,9 @@ public class Menu extends GameScene implements SceneMethods {
 			bPlaying.setMousePressed(true);
 		} else if (bPlantsList.getBounds().contains(x, y)) {
 			bPlantsList.setMousePressed(true);
-		} else if (bQuit.getBounds().contains(x, y)) {
+		} else if (bZombiesList.getBounds().contains(x, y)) {
+			bZombiesList.setMousePressed(true);
+		}  else if (bQuit.getBounds().contains(x, y)) {
 			bQuit.setMousePressed(true);
 		}
 

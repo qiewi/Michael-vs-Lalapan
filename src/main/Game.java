@@ -7,6 +7,7 @@ import scenes.Menu;
 import scenes.PlantsList;
 import scenes.Playing;
 import scenes.Settings;
+import scenes.ZombiesList;
 
 public class Game extends JFrame implements Runnable{
     private static GameScreen gameScreen;
@@ -22,6 +23,7 @@ public class Game extends JFrame implements Runnable{
     private Settings settings;
     private Help help;
     private PlantsList plantsList;
+    private ZombiesList zombiesList;
 
     public Game() {
 
@@ -45,6 +47,7 @@ public class Game extends JFrame implements Runnable{
         settings = new Settings(this);
         help = new Help(this);
         plantsList = new PlantsList(this);
+        zombiesList = new ZombiesList(this);
     }
     
     public static void update() {
@@ -138,5 +141,9 @@ public class Game extends JFrame implements Runnable{
 
     public PlantsList getPlantsList() {
         return plantsList;
+    }
+
+    public ZombiesList getZombiesList() {
+        return zombiesList;
     }
 }

@@ -33,6 +33,11 @@ public class Render {
                 game.getPlantsList().render(g);
                 break;
 
+            case ZOMBIESLIST:
+
+                game.getZombiesList().render(g);
+                break;
+
             case SETTINGS:
 
                 game.getSettings().render(g);
