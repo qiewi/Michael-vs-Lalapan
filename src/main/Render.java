@@ -17,10 +17,20 @@ public class Render {
 
                 game.getMenu().render(g);          
                 break;
-        
+            
+            case HELP:
+
+                game.getHelp().render(g);
+                break;
+
             case PLAYING:
 
                 game.getPlaying().render(g);
+                break;
+            
+            case PLANTSLIST:
+
+                game.getPlantsList().render(g);
                 break;
 
             case SETTINGS:

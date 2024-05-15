@@ -13,15 +13,10 @@ import static main.GameStates.*;
 
 public class Menu extends GameScene implements SceneMethods {
 
-	private BufferedImage img;
-	private ArrayList<BufferedImage> sprites = new ArrayList<>();
-
-	private MyButton bPlaying, bPlantsList, bZombiesList, bQuit;
+	private MyButton bPlaying, bPlantsList, bZombiesList, bHelp, bQuit;
 
 	public Menu(Game game) {
 		super(game);
-		importImg();
-		loadSprites();
 		initButtons();
 	}
 
@@ -38,14 +33,14 @@ public class Menu extends GameScene implements SceneMethods {
 		bZombiesList = new MyButton("Zombies List", x, y + yOffset * 2, w, h);
 		bQuit = new MyButton("Quit", x, y + yOffset * 3, w, h);
 
+		bHelp = new MyButton("Help", 930, 685, 70, 50);
+
 	}
 
 	@Override
 	public void render(Graphics g) {
-
 		drawButtons(g);
 		drawMenu(g);
-
 	}
 
 	private void drawMenu(Graphics g) {
@@ -73,29 +68,8 @@ public class Menu extends GameScene implements SceneMethods {
 		bPlaying.draw(g);
 		bPlantsList.draw(g);
 		bZombiesList.draw(g);
+		bHelp.draw(g);
 		bQuit.draw(g);
-
-	}
-
-	private void importImg() {
-
-		InputStream is = getClass().getResourceAsStream("resources/spriteatlas.png");
-
-		try {
-			img = ImageIO.read(is);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-	}
-
-	private void loadSprites() {
-
-		for (int y = 0; y < 10; y++) {
-			for (int x = 0; x < 10; x++) {
-				sprites.add(img.getSubimage(x * 32, y * 32, 32, 32));
-			}
-		}
 
 	}
 
@@ -105,9 +79,13 @@ public class Menu extends GameScene implements SceneMethods {
 		if (bPlaying.getBounds().contains(x, y)) {
 			setGameState(PLAYING);
 		} else if (bPlantsList.getBounds().contains(x, y)) {
-			setGameState(SETTINGS);
-		} else if (bQuit.getBounds().contains(x, y))
+			setGameState(PLANTSLIST);
+		} else if (bQuit.getBounds().contains(x, y)) {
 			System.exit(0);
+		} else if (bHelp.getBounds().contains(x, y)) {
+			setGameState(HELP);
+		}
+		
 	}
 
 	@Override
@@ -122,6 +100,8 @@ public class Menu extends GameScene implements SceneMethods {
 			bPlantsList.setMouseHover(true);
 		} else if (bQuit.getBounds().contains(x, y)) {
 			bQuit.setMouseHover(true);
+		} else if (bHelp.getBounds().contains(x, y)) {
+			bHelp.setMouseHover(true);
 		}
 
 	}
@@ -148,6 +128,7 @@ public class Menu extends GameScene implements SceneMethods {
 		bPlaying.resetBooleans();
 		bPlantsList.resetBooleans();
 		bQuit.resetBooleans();
+		bHelp.resetBooleans();
 	}
 
 }

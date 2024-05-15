@@ -23,7 +23,7 @@ public class GameScreen extends JPanel{
 
     public void initInputs() {
         myMouseListener = new MyMouseListener(game);
-        keyboardListener = new KeyboardListener();
+        keyboardListener = new KeyboardListener(game);
 
         addMouseListener(myMouseListener);
         addMouseMotionListener(myMouseListener);
@@ -39,10 +39,16 @@ public class GameScreen extends JPanel{
         setMaximumSize(size);
     }
 
+    public void update() {
+        repaint();
+    }
+
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
         game.getRender().render(g);
+
+        
 
         // g.drawImage(sprites.get(8), 0, 0, null);
 

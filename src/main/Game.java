@@ -2,12 +2,14 @@ package main;
 
 import javax.swing.JFrame;
 
+import scenes.Help;
 import scenes.Menu;
+import scenes.PlantsList;
 import scenes.Playing;
 import scenes.Settings;
 
 public class Game extends JFrame implements Runnable{
-    private GameScreen gameScreen;
+    private static GameScreen gameScreen;
     private Thread gameThread;
 
     private final double FPS_SET = 120.0;
@@ -18,11 +20,13 @@ public class Game extends JFrame implements Runnable{
     private Menu menu;
     private Playing playing;
     private Settings settings;
+    private Help help;
+    private PlantsList plantsList;
 
     public Game() {
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
+        // setLocationRelativeTo(null);
 
         initClasses();
 
@@ -39,6 +43,12 @@ public class Game extends JFrame implements Runnable{
         menu = new Menu(this);
         playing = new Playing(this);
         settings = new Settings(this);
+        help = new Help(this);
+        plantsList = new PlantsList(this);
+    }
+    
+    public static void update() {
+        gameScreen.update();
     }
 
 
@@ -50,6 +60,7 @@ public class Game extends JFrame implements Runnable{
     private void updateGame() {
         // System.out.println("Game Updated!");
     }
+
     public static void main(String[] args) {
         
         Game game = new Game();
@@ -92,7 +103,7 @@ public class Game extends JFrame implements Runnable{
                 lastUpdate = now;
                 updates++;
             } else {
-                // do nothing
+                repaint();
             }
 
             if (System.currentTimeMillis() - lastTimeCheck >= 1000) {
@@ -119,5 +130,13 @@ public class Game extends JFrame implements Runnable{
 
     public Settings getSettings() {
         return settings;
+    }
+
+    public Help getHelp() {
+        return help;
+    }
+
+    public PlantsList getPlantsList() {
+        return plantsList;
     }
 }

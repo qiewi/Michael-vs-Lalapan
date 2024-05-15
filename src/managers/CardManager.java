@@ -3,43 +3,50 @@ package managers;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
+
 import helpz.LoadSave;
-import objects.PlantCard;
 
 public class CardManager {
     
-    public PlantCard GRASS, WATER, ROAD;
+    public PlantCard SUNFLOWER, PEASHOOTER, SNOWPEA;
     public BufferedImage atlas;
-    public ArrayList<PlantCard> tiles = new ArrayList<PlantCard>();
+    public ArrayList<PlantCard> cards = new ArrayList<PlantCard>();
 
     public CardManager() {
         
-        loadAtlas();
-        createTiles();
+        CardChosen();
     }
 
-    private void createTiles() {
+    private void CardChosen() {
         
         int id = 0;
-        tiles.add(GRASS = new PlantCard(getSprite(8, 1), id++, "Grass"));
-        tiles.add(WATER = new PlantCard(getSprite(0, 6), id++, "Water"));
-        tiles.add(ROAD = new PlantCard(getSprite(9, 0), id++, "Road"));
-    }
-
-    private void loadAtlas() {
-        atlas = LoadSave.getSpriteAtlas();
+        cards.add(SUNFLOWER = new PlantCard(getSprite("sunflower"), id++, "Sunflower"));
+        cards.add(PEASHOOTER = new PlantCard(getSprite("peashooter"), id++, "Peashooter"));
+        cards.add(SNOWPEA = new PlantCard(getSprite("snowpea"), id++, "SnowPea"));
+        
     }
 
     public BufferedImage getSprite(int id) {
-        BufferedImage sprite = tiles.get(id).getSprite();
-        BufferedImage resizedSprite = new BufferedImage(64, 64, BufferedImage.TYPE_INT_ARGB);
-        AffineTransform at = new AffineTransform();
-        at.scale(64.0 / sprite.getWidth(), 64.0 / sprite.getHeight());
-        AffineTransformOp scaleOp = new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
-        resizedSprite = scaleOp.filter(sprite, resizedSprite);
-        return resizedSprite;
+        BufferedImage sprite = cards.get(id).getSprite();
+        return sprite;
+    }
+
+    public BufferedImage getSprite(String name) {
+        BufferedImage img = null;
+        InputStream is = getClass().getResourceAsStream("PlantCards/card_" + name + ".png");
+
+        try {
+            img = ImageIO.read(is);
+        } catch (IOException e) {
+            e.printStackTrace();   
+        }       
+
+        return img;
     }
 
     private BufferedImage getSprite(int xCord, int yCord) {
