@@ -3,6 +3,11 @@ package scenes;
 import javax.imageio.ImageIO;
 import java.awt.Graphics2D;
 import javax.swing.*;
+
+import static main.GameStates.MENU;
+import static main.GameStates.PLAYING;
+import static main.GameStates.setGameState;
+
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -17,13 +22,29 @@ public class Preparation extends GameScene implements SceneMethods {
     private MyButton[] inventoryButtons;
     private MyButton[] deckButtons;
     private MyButton[] panelButtons;
+    private MyButton menuButton;
     private boolean selectedClear = false;
     private boolean selectedSwap = false;
     Plant[] inventoryPlants;
     Plant[] shadowPlants;
     Plant[] deckPlants;
-    private BufferedImage selectedPlant = null;
-	private BufferedImage[] plantsImages = new BufferedImage[10];
+    private int firstIndexSwapInventory;
+    private int firstIndexSwapDeck;
+    // Initialize inventory buttons
+    private int startX = 30;
+    private int startY = 170;
+    private int buttonWidth = 62;
+    private int buttonHeight = 80;
+    private int spacing = 5;
+    // Initialize deck buttons
+    private int startXDeck = 113;
+    private int startYDeck = 15;
+    // Initialize panel buttons
+    private int startXPanel = 30;
+    private int startYPanel = 670;
+    private int buttonWidthPanel = 173;
+    private int buttonHeightPanel = 50;
+    private int spacingPanel = 5;
 
     public Preparation(Game game) {
         super(game);
@@ -31,18 +52,18 @@ public class Preparation extends GameScene implements SceneMethods {
         inventoryPlants = inventory.getPlants();
         shadowPlants = inventory.getShadowPlants();
         deckPlants = inventory.getDeck();
+        initMenuButton();
         initButtons();
     }
 
     @Override
 	public void render(Graphics g) {
-
-		drawMap(g);
+        drawMenuButton(g);
+		drawBG(g);
         drawButtons(g);
-
 	}
 
-    private void drawMap(Graphics g) {
+    private void drawBG(Graphics g) {
 		BufferedImage img = null;
 		InputStream is = getClass().getResourceAsStream("resources/InventoryScene.png");
 	
@@ -89,53 +110,44 @@ public class Preparation extends GameScene implements SceneMethods {
     
         return resized;
     }
+
+    private void initMenuButton() {
+        menuButton = new MyButton(874, 2, 140, 40, null);
+    }
     
     private void initButtons() {
-        inventoryButtons = new MyButton[12];
+        inventoryButtons = new MyButton[16];
         deckButtons = new MyButton[6];
         panelButtons = new MyButton[3];
 
         // Initialize inventory buttons
-        int startX = 30;
-        int startY = 160;
-        int buttonWidth = 70;
-        int buttonHeight = 70;
-        int spacing = 10;
-        // Initialize deck buttons
-        int startXDeck = 110;
-        int startYDeck = 15;
-        // Initialize panel buttons
-        int startXPanel = 30;
-        int startYPanel = 570;
-        int buttonWidthPanel = 160;
-        int buttonHeightPanel = 40;
-        int spacingPanel = 5;
-
-        // Initialize inventory buttons
         for (int i = 0; i < 2; i++) {
-            for (int j = 0; j < 6; j++) {
-                int x = startX + (j % 6) * (buttonWidth + spacing);
-                int y = startY + (j / 6) * (buttonHeight + spacing);
-                inventoryButtons[i*6+j] = new MyButton(x, y, buttonWidth, buttonHeight, null);
+            for (int j = 0; j < 8; j++) {
+                int x = startX + (j % 8) * (buttonWidth + spacing);
+                int y = startY + (j / 8) * (buttonHeight + spacing);
+                inventoryButtons[i*8+j] = new MyButton(x, y, buttonWidth, buttonHeight, null, false, false, false);
             }
-            startX = 30;
             startY = startY + buttonHeight + spacing;
         }
 
         // Initialize deck buttons
         for (int i = 0; i < 6; i++) {
             int x = startXDeck + i * (buttonWidth + spacing);
-            deckButtons[i] = new MyButton(x, startYDeck, buttonWidth, buttonHeight, null);
+            deckButtons[i] = new MyButton(x, startYDeck, buttonWidth, buttonHeight, null, false, false, false);
         }
 
         // Initialize panel buttons
         String[] panelButtonsTexts = {"Clear", "Swap", "Start"};
         for (int i = 0; i < 3; i++) {
             int x = startXPanel + i * (buttonWidthPanel + spacingPanel);
-            panelButtons[i] = new MyButton(panelButtonsTexts[i], x, startYPanel, buttonWidthPanel, buttonHeightPanel);
+            panelButtons[i] = new MyButton(panelButtonsTexts[i], x, startYPanel, buttonWidthPanel, buttonHeightPanel, true);
         }
 
         refreshInventoryAndDeck();
+    }
+
+    private void drawMenuButton(Graphics g) {
+        menuButton.draw(g);
     }
 
     private void drawButtons(Graphics g) {
@@ -150,9 +162,6 @@ public class Preparation extends GameScene implements SceneMethods {
         }
 	}
 
-    private int firstIndexSwapInventory;
-    private int firstIndexSwapDeck;
-
     private void refreshInventoryAndDeck() {
         if (!selectedSwap) {
             firstIndexSwapInventory = -1;
@@ -161,56 +170,51 @@ public class Preparation extends GameScene implements SceneMethods {
 
         for (int i = 0; i < 10; i++) {
             if (inventoryPlants[i] != null) {
-                BufferedImage img = getPlantsImages(inventoryPlants[i].getName(), 70, 70);
+                BufferedImage img = getPlantsImages(inventoryPlants[i].getName(), buttonWidth, buttonHeight);
                 inventoryButtons[i].setImage(img);
-                // inventoryButtons[i].setEnabled(true);
+                inventoryButtons[i].setEnabled(true);
                 if (selectedSwap) {
-                    // inventoryButtons[i].setBorder1(true);
+                    inventoryButtons[i].setPotentialSwapInventory(true);
                     if (firstIndexSwapInventory != -1) {
-                        // inventoryButtons[firstIndexSwapInventory].setBorder2(true);
+                        inventoryButtons[firstIndexSwapInventory].setFirstSwap(true);
                     }
                 } else {
-                    // inventoryButtons[i].setBorder1(false);
-                    // inventoryButtons[i].setBorder2(false);
+                    for (MyButton button : inventoryButtons) {
+                        button.setPotentialSwapInventory(false);
+                    }
+                    inventoryButtons[i].setFirstSwap(false);
                 }
             } else if (shadowPlants[i] != null) {
-                BufferedImage img = getPlantsImages(shadowPlants[i].getName(), 80, 80);
+                BufferedImage img = getPlantsImages(shadowPlants[i].getName(), buttonWidth, buttonHeight);
                 inventoryButtons[i].setImage(img);
-                // inventoryButtons[i].setIcon(shadowPlants[i].getImage());
-                // inventoryButtons[i].setEnabled(false);
-                // inventoryButtons[i].setBorder(borderDef);
-                
-            } else {
-                // inventoryButtons[i].setText("Empty");
-                // inventoryButtons[i].setEnabled(false);
             }
         }
 
         // Update deck buttons
         for (int i = 0; i < 6; i++) {
             if (deckPlants[i] != null) {
-                BufferedImage img = getPlantsImages(deckPlants[i].getName(), 80, 80);
+                BufferedImage img = getPlantsImages(deckPlants[i].getName(), buttonWidth, buttonHeight);
                 deckButtons[i].setImage(img);
-                // deckButtons[i].setIcon(deckPlants[i].getImage());
-                // deckButtons[i].setEnabled(true);
+                deckButtons[i].setEnabled(true);
                 if (selectedSwap) {
-                    // deckButtons[i].setBorder1(true);
+                    deckButtons[i].setPotentialSwapDeck(true);
                     if (firstIndexSwapDeck != -1) {
-                        // deckButtons[firstIndexSwapDeck].setBorder2(true);
+                        deckButtons[firstIndexSwapDeck].setFirstSwap(true);
                     }
                 } else {
-                    // deckButtons[i].setBorder1(false);
-                    // deckButtons[i].setBorder2(false);
+                    for (MyButton button : deckButtons) {
+                        button.setPotentialSwapDeck(false);
+                    }
+                    deckButtons[i].setFirstSwap(false);
                 }
             } else {
                 deckButtons[i].setImage(null);
-                // deckButtons[i].setIcon(null);
-                // deckButtons[i].setEnabled(false);
+                deckButtons[i].setEnabled(false);
             }
         }
 
         if (selectedClear == true) {
-            for (int i = 0; i < deckPlants.length; i++) {
+            for (int i = 0; i < deckPlants.length-1; i++) {
                 if (deckPlants[i] != null) {
                     try {
                         inventory.removeDeck(deckPlants[i]);
@@ -229,36 +233,33 @@ public class Preparation extends GameScene implements SceneMethods {
         } else {
             panelButtons[1].setText("Cancel");
         }
-
-        // Game.refresh();
     }
 
     @Override
     public void mouseClicked(int x, int y) {
-        // Handle mouse click events
-        // Add action listeners to panel buttons
+
+        if (menuButton.getBounds().contains(x, y)) {
+            selectedClear = true;
+            refreshInventoryAndDeck();
+            setGameState(MENU);
+        }
         if (panelButtons[0].getBounds().contains(x, y)) {
-            // panelButtons[0].setEnabled(!panelButtons[0].isEnabled());
-            System.out.println("test");
             selectedClear = true;
             refreshInventoryAndDeck();
         }
 
         if (panelButtons[1].getBounds().contains(x, y)) {
-            // panelButtons[1].setEnabled(!panelButtons[1].isEnabled());
             selectedSwap = !selectedSwap;
             refreshInventoryAndDeck();
         }
 
         if (panelButtons[2].getBounds().contains(x, y)) {
-            // panelButtons[2].setEnabled(!panelButtons[2].isEnabled());
-            JOptionPane.showMessageDialog(null, "Start button clicked!");
+            setGameState(PLAYING);
         }
 
         for (int i = 0; i < 10; i++) {
             final int index = i;
-            if (inventoryButtons[i].getBounds().contains(x, y)) {
-                // inventoryButtons[i].setEnabled(!inventoryButtons[i].isEnabled());
+            if (inventoryButtons[i].getBounds().contains(x, y) && inventoryButtons[i].isEnabled()) {
                 try {
                     if (selectedSwap) {
                         if (firstIndexSwapInventory == -1) {
@@ -274,6 +275,7 @@ public class Preparation extends GameScene implements SceneMethods {
                         }
                     } else {
                         inventory.addDeck(inventoryPlants[index]);
+                        inventoryButtons[i].setEnabled(!inventoryButtons[i].isEnabled());
                     }
                     refreshInventoryAndDeck();
                 } catch (Exception ex) {
@@ -284,8 +286,7 @@ public class Preparation extends GameScene implements SceneMethods {
 
         for (int i = 0; i < 6; i++) {
             final int index = i;
-            if (deckButtons[i].getBounds().contains(x, y)) {
-                // deckButtons[i].setEnabled(!deckButtons[i].isEnabled());
+            if (deckButtons[i].getBounds().contains(x, y) && deckButtons[i].isEnabled()) {
                 try {
                     if (deckPlants[index] != null) {
                         if (selectedSwap) {
@@ -373,9 +374,9 @@ class Inventory {
     public Inventory() {
         plants[0] = new Plant("Sunflower");
         plants[1] = new Plant("Peashooter");
-        plants[2] = new Plant("Cherry_Bomb");
+        plants[2] = new Plant("TangleKelp");
         plants[3] = new Plant("Wall-nut");
-        plants[4] = new Plant("Potato_Mine");
+        plants[4] = new Plant("Lilypad");
         plants[5] = new Plant("Snow_Pea");
         plants[6] = new Plant("Repeater");
         plants[7] = new Plant("Gatling_Pea");
@@ -413,20 +414,22 @@ class Inventory {
                         plants[j] = plant;
                         shadowPlants[j] = null;
                         // deck[i] = null;
-                        int index = i;
-                        while (i+1 < deck.length) {
-                            if (deck[i] != null) {
-                                deck[index] = deck[i+1];
-                                index++;
+                        int idx = i+1;
+                        while (idx < deck.length) {
+                            if (deck[idx] != null) {
+                                deck[i] = deck[idx];
+                                deck[idx] = null;
+                                removed = true;
+                                i++;
                             }
-                            i++;
+                            idx++;
                         }
-                        removed = true;
+                        if (!removed) {
+                            deck[i] = null;
+                            removed = true;
+                        }                        
                         break;
                     }
-                }
-                if (removed) {
-                    break;
                 }
             }
         }
