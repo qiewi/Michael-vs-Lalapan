@@ -7,6 +7,7 @@ import javax.swing.*;
 import static main.GameStates.MENU;
 import static main.GameStates.PLAYING;
 import static main.GameStates.setGameState;
+import static main.GameStates.valueOf;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -16,15 +17,18 @@ import java.awt.Image;
 
 import main.Game;
 import ui.MyButton;
+import entity.Sun;
 
 public class Preparation extends GameScene implements SceneMethods {
     private Inventory inventory;
+    private Sun sun;
 
     // Initialize Buttons
     private MyButton[] inventoryButtons;
     private MyButton[] deckButtons;
     private MyButton[] panelButtons;
     private MyButton menuButton;
+    private MyButton sunText;
 
     // Initialize Booleans for Inventory Swap
     private boolean selectedClear = false;
@@ -56,9 +60,16 @@ public class Preparation extends GameScene implements SceneMethods {
     private int buttonHeightPanel = 50;
     private int spacingPanel = 5;
 
+    // Initialize panel buttons
+    private int startXSun = 38;
+    private int startYSun = 77;
+    private int SunWidth = 25;
+    private int SunHeight = 25;
+
     public Preparation(Game game) {
         super(game);
         inventory = new Inventory();
+        sun = new Sun();
 
         // Initialize Inventories
         inventoryPlants = inventory.getPlants();
@@ -66,6 +77,7 @@ public class Preparation extends GameScene implements SceneMethods {
         deckPlants = inventory.getDeck();
 
         // Initialize Buttons
+        initSunText();
         initMenuButton();
         initButtons();
     }
@@ -75,6 +87,7 @@ public class Preparation extends GameScene implements SceneMethods {
         drawMenuButton(g);
 		drawBG(g);
         drawButtons(g);
+        drawSunText(g);
 	}
 
     private void drawBG(Graphics g) {
@@ -125,6 +138,10 @@ public class Preparation extends GameScene implements SceneMethods {
         return resized;
     }
 
+    private void initSunText() {
+        sunText = new MyButton(true, String.valueOf(sun.getSun()), startXSun, startYSun, SunWidth, SunHeight);
+    }
+    
     private void initMenuButton() {
         menuButton = new MyButton(874, 2, 140, 40, null);
     }
@@ -159,6 +176,11 @@ public class Preparation extends GameScene implements SceneMethods {
 
         refreshInventoryAndDeck();
     }
+
+    private void drawSunText(Graphics g) {
+        sunText.draw(g);
+    }
+
 
     private void drawMenuButton(Graphics g) {
         menuButton.draw(g);
