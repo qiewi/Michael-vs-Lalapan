@@ -213,7 +213,7 @@ public class Playing extends GameScene implements SceneMethods {
 		} else if (e.getKeyCode() == KeyEvent.VK_5) {
 			PlantsList.add(PlantFactory.CreatePlant("WallNut", xArrow, yArrow));
 		} else if (e.getKeyCode() == KeyEvent.VK_6) {
-			PlantsList.add(PlantFactory.CreatePlant("LilyPad", xArrow, yArrow));
+			PlantsList.add(PlantFactory.CreatePlant("LilyPad", xArrow, yArrow + 10));
 		} else if (e.getKeyCode() == KeyEvent.VK_0) {
 			for (int i = 0; i < PlantsList.size(); i++) {
 				if (PlantsList.get(i).getX() == xArrow && PlantsList.get(i).getY() == yArrow) {
