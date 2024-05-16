@@ -4,10 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.awt.color.ColorSpace;
-import java.awt.image.ColorConvertOp;
 import java.awt.Font;
 
 
@@ -101,7 +97,7 @@ public class MyButton {
 	}
 
 	private void drawBorder(Graphics g) {
-		g.setColor(Color.black);
+		// g.setColor(Color.black);
 		g.drawRect(x, y, width, height);
 		if (mousePressed && enable) {
 			g.drawRect(x + 1, y + 1, width - 2, height - 2);
@@ -168,7 +164,7 @@ public class MyButton {
 	private void drawText(Graphics g) {
 		if (text != null) {
 			// Set font
-			Font font = new Font("Arial", Font.BOLD, 20); // Change "Arial" to your desired font name, adjust size and style as needed
+			Font font = new Font("Times New Roman", Font.BOLD, 24); // Change "Arial" to your desired font name, adjust size and style as needed
 			g.setFont(font);
 			
 			// Set color
@@ -181,7 +177,7 @@ public class MyButton {
 			// Draw text
 			int textWidth = g.getFontMetrics(font).stringWidth(text);
 			int textHeight = g.getFontMetrics(font).getHeight();
-			g.drawString(text, x + (width - textWidth) / 2, y + (height + textHeight - 6) / 2);
+			g.drawString(text, x + (width - textWidth) / 2, y + (height + textHeight - 9) / 2);
 		}
 	}
 	
