@@ -23,6 +23,11 @@ public class Render {
                 game.getHelp().render(g);
                 break;
 
+            case PREPARATION:
+
+                game.getPreparation().render(g);
+                break;
+
             case PLAYING:
 
                 game.getPlaying().render(g);
@@ -38,11 +43,6 @@ public class Render {
                 game.getZombiesList().render(g);
                 break;
 
-            case SETTINGS:
-
-                game.getSettings().render(g);
-                break;
-                
             default:
                 break;
         }

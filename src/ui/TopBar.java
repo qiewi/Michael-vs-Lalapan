@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import main.Game;
 import managers.PlantCard;
 import scenes.Playing;
 
@@ -36,30 +37,36 @@ public class TopBar {
 
     private void drawplantCards(Graphics g) {
         for (MyButton b: plantCards) {
-            g.drawImage(getButtImg(b.getId()), b.x, b.y, b.width, b.height, null);
+            g.drawImage(b.getImage(), b.x, b.y, b.width, b.height, null);
         }
     }
 
-    public BufferedImage getButtImg(int id) {
-        return playing.getPlantManager().getSprite(id);
-    }
+    // public BufferedImage getButtImg(int id) {
+    //     return playing.getPlantManager().getSprite(id);
+    // }
 
     private void initButtons() {
 		bMenu = new MyButton("Menu", 1024 - 150, 2, 130, 40);
 
-        int w = 60;
+        int w = 62;
         int h = 80;
         int xStart = 120;
         int yStart = 15;
         int xOffset = (int) (w * 1.2f);
 
+        for (int i = 0; i < 6; i++) {
+            plantCards.add(new MyButton("", xStart + xOffset * i, yStart, w, h, i));
+        }
+	}
+
+    public void updateButtons() {
         int i = 0;
-        for (PlantCard plant : playing.getPlantManager().cards) {
-            plantCards.add(new MyButton(plant.getName(), xStart + xOffset * i, yStart, w, h, i));
+        for (String name : playing.getGame().getPlaying().getPlantDeckNames()) {
+            plantCards.get(i).setName(name);
+            plantCards.get(i).setImage(playing.getGame().getPreparation().getPlantDeckButtons()[i].getImage());
             i++;
         }
-
-	}
+    }
 
     public void draw(Graphics g) {
         
@@ -74,9 +81,10 @@ public class TopBar {
 
 	public void mouseClicked(int x, int y) {
 		if (bMenu.getBounds().contains(x, y))
-			setGameState(MENU);
             playing.clearPlants();
-
+            playing.getGame().getPreparation().setSelectedClear(true);
+            playing.getGame().getPreparation().refreshInventoryAndDeck();
+            setGameState(MENU);
 	}
 
 	
@@ -108,5 +116,9 @@ public class TopBar {
             }
         }
 	}
+
+    public MyButton getPlantCardsButton(int index) {
+        return plantCards.get(index);
+    }
 
 }

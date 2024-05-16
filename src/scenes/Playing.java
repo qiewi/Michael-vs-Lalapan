@@ -12,20 +12,17 @@ import javax.imageio.ImageIO;
 import entity.Plants.Plant;
 import entity.Plants.PlantFactory;
 import entity.Plants.Sunflower;
-import helpz.LevelBuild;
 import main.Game;
-import managers.CardManager;
 import managers.ZombiesManager;
+import ui.MyButton;
 import ui.TopBar;
 
-import static main.GameStates.*;
 
 public class Playing extends GameScene implements SceneMethods {
 
-	private int[][] lvl;
-	private CardManager plantManager;
 	private int xArrow, yArrow;
 	private ZombiesManager zombiesManager;
+	private String[] plantDeck;
 
 	private static ArrayList<Plant> PlantsList = new ArrayList<Plant>();
 
@@ -36,11 +33,8 @@ public class Playing extends GameScene implements SceneMethods {
 		xArrow = 270;
 		yArrow = 200;
 
-		lvl = LevelBuild.getLevelData();
-		plantManager = new CardManager();
 		zombiesManager = new ZombiesManager(this);
 		topBar = new TopBar(0, 0, 768, 100, this);
-
 	}
 
 	@Override
@@ -57,6 +51,10 @@ public class Playing extends GameScene implements SceneMethods {
 	public void update() {
 		updateTick();
 		zombiesManager.update();
+	}
+
+	public void createPlantDeck(String[] plantDeck) {
+		this.plantDeck = plantDeck;
 	}
 
 	private void drawPlants(Graphics g) {
@@ -108,17 +106,22 @@ public class Playing extends GameScene implements SceneMethods {
 		}
 	}
 
-	public CardManager getPlantManager () {
-		return plantManager;
-	}
-
 	private boolean checkPool(Plant plant) {
-		if (plant.getAquaStatus()) {
-			return true;
+		boolean plantable = true;
+		
+		if (yArrow >= 380 && yArrow <= 470) {
+			if (!plant.getAquaStatus()) {
+				for (Plant p : PlantsList) {
+					if (p.getX() == xArrow && p.getY() == yArrow) {
+						if (p.getName().equals("LilyPad") == false) {
+							plantable = false;
+						}
+					}
+				}
+			}
 		}
-		else {
-			return false;
-		}
+
+		return plantable;
 	}
 
 
@@ -148,9 +151,6 @@ public class Playing extends GameScene implements SceneMethods {
 		topBar.mouseReleased(x, y);
 	}
 
-	public void clearPlants() {
-		PlantsList.clear();
-	}
 
 	public void keyPressed(KeyEvent e) {
 		// Set
@@ -185,43 +185,92 @@ public class Playing extends GameScene implements SceneMethods {
 		}
 
 		// Create Plants (Harus disesuain lg)
-		else if (e.getKeyCode() == KeyEvent.VK_1) {
-			boolean isExist = false;
-			for (Plant plant : PlantsList) {
-				if (plant.getX() == xArrow && plant.getY() == yArrow) {
-					isExist = true;
-				}
-			}
+		Plant plantCreated;
 
-			if(isExist) {
-				return;
-			} else {
-				if (yArrow >= 380 && yArrow <= 470) {
-					if (checkPool(new Sunflower(xArrow, yArrow))) {
-						PlantsList.add(PlantFactory.CreatePlant("Sunflower", xArrow, yArrow));
-					}
-				} else {
-					PlantsList.add(PlantFactory.CreatePlant("Sunflower", xArrow, yArrow));
-				}
-			}
-		} else if (e.getKeyCode() == KeyEvent.VK_2) {
-			PlantsList.add(PlantFactory.CreatePlant("Peashooter", xArrow, yArrow));
-		} else if (e.getKeyCode() == KeyEvent.VK_3) {
-			PlantsList.add(PlantFactory.CreatePlant("Snowpea", xArrow, yArrow));
-		} else if (e.getKeyCode() == KeyEvent.VK_4) {
-			PlantsList.add(PlantFactory.CreatePlant("Gatlingpea", xArrow, yArrow));
-		} else if (e.getKeyCode() == KeyEvent.VK_5) {
-			PlantsList.add(PlantFactory.CreatePlant("WallNut", xArrow, yArrow));
-		} else if (e.getKeyCode() == KeyEvent.VK_6) {
-			PlantsList.add(PlantFactory.CreatePlant("LilyPad", xArrow, yArrow + 10));
-		} else if (e.getKeyCode() == KeyEvent.VK_0) {
-			for (int i = 0; i < PlantsList.size(); i++) {
-				if (PlantsList.get(i).getX() == xArrow && PlantsList.get(i).getY() == yArrow) {
-					PlantsList.remove(i);
+		switch (e.getKeyCode()) {
+			
+			case KeyEvent.VK_1:
+				if (checkPlants()) {
 					break;
+				} else {
+					plantCreated = PlantFactory.CreatePlant(topBar.getPlantCardsButton(0).getName(), xArrow, yArrow);
+					if (checkPool(plantCreated)) 
+						PlantsList.add(plantCreated);
 				}
-			}
+				break;
+
+			case KeyEvent.VK_2:
+				if (checkPlants()) {
+					break;
+				} else {
+					plantCreated = PlantFactory.CreatePlant(topBar.getPlantCardsButton(1).getName(), xArrow, yArrow);
+					if (checkPool(plantCreated)) 
+						PlantsList.add(plantCreated);
+				}
+				break;
+			
+			case KeyEvent.VK_3:
+				if (checkPlants()) {
+					break;
+				} else {
+					plantCreated = PlantFactory.CreatePlant(topBar.getPlantCardsButton(2).getName(), xArrow, yArrow);
+					if (checkPool(plantCreated)) 
+						PlantsList.add(plantCreated);
+				}
+				break;
+
+			case KeyEvent.VK_4:
+				if (checkPlants()) {
+					break;
+				} else {
+					plantCreated = PlantFactory.CreatePlant(topBar.getPlantCardsButton(3).getName(), xArrow, yArrow);
+					if (checkPool(plantCreated)) 
+						PlantsList.add(plantCreated);
+				}
+				break;
+			
+			case KeyEvent.VK_5:
+				if (checkPlants()) {
+					break;
+				} else {
+					plantCreated = PlantFactory.CreatePlant(topBar.getPlantCardsButton(4).getName(), xArrow, yArrow);
+					if (checkPool(plantCreated)) 
+						PlantsList.add(plantCreated);
+				}
+				break;
+			
+			case KeyEvent.VK_6:
+				if (checkPlants()) {
+					break;
+				} else {
+					plantCreated = PlantFactory.CreatePlant(topBar.getPlantCardsButton(5).getName(), xArrow, yArrow);
+					if (checkPool(plantCreated)) 
+						PlantsList.add(plantCreated);
+				}
+				break;
 		}
+		
     }
 
+	public void clearPlants() {
+		PlantsList.clear();
+	}
+
+	private boolean checkPlants() {
+		boolean isExist = false;
+		for (Plant plant : PlantsList) {
+			if (plant.getX() == xArrow && plant.getY() == yArrow) {
+				isExist = true;
+			}
+		}
+		return isExist;
+	}
+
+	public String[] getPlantDeckNames () {
+		return plantDeck;
+	}
+
+	public TopBar getTopBar() {
+		return topBar;
+	}
 }

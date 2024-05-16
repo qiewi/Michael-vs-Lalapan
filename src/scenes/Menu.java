@@ -77,7 +77,7 @@ public class Menu extends GameScene implements SceneMethods {
 	public void mouseClicked(int x, int y) {
 
 		if (bPlaying.getBounds().contains(x, y)) {
-			setGameState(PLAYING);
+			setGameState(PREPARATION);
 		} else if (bPlantsList.getBounds().contains(x, y)) {
 			setGameState(PLANTSLIST);
 		} else if (bZombiesList.getBounds().contains(x, y)) {
