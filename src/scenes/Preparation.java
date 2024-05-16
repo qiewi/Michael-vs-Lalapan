@@ -254,7 +254,21 @@ public class Preparation extends GameScene implements SceneMethods {
         }
 
         if (panelButtons[2].getBounds().contains(x, y)) {
-            setGameState(PLAYING);
+            boolean deckFull = true;
+            for (Plant DP : deckPlants) {
+                if (DP == null) {
+                    deckFull = false;
+                }
+            }
+            try {
+                if (deckFull) {
+                    setGameState(PLAYING);
+                } else {
+                    throw new Exception("Deck belum full!");
+                }
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
+            }
         }
 
         for (int i = 0; i < 10; i++) {
