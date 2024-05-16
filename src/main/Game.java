@@ -7,7 +7,6 @@ import scenes.Menu;
 import scenes.PlantsList;
 import scenes.Playing;
 import scenes.Preparation;
-import scenes.Settings;
 import scenes.ZombiesList;
 
 public class Game extends JFrame implements Runnable{

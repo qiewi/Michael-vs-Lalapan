@@ -19,26 +19,36 @@ import ui.MyButton;
 
 public class Preparation extends GameScene implements SceneMethods {
     private Inventory inventory;
+
+    // Initialize Buttons
     private MyButton[] inventoryButtons;
     private MyButton[] deckButtons;
     private MyButton[] panelButtons;
     private MyButton menuButton;
+
+    // Initialize Booleans for Inventory Swap
     private boolean selectedClear = false;
     private boolean selectedSwap = false;
+
+    // Initialize Inventory
     InventoryPlant[] inventoryPlants;
     InventoryPlant[] shadowPlants;
     InventoryPlant[] deckPlants;
+
     private int firstIndexSwapInventory;
     private int firstIndexSwapDeck;
+
     // Initialize inventory buttons
     private int startX = 30;
     private int startY = 170;
     private int buttonWidth = 62;
     private int buttonHeight = 80;
     private int spacing = 5;
+
     // Initialize deck buttons
     private int startXDeck = 113;
     private int startYDeck = 15;
+
     // Initialize panel buttons
     private int startXPanel = 30;
     private int startYPanel = 670;
@@ -49,9 +59,13 @@ public class Preparation extends GameScene implements SceneMethods {
     public Preparation(Game game) {
         super(game);
         inventory = new Inventory();
+
+        // Initialize Inventories
         inventoryPlants = inventory.getPlants();
         shadowPlants = inventory.getShadowPlants();
         deckPlants = inventory.getDeck();
+
+        // Initialize Buttons
         initMenuButton();
         initButtons();
     }

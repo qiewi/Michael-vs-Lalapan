@@ -1,7 +1,6 @@
 package managers;
 
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -11,12 +10,10 @@ import scenes.Playing;
 
 public class ZombiesManager {
     private Playing playing;
-	private BufferedImage[] ZombieImgs;
 	private ArrayList<Zombie> zombies = new ArrayList<>();
 
 	public ZombiesManager(Playing playing) {
 		this.playing = playing;
-		ZombieImgs = new BufferedImage[4];
 		initializeZombie();
 	}
 

@@ -25,9 +25,12 @@ public class Playing extends GameScene implements SceneMethods {
 
 	public Playing(Game game) {
 		super(game);
+
+		// Default Cursor Position
 		xArrow = 270;
 		yArrow = 200;
 
+		// Initialize Managers
 		plantsManager = new PlantsManager(this);
 		zombiesManager = new ZombiesManager(this);
 
@@ -37,14 +40,16 @@ public class Playing extends GameScene implements SceneMethods {
 	@Override
 	public void render(Graphics g) {
 
+		// Draw Map and Bar
 		drawMap(g);
 		topBar.draw(g);
 
+		// Draw Managers
 		plantsManager.draw(g);
 		zombiesManager.draw(g);
 
+		// Draw Arrow and the Selected Tile
 		drawSelectedTile(g);
-
 	}
 
 	public void update() {

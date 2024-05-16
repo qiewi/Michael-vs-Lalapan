@@ -1,12 +1,8 @@
 package ui;
 
-import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import main.Game;
-import managers.PlantCard;
 import scenes.Playing;
 
 import static main.GameStates.*;
@@ -14,6 +10,7 @@ import static main.GameStates.*;
 public class TopBar {
     
     private int x, y, width, height;
+
     private Playing playing;
     private MyButton bMenu;
 
@@ -119,6 +116,22 @@ public class TopBar {
 
     public MyButton getPlantCardsButton(int index) {
         return plantCards.get(index);
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 
 }

@@ -38,8 +38,6 @@ public class MyButton {
 		this.height = height;
 		this.id = -1;
 		this.image = image;
-		this.potentialSwapDeck = potentialSwapDeck;
-		this.firstSwap = firstSwap;
 
 		initBounds();
 	}
@@ -53,8 +51,6 @@ public class MyButton {
 		this.height = height;
 		this.id = -1;
 		this.image = image;
-		this.potentialSwapDeck = potentialSwapDeck;
-		this.firstSwap = firstSwap;
 
 		initBounds();
 	}
