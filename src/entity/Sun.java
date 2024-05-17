@@ -11,7 +11,7 @@ public class Sun {
 
     // Nanti pindain method ke playing
     public void startMorning() {
-
+        sun = 25;
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
                 morning = !morning;

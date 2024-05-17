@@ -48,7 +48,6 @@ public class Playing extends GameScene implements SceneMethods {
 		topBar = new TopBar(0, 0, 768, 100, this);
 
 		sun = new Sun();
-
         initSunText();
 	}
 
@@ -132,7 +131,7 @@ public class Playing extends GameScene implements SceneMethods {
 
 	@Override
 	public void mouseClicked(int x, int y) {
-		if ( y >= 0 && y <= 100) {
+		if ( y >= 2 && y <= 42 && x >= 874 && x <= 1004) {
 			topBar.mouseClicked(x, y);
 		} 
 	}
@@ -227,7 +226,15 @@ public class Playing extends GameScene implements SceneMethods {
 		return plantDeck;
 	}
 
+	public PlantsManager getPlantsManager() {
+		return plantsManager;
+	}
+
 	public TopBar getTopBar() {
 		return topBar;
+	}
+
+	public Sun getPlayingSun() {
+		return sun;
 	}
 }

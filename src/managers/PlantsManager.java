@@ -50,9 +50,9 @@ public class PlantsManager {
 				for (Plant p : plants) {
 					if (p.getX() == x && p.getY() == y) {
 						if (p.getName().equals("LilyPad")) {
-							// if (p.getAquaStatus() == false) {
+							if (plant.getAquaStatus() == false) {
 								plantable = true;
-							// }
+							}
 						} 
 					}
 				}
@@ -71,6 +71,11 @@ public class PlantsManager {
 	}
 
     public void clearPlants() {
+		for (Plant p : plants) {
+			if (p instanceof entity.Plants.Sunflower) {
+				((entity.Plants.Sunflower) p).stopSunSF();
+			}
+		}
         plants.clear();
     }
 
@@ -85,6 +90,10 @@ public class PlantsManager {
         } else {
 		    g.drawImage(plant.getImage(), (int) plant.getX() - 15, (int) plant.getY(), null); // work di x nya coba
         }
+	}
+
+	public ArrayList<Plant> getPlants() {
+		return plants;
 	}
     
 }
