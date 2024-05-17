@@ -190,6 +190,10 @@ public class Playing extends GameScene implements SceneMethods {
 			case KeyEvent.VK_6:
 				plantsManager.addPlant(topBar.getPlantCardsButton(5).getName(), xArrow, yArrow);
 				break;
+
+			case KeyEvent.VK_D:
+				plantsManager.deletePlant(xArrow, yArrow);
+				break;
 		}
 		
     }

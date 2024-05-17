@@ -28,6 +28,14 @@ public class PlantsManager {
         
 	}
 
+	public void deletePlant(int x, int y) {
+		for (int i = 0; i < plants.size(); i++) {
+			if (plants.get(i).getX() == x && plants.get(i).getY() == y) {
+				plants.remove(i);
+			}
+		}
+	}
+
     private boolean checkPlants(int x, int y) {
 		boolean isExist = false;
 		for (Plant plant : plants) {
@@ -52,7 +60,11 @@ public class PlantsManager {
 					}
 				}
 			} 
-		}
+		} else {
+            if (plant.getAquaStatus() == true) {
+                plantable = false;
+            }
+        }
 
 		return plantable;
 	}
@@ -73,5 +85,8 @@ public class PlantsManager {
 		    g.drawImage(plant.getImage(), (int) plant.getX() - 15, (int) plant.getY(), null); // work di x nya coba
         }
 	}
-    
+
+	public ArrayList<Plant> getPlants() {
+		return plants;
+	}
 }
