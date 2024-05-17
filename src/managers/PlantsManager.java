@@ -50,9 +50,9 @@ public class PlantsManager {
 				for (Plant p : plants) {
 					if (p.getX() == x && p.getY() == y) {
 						if (p.getName().equals("LilyPad")) {
-							// if (p.getAquaStatus() == false) {
+							if (plant.getAquaStatus() == false) {
 								plantable = true;
-							// }
+							}
 						} 
 					}
 				}
