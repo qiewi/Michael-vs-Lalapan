@@ -166,7 +166,6 @@ public class MyButton {
 		}
 		
 		if (image != null) {
-			// Apply grayscale filter if the button is disabled
 			int imgX = x + (width - image.getWidth(null)) / 2;
 			int imgY = y + (height - image.getHeight(null)) / 2;
 			g.drawImage(image, imgX, imgY, null);
@@ -181,7 +180,7 @@ public class MyButton {
 	private void drawText(Graphics g) {
 		if (text != null) {
 			// Set font
-			Font font = new Font("Times New Roman", Font.BOLD, 24); // Change "Arial" to your desired font name, adjust size and style as needed
+			Font font = new Font("Times New Roman", Font.BOLD, 21); // Change "Arial" to your desired font name, adjust size and style as needed
 			g.setFont(font);
 			
 			// Set color

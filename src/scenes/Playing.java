@@ -11,7 +11,9 @@ import javax.imageio.ImageIO;
 import main.Game;
 import managers.PlantsManager;
 import managers.ZombiesManager;
+import ui.MyButton;
 import ui.TopBar;
+import entity.Sun;
 
 
 public class Playing extends GameScene implements SceneMethods {
@@ -22,6 +24,15 @@ public class Playing extends GameScene implements SceneMethods {
 	private String[] plantDeck;
 
 	private TopBar topBar;
+
+	private Sun sun;
+	private MyButton sunText;
+
+	// Initialize sun text
+    private int startXSun = 38;
+    private int startYSun = 75;
+    private int SunWidth = 25;
+    private int SunHeight = 25;
 
 	public Playing(Game game) {
 		super(game);
@@ -35,6 +46,10 @@ public class Playing extends GameScene implements SceneMethods {
 		zombiesManager = new ZombiesManager(this);
 
 		topBar = new TopBar(0, 0, 768, 100, this);
+
+		sun = new Sun();
+
+        initSunText();
 	}
 
 	@Override
@@ -43,6 +58,7 @@ public class Playing extends GameScene implements SceneMethods {
 		// Draw Map and Bar
 		drawMap(g);
 		topBar.draw(g);
+		drawSunText(g);
 
 		// Draw Managers
 		plantsManager.draw(g);
@@ -56,6 +72,7 @@ public class Playing extends GameScene implements SceneMethods {
 		updateTick();
 		plantsManager.update();
 		zombiesManager.update();
+		sunText.setText(String.valueOf(sun.getSun()));
 	}
 
 	public void createPlantDeck(String[] plantDeck) {
@@ -83,6 +100,14 @@ public class Playing extends GameScene implements SceneMethods {
 			}
 		}
 	}
+
+	private void initSunText() {
+        sunText = new MyButton(true, String.valueOf(sun.getSun()), startXSun, startYSun, SunWidth, SunHeight);
+    }
+
+	private void drawSunText(Graphics g) {
+        sunText.draw(g);
+    }
 
 	private void drawMap(Graphics g) {
 		BufferedImage img = null;

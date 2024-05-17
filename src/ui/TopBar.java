@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 import scenes.Playing;
+// import entity.Sun;
 
 import static main.GameStates.*;
 
@@ -11,8 +12,17 @@ public class TopBar {
     
     private int x, y, width, height;
 
+    // private Sun sun;
+
     private Playing playing;
     private MyButton bMenu;
+    // private MyButton sunText;
+
+    // // Initialize sun text
+    // private int startXSun = 38;
+    // private int startYSun = 75;
+    // private int SunWidth = 25;
+    // private int SunHeight = 25;
 
     private ArrayList<MyButton> plantCards = new ArrayList<MyButton>();
 
@@ -23,6 +33,9 @@ public class TopBar {
         this.height = height;
         this.playing = playing;
 
+        // sun = new Sun();
+
+        // initSunText();
         initButtons();
     }
 
@@ -30,6 +43,7 @@ public class TopBar {
 		// bMenu.draw(g);
 
         drawplantCards(g);
+        // drawSunText(g);
 	}
 
     private void drawplantCards(Graphics g) {
@@ -38,8 +52,17 @@ public class TopBar {
         }
     }
 
+    // private void drawSunText(Graphics g) {
+    //     sunText.draw(g);
+    // }
+
     // public BufferedImage getButtImg(int id) {
     //     return playing.getPlantManager().getSprite(id);
+    // }
+
+    // private void initSunText() {
+    //     sunText = new MyButton(true, String.valueOf(sun.getSun()), startXSun, startYSun, SunWidth, SunHeight);
+    //     sun.addSunMorning();
     // }
 
     private void initButtons() {

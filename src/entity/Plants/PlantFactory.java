@@ -14,17 +14,17 @@ public class PlantFactory {
         } else if (name.equals("GatlingPea")) {
             plant = new GatlingpPea(x, y);
         } else if (name.equals("WallNut")) {
-            plant = new WallNut(x, y);
+            plant = new Wallnut(x, y);
         } else if (name.equals("TallNut")) {
-            plant = new TallNut(x, y);
+            plant = new Tallnut(x, y);
         } else if (name.equals("Squash")) {
             plant = new Squash(x, y);
         } else if (name.equals("SnowPea")) {
-            plant = new SnowPea(x, y);
+            plant = new Snowpea(x, y);
         } else if (name.equals("LilyPad")) {
-            plant = new LilyPad(x, y);
+            plant = new Lilypad(x, y);
         } else if (name.equals("TangleKelp")) {
-            plant = new TangleKelp(x, y);
+            plant = new Tanglekelp(x, y);
         }
             
         return plant;
