@@ -91,5 +91,9 @@ public class PlantsManager {
 		    g.drawImage(plant.getImage(), (int) plant.getX() - 15, (int) plant.getY(), null); // work di x nya coba
         }
 	}
+
+	public ArrayList<Plant> getPlants() {
+		return plants;
+	}
     
 }

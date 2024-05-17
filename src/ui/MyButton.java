@@ -13,7 +13,7 @@ public class MyButton {
 	private String text, name;
 	private Rectangle bounds;
 	private boolean mouseHover, mousePressed, enable, potentialSwapInventory, potentialSwapDeck, firstSwap, isJustText;
-	private Image image;
+	private Image image, hideImage;
 	
 	// For Inventory Buttons
 	public MyButton(int x, int y, int width, int height, Image image, boolean enable, boolean potentialSwapInventory, boolean firstSwap) {
@@ -270,5 +270,13 @@ public class MyButton {
 
 	public Image getImage() {
 		return image;
+	}
+
+	public void setHideImage(Image hideImage) {
+		this.hideImage = hideImage;
+	}
+
+	public Image getHideImage() {
+		return hideImage;
 	}
 }

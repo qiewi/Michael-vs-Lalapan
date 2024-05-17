@@ -3,6 +3,8 @@ package ui;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
+import entity.Plants.Plant;
+import entity.Plants.PlantFactory;
 import scenes.Playing;
 // import entity.Sun;
 
@@ -12,17 +14,8 @@ public class TopBar {
     
     private int x, y, width, height;
 
-    // private Sun sun;
-
     private Playing playing;
     private MyButton bMenu;
-    // private MyButton sunText;
-
-    // // Initialize sun text
-    // private int startXSun = 38;
-    // private int startYSun = 75;
-    // private int SunWidth = 25;
-    // private int SunHeight = 25;
 
     private ArrayList<MyButton> plantCards = new ArrayList<MyButton>();
 
@@ -33,40 +26,30 @@ public class TopBar {
         this.height = height;
         this.playing = playing;
 
-        // sun = new Sun();
-
-        // initSunText();
         initButtons();
     }
 
     private void drawButtons(Graphics g) {
 		// bMenu.draw(g);
 
-        drawplantCards(g);
-        // drawSunText(g);
+        checkCardsCost(g);
+        for (MyButton b: plantCards) {
+            b.draw(g);
+        }
 	}
 
-    private void drawplantCards(Graphics g) {
+    private void checkCardsCost(Graphics g) {
         for (MyButton b: plantCards) {
-            g.drawImage(b.getImage(), b.x, b.y, b.width, b.height, null);
+            if (PlantFactory.getPlantCost(b.getName()) > playing.getPlayingSun().getSun()) {
+                b.setEnabled(false);
+            } else {
+                b.setEnabled(true);
+            }
         }
     }
 
-    // private void drawSunText(Graphics g) {
-    //     sunText.draw(g);
-    // }
-
-    // public BufferedImage getButtImg(int id) {
-    //     return playing.getPlantManager().getSprite(id);
-    // }
-
-    // private void initSunText() {
-    //     sunText = new MyButton(true, String.valueOf(sun.getSun()), startXSun, startYSun, SunWidth, SunHeight);
-    //     sun.addSunMorning();
-    // }
-
     private void initButtons() {
-		bMenu = new MyButton("Menu", 1024 - 150, 2, 130, 40);
+		bMenu = new MyButton("Menu", 874, 2, 130, 40);
 
         int w = 62;
         int h = 80;
