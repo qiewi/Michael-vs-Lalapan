@@ -6,13 +6,16 @@ import java.util.ArrayList;
 import entity.Plants.Plant;
 import entity.Plants.PlantFactory;
 import scenes.Playing;
+import entity.Sun;
 
 public class PlantsManager {
     private Playing playing;
 	private ArrayList<Plant> plants = new ArrayList<>();
+	private Sun sun;
 
 	public PlantsManager(Playing playing) {
 		this.playing = playing;
+		sun = new Sun();
 	}
 
 	public void update() {
@@ -21,19 +24,11 @@ public class PlantsManager {
 
 	public void addPlant(String name, int x, int y) {
         Plant plantCreated = PlantFactory.CreatePlant(name, x, y);
-        if (checkPool(plantCreated, x, y)) {
-            if (!checkPlants(x, y)) 
+        if (checkNonAquatic(plantCreated, x, y) && !checkPlants(x, y) && checkCost(plantCreated, sun)) {
                 plants.add(plantCreated);
+				sun.reduceSun(plantCreated.getCost());
         }
         
-	}
-
-	public void deletePlant(int x, int y) {
-		for (int i = 0; i < plants.size(); i++) {
-			if (plants.get(i).getX() == x && plants.get(i).getY() == y) {
-				plants.remove(i);
-			}
-		}
 	}
 
     private boolean checkPlants(int x, int y) {
@@ -46,7 +41,7 @@ public class PlantsManager {
 		return isExist;
 	}
 
-    private boolean checkPool(Plant plant, int x, int y) {
+    private boolean checkNonAquatic(Plant plant, int x, int y) {
 		boolean plantable = true;
 		
 		if (y >= 380 && y <= 470) {
@@ -55,21 +50,32 @@ public class PlantsManager {
 				for (Plant p : plants) {
 					if (p.getX() == x && p.getY() == y) {
 						if (p.getName().equals("LilyPad")) {
-							plantable = true;
+							// if (p.getAquaStatus() == false) {
+								plantable = true;
+							// }
 						} 
 					}
 				}
 			} 
 		} else {
-            if (plant.getAquaStatus() == true) {
+			if (plant.getAquaStatus() == true) {
                 plantable = false;
-            }
-        }
+			}
+		}
 
 		return plantable;
 	}
 
+	private boolean checkCost(Plant plant, Sun sun) {
+		return (plant.getCost() <= sun.getSun());
+	}
+
     public void clearPlants() {
+		for (Plant p : plants) {
+			if (p instanceof entity.Plants.Sunflower) {
+				((entity.Plants.Sunflower) p).stopSunSF();
+			}
+		}
         plants.clear();
     }
 
@@ -85,8 +91,5 @@ public class PlantsManager {
 		    g.drawImage(plant.getImage(), (int) plant.getX() - 15, (int) plant.getY(), null); // work di x nya coba
         }
 	}
-
-	public ArrayList<Plant> getPlants() {
-		return plants;
-	}
+    
 }

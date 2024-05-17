@@ -16,15 +16,18 @@ import java.awt.Image;
 
 import main.Game;
 import ui.MyButton;
+import entity.Sun;
 
 public class Preparation extends GameScene implements SceneMethods {
     private Inventory inventory;
+    private Sun sun;
 
     // Initialize Buttons
     private MyButton[] inventoryButtons;
     private MyButton[] deckButtons;
     private MyButton[] panelButtons;
     private MyButton menuButton;
+    private MyButton sunText;
 
     // Initialize Booleans for Inventory Swap
     private boolean selectedClear = false;
@@ -56,9 +59,16 @@ public class Preparation extends GameScene implements SceneMethods {
     private int buttonHeightPanel = 50;
     private int spacingPanel = 5;
 
+    // Initialize sun text
+    private int startXSun = 38;
+    private int startYSun = 77;
+    private int SunWidth = 25;
+    private int SunHeight = 25;
+
     public Preparation(Game game) {
         super(game);
         inventory = new Inventory();
+        sun = new Sun();
 
         // Initialize Inventories
         inventoryPlants = inventory.getPlants();
@@ -66,6 +76,7 @@ public class Preparation extends GameScene implements SceneMethods {
         deckPlants = inventory.getDeck();
 
         // Initialize Buttons
+        initSunText();
         initMenuButton();
         initButtons();
     }
@@ -75,6 +86,7 @@ public class Preparation extends GameScene implements SceneMethods {
         drawMenuButton(g);
 		drawBG(g);
         drawButtons(g);
+        drawSunText(g);
 	}
 
     private void drawBG(Graphics g) {
@@ -125,6 +137,10 @@ public class Preparation extends GameScene implements SceneMethods {
         return resized;
     }
 
+    private void initSunText() {
+        sunText = new MyButton(true, String.valueOf(sun.getSun()), startXSun, startYSun, SunWidth, SunHeight);
+    }
+    
     private void initMenuButton() {
         menuButton = new MyButton(874, 2, 140, 40, null);
     }
@@ -151,7 +167,7 @@ public class Preparation extends GameScene implements SceneMethods {
         }
 
         // Initialize panel buttons
-        String[] panelButtonsTexts = {"Clear", "Swap", "Start"};
+        String[] panelButtonsTexts = {"CLEAR", "SWAP", "START"};
         for (int i = 0; i < 3; i++) {
             int x = startXPanel + i * (buttonWidthPanel + spacingPanel);
             panelButtons[i] = new MyButton(panelButtonsTexts[i], x, startYPanel, buttonWidthPanel, buttonHeightPanel, true);
@@ -159,6 +175,11 @@ public class Preparation extends GameScene implements SceneMethods {
 
         refreshInventoryAndDeck();
     }
+
+    private void drawSunText(Graphics g) {
+        sunText.draw(g);
+    }
+
 
     private void drawMenuButton(Graphics g) {
         menuButton.draw(g);
@@ -182,7 +203,7 @@ public class Preparation extends GameScene implements SceneMethods {
             firstIndexSwapDeck = -1;
         }
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < inventoryPlants.length; i++) {
             if (inventoryPlants[i] != null) {
                 BufferedImage img = getPlantsImages(inventoryPlants[i].getName(), buttonWidth, buttonHeight);
                 inventoryButtons[i].setImage(img);
@@ -205,7 +226,7 @@ public class Preparation extends GameScene implements SceneMethods {
         }
 
         // Update deck buttons
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < deckPlants.length; i++) {
             if (deckPlants[i] != null) {
                 BufferedImage img = getPlantsImages(deckPlants[i].getName(), buttonWidth, buttonHeight);
                 deckButtons[i].setImage(img);
@@ -243,9 +264,9 @@ public class Preparation extends GameScene implements SceneMethods {
         }
 
         if (selectedSwap == false) {
-            panelButtons[1].setText("Swap");
+            panelButtons[1].setText("SWAP");
         } else {
-            panelButtons[1].setText("Cancel");
+            panelButtons[1].setText("CANCEL");
         }
     }
 
@@ -284,6 +305,8 @@ public class Preparation extends GameScene implements SceneMethods {
                     game.getPlaying().createPlantDeck(this.inventory.getPlantDeckNames());
                     game.getPlaying().getTopBar().updateButtons();
                     setGameState(PLAYING);
+                    //nanti pindain ke playing
+                    sun.startMorning();
                 } else {
                     throw new Exception("Deck belum full!");
                 }

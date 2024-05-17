@@ -4,34 +4,33 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public abstract class Sun {  
-    private int sun = 25;
+public class Sun {  
+    private static int sun = 25;
     Timer timer = new Timer();
-    
-    public abstract void addSunSF(); // nanti untuk di extend sama sunflower
-    // ini codenya kalau mau
-    // import java.util.Timer;
-    // import java.util.TimerTask;
+    boolean morning = false;
 
-    // public class MySun extends Sun {
-        
-    //     public void addSunSF() {
-    //         timer.scheduleAtFixedRate(new TimerTask() {
-    //             public void run() {
-    //                 setSun(getSun() + 25);
-    //             }
-    //         }, 0000, 10000);
-    //     }
-    // }
+    // Nanti pindain method ke playing
+    public void startMorning() {
+        sun = 25;
+        timer.scheduleAtFixedRate(new TimerTask() {
+            public void run() {
+                morning = !morning;
+                addSunMorning();
+            }
+        }, 0000, 100000);
+    }
 
     public void addSunMorning() {
         int period = generateRandomPeriod(5, 10) * 1000;
 
-        timer.scheduleAtFixedRate(new TimerTask() {
-            public void run() {
-                sun += 25;
-            }
-        }, 0000, period);
+        if (morning) {
+            timer.scheduleAtFixedRate(new TimerTask() {
+                public void run() {
+                    sun += 25;
+                }
+            }, 1000, period);
+        }
+        
     }
 
     private int generateRandomPeriod(int minSeconds, int maxSeconds) {
@@ -44,7 +43,15 @@ public abstract class Sun {
     }
     
     public void setSun(int sun) {
-        this.sun = sun;
+        Sun.sun = sun;
+    }
+
+    public void addSun(int add) {
+        Sun.sun += add;
+    }
+
+    public void reduceSun(int min) {
+        Sun.sun -= min;
     }
 }
 
