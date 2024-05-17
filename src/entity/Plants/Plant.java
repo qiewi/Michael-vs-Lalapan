@@ -9,7 +9,6 @@ import javax.imageio.ImageIO;
 import entity.Action;
 import entity.Entity;
 import entity.Zombies.Zombie;
-import helpz.LoadSave;
 
 public abstract class Plant extends Entity implements Action {
     private int cost;

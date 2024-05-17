@@ -4,8 +4,8 @@ public class ShieldZomB extends Zombie {
 
     private boolean shield_on = true;
 
-    public ShieldZomB(String name, int extra_health, boolean shield_on) {
-        super(name, 100 + extra_health, 100, 1, false);
+    public ShieldZomB(String name, int extra_health, boolean shield_on, int x, int y) {
+        super(name, 100 + extra_health, 100, 1, false, x, y);
         this.shield_on = shield_on;
     }
 

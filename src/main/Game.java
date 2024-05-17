@@ -6,7 +6,7 @@ import scenes.Help;
 import scenes.Menu;
 import scenes.PlantsList;
 import scenes.Playing;
-import scenes.Settings;
+import scenes.Preparation;
 import scenes.ZombiesList;
 
 public class Game extends JFrame implements Runnable{
@@ -20,7 +20,7 @@ public class Game extends JFrame implements Runnable{
     private Render render;
     private Menu menu;
     private Playing playing;
-    private Settings settings;
+    private Preparation preparation;
     private Help help;
     private PlantsList plantsList;
     private ZombiesList zombiesList;
@@ -33,6 +33,7 @@ public class Game extends JFrame implements Runnable{
         initClasses();
 
         setResizable(false);
+        setTitle("Michael vs Lalapan");
         add(gameScreen);
         pack();
         
@@ -43,8 +44,8 @@ public class Game extends JFrame implements Runnable{
         render = new Render(this);
         gameScreen = new GameScreen(this);
         menu = new Menu(this);
+        preparation = new Preparation(this);
         playing = new Playing(this);
-        settings = new Settings(this);
         help = new Help(this);
         plantsList = new PlantsList(this);
         zombiesList = new ZombiesList(this);
@@ -61,7 +62,17 @@ public class Game extends JFrame implements Runnable{
     }
 
     private void updateGame() {
-        // System.out.println("Game Updated!");
+        switch (GameStates.gameState) {
+            case MENU:
+                break;
+            case PLAYING:
+                playing.update();
+                break;
+            case SETTINGS:
+                break;
+            default:
+                break;
+            }
     }
 
     public static void main(String[] args) {
@@ -105,10 +116,7 @@ public class Game extends JFrame implements Runnable{
                 updateGame();
                 lastUpdate = now;
                 updates++;
-            } else {
-                repaint();
-            }
-
+            } 
             if (System.currentTimeMillis() - lastTimeCheck >= 1000) {
                 System.out.println("FPS: " + frames + " | UPS: " + updates);
                 frames = 0;
@@ -131,8 +139,8 @@ public class Game extends JFrame implements Runnable{
         return playing;
     }
 
-    public Settings getSettings() {
-        return settings;
+    public Preparation getPreparation() {
+        return preparation;
     }
 
     public Help getHelp() {

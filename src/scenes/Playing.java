@@ -1,66 +1,65 @@
 package scenes;
 
-import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
-import entity.Plants.Plant;
-import entity.Plants.PlantFactory;
-import helpz.LevelBuild;
 import main.Game;
-import managers.CardManager;
+import managers.PlantsManager;
+import managers.ZombiesManager;
 import ui.TopBar;
 
-import static main.GameStates.*;
 
 public class Playing extends GameScene implements SceneMethods {
 
-	private int[][] lvl;
-	private CardManager tileManager;
 	private int xArrow, yArrow;
-
-	private static ArrayList<Plant> PlantsList = new ArrayList<Plant>();
+	private PlantsManager plantsManager;
+	private ZombiesManager zombiesManager;
+	private String[] plantDeck;
 
 	private TopBar topBar;
 
 	public Playing(Game game) {
 		super(game);
+
+		// Default Cursor Position
 		xArrow = 270;
 		yArrow = 200;
 
-		lvl = LevelBuild.getLevelData();
-		tileManager = new CardManager();
-		topBar = new TopBar(0, 0, 768, 100, this);
+		// Initialize Managers
+		plantsManager = new PlantsManager(this);
+		zombiesManager = new ZombiesManager(this);
 
+		topBar = new TopBar(0, 0, 768, 100, this);
 	}
 
 	@Override
 	public void render(Graphics g) {
 
+		// Draw Map and Bar
 		drawMap(g);
 		topBar.draw(g);
-		drawPlants(g);
-		drawSelectedTile(g);
 
+		// Draw Managers
+		plantsManager.draw(g);
+		zombiesManager.draw(g);
+
+		// Draw Arrow and the Selected Tile
+		drawSelectedTile(g);
 	}
 
-	private void drawPlants(Graphics g) {
-		for (Plant plant : PlantsList) {
-			BufferedImage img = plant.getImage();
-			int width = 90;
-			int height = (img.getHeight() * width) / img.getWidth(); // maintain aspect ratio
-			Image scaledImage = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-			img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-			g.drawImage(scaledImage, plant.getX() - 15, plant.getY(), null);
-		}
+	public void update() {
+		updateTick();
+		plantsManager.update();
+		zombiesManager.update();
+	}
+
+	public void createPlantDeck(String[] plantDeck) {
+		this.plantDeck = plantDeck;
 	}
 
 	private void drawSelectedTile(Graphics g) {
@@ -80,12 +79,7 @@ public class Playing extends GameScene implements SceneMethods {
 				System.out.println("Image is null. Check the file format and content.");
 			} else {
 				// Per Tiles 80 x 90
-				int width = 50;
-				int height = (img.getHeight() * width) / img.getWidth(); // maintain aspect ratio
-				Image scaledImage = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-				img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-				g.drawImage(scaledImage, xArrow, yArrow, null);
-				g.dispose();
+				g.drawImage(img, xArrow, yArrow, null);
 			}
 		}
 	}
@@ -110,11 +104,6 @@ public class Playing extends GameScene implements SceneMethods {
 			}
 		}
 	}
-
-	public CardManager getTileManager () {
-		return tileManager;
-	}
-
 
 	@Override
 	public void mouseClicked(int x, int y) {
@@ -142,8 +131,9 @@ public class Playing extends GameScene implements SceneMethods {
 		topBar.mouseReleased(x, y);
 	}
 
+
 	public void keyPressed(KeyEvent e) {
-		// Set
+		// Posisi Cursor
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 			if (xArrow + 80 > 910) {
 				xArrow = 270;
@@ -174,14 +164,49 @@ public class Playing extends GameScene implements SceneMethods {
 			Game.update();
 		}
 
-		// Create Plants (Harus disesuain lg)
-		else if (e.getKeyCode() == KeyEvent.VK_1) {
-			PlantsList.add(PlantFactory.CreatePlant("Sunflower", xArrow, yArrow));
-		} else if (e.getKeyCode() == KeyEvent.VK_2) {
-			PlantsList.add(PlantFactory.CreatePlant("Peashooter", xArrow, yArrow));
-		} else if (e.getKeyCode() == KeyEvent.VK_3) {
-			PlantsList.add(PlantFactory.CreatePlant("Snowpea", xArrow, yArrow));
+		// Create Plants 
+		switch (e.getKeyCode()) {
+			
+			case KeyEvent.VK_1:
+				plantsManager.addPlant(topBar.getPlantCardsButton(0).getName(), xArrow, yArrow);
+				break;
+
+			case KeyEvent.VK_2:
+				plantsManager.addPlant(topBar.getPlantCardsButton(1).getName(), xArrow, yArrow);
+				break;
+			
+			case KeyEvent.VK_3:
+				plantsManager.addPlant(topBar.getPlantCardsButton(2).getName(), xArrow, yArrow);
+				break;
+
+			case KeyEvent.VK_4:
+				plantsManager.addPlant(topBar.getPlantCardsButton(3).getName(), xArrow, yArrow);
+				break;
+			
+			case KeyEvent.VK_5:
+				plantsManager.addPlant(topBar.getPlantCardsButton(4).getName(), xArrow, yArrow);
+				break;
+			
+			case KeyEvent.VK_6:
+				plantsManager.addPlant(topBar.getPlantCardsButton(5).getName(), xArrow, yArrow);
+				break;
+
+			case KeyEvent.VK_D:
+				plantsManager.deletePlant(xArrow, yArrow);
+				break;
 		}
+		
     }
 
+	public void clearPlants() {
+		plantsManager.clearPlants();
+	}
+
+	public String[] getPlantDeckNames () {
+		return plantDeck;
+	}
+
+	public TopBar getTopBar() {
+		return topBar;
+	}
 }

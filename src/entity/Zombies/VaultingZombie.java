@@ -4,8 +4,8 @@ public class VaultingZombie extends Zombie {
 
     private boolean vault_on = true;
 
-    public VaultingZombie(String name, int extra_health, boolean vault_on) {
-        super(name, 100 + extra_health, 100, 1, false);
+    public VaultingZombie(String name, int extra_health, boolean vault_on, int x, int y) {
+        super(name, 100 + extra_health, 100, 1, false, x ,y);
         this.vault_on = vault_on;
     }
 
