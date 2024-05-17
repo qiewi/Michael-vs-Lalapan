@@ -10,6 +10,7 @@ import javax.imageio.ImageIO;
 
 import main.Game;
 import managers.PlantsManager;
+import managers.SunDropManager;
 import managers.ZombiesManager;
 import ui.MyButton;
 import ui.TopBar;
@@ -21,6 +22,7 @@ public class Playing extends GameScene implements SceneMethods {
 	private int xArrow, yArrow;
 	private PlantsManager plantsManager;
 	private ZombiesManager zombiesManager;
+	private SunDropManager sunDropManager;
 	private String[] plantDeck;
 
 	private TopBar topBar;
@@ -44,6 +46,7 @@ public class Playing extends GameScene implements SceneMethods {
 		// Initialize Managers
 		plantsManager = new PlantsManager(this);
 		zombiesManager = new ZombiesManager(this);
+		sunDropManager = new SunDropManager(this);
 
 		topBar = new TopBar(0, 0, 768, 100, this);
 
@@ -62,6 +65,7 @@ public class Playing extends GameScene implements SceneMethods {
 		// Draw Managers
 		plantsManager.draw(g);
 		zombiesManager.draw(g);
+		sunDropManager.draw(g);
 
 		// Draw Arrow and the Selected Tile
 		drawSelectedTile(g);
@@ -71,6 +75,7 @@ public class Playing extends GameScene implements SceneMethods {
 		updateTick();
 		plantsManager.update();
 		zombiesManager.update();
+		sunDropManager.update();
 		sunText.setText(String.valueOf(sun.getSun()));
 	}
 

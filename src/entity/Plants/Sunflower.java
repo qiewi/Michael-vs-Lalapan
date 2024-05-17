@@ -4,14 +4,18 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import entity.Sun;
+import managers.SunDropManager;
 
 public class Sunflower extends Plant {
     private Sun sun;
     private TimerTask sunTask;
+    private int sunX, sunY;
 
     public Sunflower(int x, int y) {
         super("Sunflower", 50, 100, 0, 0, 0, 10, false, x, y);
         this.setImage(getPlantImage("Sunflower"));
+        this.sunX = x;
+        this.sunY = y;
 
         // Inisiasi untuk penambahan sun
         sun = new Sun();
@@ -25,7 +29,8 @@ public class Sunflower extends Plant {
         timer = new Timer();
         sunTask = new TimerTask() {
             public void run() {
-                sun.addSun(25);
+                SunDropManager.addSunDrop(sunX, sunY);
+                // sun.addSun(25);
             }
         };
         timer.scheduleAtFixedRate(sunTask, 0, 3000);
