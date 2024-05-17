@@ -3,31 +3,40 @@ package entity.Plants;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import entity.Sun;
 
 public class Sunflower extends Plant {
+    private Sun sun;
+    private TimerTask sunTask;
 
     public Sunflower(int x, int y) {
         super("Sunflower", 50, 100, 0, 0, 0, 10, false, x, y);
         this.setImage(getPlantImage("Sunflower"));
+
+        // Inisiasi untuk penambahan sun
+        sun = new Sun();
+        addSunSF();
     }
 
-    private int sun = 25;
     Timer timer = new Timer();
+    
 
     public void addSunSF() {
-        timer.scheduleAtFixedRate(new TimerTask() {
+        timer = new Timer();
+        sunTask = new TimerTask() {
             public void run() {
-                setSun(getSun() + 25);
+                sun.addSun(25);
             }
-        }, 0000, 10000);
+        };
+        timer.scheduleAtFixedRate(sunTask, 0, 3000);
     }
 
-    public int getSun() {
-        return sun;
-    }
-    
-    public void setSun(int sun) {
-        this.sun = sun;
+    public void stopSunSF() {
+        if (timer != null) {
+            sunTask.cancel();
+            timer.cancel();
+            timer.purge();
+        }
     }
 
     public void action() {
