@@ -10,10 +10,11 @@ import scenes.Playing;
 
 public class ZombiesManager {
     private Playing playing;
-	private ArrayList<Zombie> zombies = new ArrayList<>();
+	private static ArrayList<Zombie> zombies;
 
 	public ZombiesManager(Playing playing) {
 		this.playing = playing;
+		zombies = new ArrayList<>(); // ditaro di inisialiasi
 		initializeZombie();
 	}
 
@@ -23,16 +24,23 @@ public class ZombiesManager {
 	}
 
     private void initializeZombie () {
-        int [] position = new int [] {165, 255, 345, 435, 545, 615};
+        int [] position = new int [] {200, 290, 380, 470, 560, 650};
 
         for (int i = 0; i < 10; i++) {
             Random rand = new Random();
             int pos = rand.nextInt(5) + 1;
             addZombie(990, position[pos]);
         }
-
-        
     }
+
+	public static boolean checkZombiesInLane(int y) {
+		for (Zombie z : zombies) {
+			if (z.getY() == y) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	public void addZombie(int x, int y) {
 		zombies.add(ZombieFactory.CreateZombie("Normal", x, y));
@@ -44,6 +52,6 @@ public class ZombiesManager {
 	}
 
 	private void drawZombie(Zombie z, Graphics g) {
-		g.drawImage(z.getImage(), (int) z.getX(), (int) z.getY(), null);
+		g.drawImage(z.getImage(), (int) z.getX(), (int) z.getY() - 35, null);
 	}
 }

@@ -42,9 +42,6 @@ public abstract class Plant extends Entity implements Action {
 
     }
 
-    public void action() {
-    }
-
     public int getCost() {
         return this.cost;
     }

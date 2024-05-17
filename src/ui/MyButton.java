@@ -12,25 +12,10 @@ public class MyButton {
 	public int x, y, width, height, id;
 	private String text, name;
 	private Rectangle bounds;
-	private boolean mouseHover, mousePressed, enable, potentialSwapInventory, potentialSwapDeck, firstSwap, isJustText;
+	private boolean mouseHover, mousePressed, enable = false, potentialSwap = false, firstSwap = false, forSunText;
 	private Image image, hideImage;
 	
-	// For Inventory Buttons
-	public MyButton(int x, int y, int width, int height, Image image, boolean enable, boolean potentialSwapInventory, boolean firstSwap) {
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
-		this.id = -1;
-		this.image = image;
-		this.enable = enable;
-		this.potentialSwapInventory = potentialSwapInventory;
-		this.firstSwap = firstSwap;
-
-		initBounds();
-	}
-
-	// For Deck Buttons
+	// For Cards Buttons
 	public MyButton(int x, int y, int width, int height, Image image) {
 		this.x = x;
 		this.y = y;
@@ -51,19 +36,6 @@ public class MyButton {
 		this.height = height;
 		this.id = -1;
 		this.image = image;
-
-		initBounds();
-	}
-
-	// For Panel Buttons
-	public MyButton(String text, int x, int y, int width, int height, boolean enable) {
-		this.text = text;
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
-		this.id = -1;
-		this.enable = enable;
 
 		initBounds();
 	}
@@ -93,14 +65,14 @@ public class MyButton {
 	}
 
 	// For Text Buttons
-	public MyButton(boolean isJustText, String text, int x, int y, int width, int height) {
-		this.isJustText = isJustText;
+	public MyButton(String text, int x, int y, int width, int height, boolean forSunText) {
 		this.text = text;
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
 		this.id = -1;
+		this.forSunText = forSunText;
 
 		initBounds();
 	}
@@ -123,16 +95,11 @@ public class MyButton {
 	private void drawBorder(Graphics g) {
 		// g.setColor(Color.black);
 
-		if (isJustText != true) {
+		if (forSunText != true) {
 			if (text != null) {
 				g.setColor(new Color(52,120,8));
 			}
 			g.drawRect(x, y, width, height);
-			
-			if (mousePressed && enable) {
-				g.drawRect(x + 1, y + 1, width - 2, height - 2);
-				g.drawRect(x + 2, y + 2, width - 4, height - 4);
-			}
 
 			if ((mouseHover || mousePressed) && enable) {
 				g.setColor(new Color(206, 151, 38));
@@ -140,12 +107,7 @@ public class MyButton {
 				g.drawRect(x + 2, y + 2, width - 4, height - 4);
 			}
 		
-			if (potentialSwapInventory) {
-				g.setColor(Color.YELLOW);
-				g.drawRect(x - 2, y - 2, width + 4, height + 4);
-			} 
-		
-			if (potentialSwapDeck) {
+			if (potentialSwap) {
 				g.setColor(Color.YELLOW);
 				g.drawRect(x - 2, y - 2, width + 4, height + 4);
 			}
@@ -160,7 +122,7 @@ public class MyButton {
 	
 
 	private void drawBody(Graphics g) {
-		if (isJustText != true) {
+		if (forSunText != true) {
 			g.setColor(new Color(90, 43, 20));
 			g.fillRect(x, y, width, height);
 		}
@@ -180,7 +142,7 @@ public class MyButton {
 	private void drawText(Graphics g) {
 		if (text != null) {
 			// Set font
-			Font font = new Font("Times New Roman", Font.BOLD, 21); // Change "Arial" to your desired font name, adjust size and style as needed
+			Font font = new Font("Times New Roman", Font.BOLD, 21);
 			g.setFont(font);
 			
 			// Set color
@@ -190,7 +152,7 @@ public class MyButton {
 				g.setColor(new Color(206, 151, 38));
 			}
 
-			if (isJustText == true) {
+			if (forSunText == true) {
 				g.setColor(Color.BLACK);
 			}
 
@@ -219,12 +181,8 @@ public class MyButton {
 		this.firstSwap = firstSwap;
 	}
 
-	public void setPotentialSwapInventory(boolean potentialSwapInventory) {
-		this.potentialSwapInventory = potentialSwapInventory;
-	}
-
-	public void setPotentialSwapDeck(boolean potentialSwapDeck) {
-		this.potentialSwapDeck = potentialSwapDeck;
+	public void setPotentialSwap(boolean potentialSwap) {
+		this.potentialSwap = potentialSwap;
 	}
 
 	public void resetBooleans() {

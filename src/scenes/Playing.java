@@ -9,11 +9,13 @@ import java.io.InputStream;
 import javax.imageio.ImageIO;
 
 import main.Game;
+import managers.PeasManager;
 import managers.PlantsManager;
+import managers.SunDropManager;
 import managers.ZombiesManager;
+import objects.Sun;
 import ui.MyButton;
 import ui.TopBar;
-import entity.Sun;
 
 
 public class Playing extends GameScene implements SceneMethods {
@@ -21,6 +23,8 @@ public class Playing extends GameScene implements SceneMethods {
 	private int xArrow, yArrow;
 	private PlantsManager plantsManager;
 	private ZombiesManager zombiesManager;
+	private SunDropManager sunDropManager;
+	private PeasManager peasManager;
 	private String[] plantDeck;
 
 	private TopBar topBar;
@@ -44,6 +48,8 @@ public class Playing extends GameScene implements SceneMethods {
 		// Initialize Managers
 		plantsManager = new PlantsManager(this);
 		zombiesManager = new ZombiesManager(this);
+		sunDropManager = new SunDropManager(this);
+		peasManager = new PeasManager(this);
 
 		topBar = new TopBar(0, 0, 768, 100, this);
 
@@ -62,6 +68,8 @@ public class Playing extends GameScene implements SceneMethods {
 		// Draw Managers
 		plantsManager.draw(g);
 		zombiesManager.draw(g);
+		sunDropManager.draw(g);
+		peasManager.draw(g);
 
 		// Draw Arrow and the Selected Tile
 		drawSelectedTile(g);
@@ -69,8 +77,12 @@ public class Playing extends GameScene implements SceneMethods {
 
 	public void update() {
 		updateTick();
+
 		plantsManager.update();
 		zombiesManager.update();
+		sunDropManager.update();
+		peasManager.update();
+		
 		sunText.setText(String.valueOf(sun.getSun()));
 	}
 
@@ -101,7 +113,7 @@ public class Playing extends GameScene implements SceneMethods {
 	}
 
 	private void initSunText() {
-        sunText = new MyButton(true, String.valueOf(sun.getSun()), startXSun, startYSun, SunWidth, SunHeight);
+        sunText = new MyButton(String.valueOf(sun.getSun()), startXSun, startYSun, SunWidth, SunHeight, true);
     }
 
 	private void drawSunText(Graphics g) {
@@ -213,6 +225,10 @@ public class Playing extends GameScene implements SceneMethods {
 			
 			case KeyEvent.VK_6:
 				plantsManager.addPlant(topBar.getPlantCardsButton(5).getName(), xArrow, yArrow);
+				break;
+
+			case KeyEvent.VK_D:
+				plantsManager.deletePlantsAt(xArrow, yArrow);;
 				break;
 		}
 		
