@@ -37,7 +37,7 @@ public class GameOverScene extends GameScene implements SceneMethods {
 
     private void drawGameOver(Graphics g) {
 		BufferedImage img = null;
-		InputStream is = getClass().getResourceAsStream("resources/GameOver.png");
+		InputStream is = getClass().getResourceAsStream("resources/gameover.png");
 	
 		if (is == null) {
 			System.out.println("Stream is null. Check the file path.");
@@ -64,7 +64,7 @@ public class GameOverScene extends GameScene implements SceneMethods {
     @Override
     public void mouseClicked(int x, int y) {
         if (bTryAgain.getBounds().contains(x, y)) {
-            setGameState(PLAYING); // Assuming RESTART is defined in your GameStates
+            setGameState(PREPARATION); // Assuming RESTART is defined in your GameStates
         } else if (bExit.getBounds().contains(x, y)) {
             setGameState(MENU); // Assuming you want to go back to the menu
         }
