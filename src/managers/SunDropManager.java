@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 
-import entity.Sun;
+import objects.Sun;
 import scenes.Playing;
 
 public class SunDropManager {
@@ -37,7 +37,7 @@ public class SunDropManager {
         int[] xPositions = { 310, 390, 480, 570, 660, 750, 840 };
         int[] destructYPositions = { 200, 290, 380, 470, 560, 650 };
 
-        int x = xPositions[ranX.nextInt(840) + 310];
+        int x = xPositions[ranX.nextInt(xPositions.length)];
         int destructY = destructYPositions[ranDestructY.nextInt(destructYPositions.length)];
 
         activeSuns.add(new SunDrop(x, 100, destructY));
