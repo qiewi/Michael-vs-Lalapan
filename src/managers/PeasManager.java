@@ -28,8 +28,17 @@ public class PeasManager {
 	}
 
     // For Game 
-	public static void addPeaInLane(int x, int y) {
-        peas.add(new Pea(x, y));
+	public static void addPeaInLane(int x, int y, String name) {
+        switch (name) {
+            case "Normal":
+                peas.add(new Pea(x, y, "Normal"));
+                break;
+            case "Frozen":
+                peas.add(new Pea(x, y, "Frozen"));
+                break;
+            default:
+                break;
+        };
 	}
 
 	public void draw(Graphics g) {

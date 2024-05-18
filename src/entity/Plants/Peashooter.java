@@ -18,10 +18,9 @@ public class Peashooter extends Plant {
     public void action() {
         shootTimer = new Timer(2000, (ActionEvent e) -> {
             if (ZombiesManager.checkZombiesInLane((int) this.getY())) {
-                PeasManager.addPeaInLane((int) this.getX() + 50, (int) this.getY());
+                PeasManager.addPeaInLane((int) this.getX() + 50, (int) this.getY(), "Normal");
             }
         });
-        shootTimer.setInitialDelay(0);
         shootTimer.start();
     }
 

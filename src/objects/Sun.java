@@ -49,7 +49,7 @@ public class Sun {
 
     public BufferedImage setSunImage() {
         BufferedImage img = null;
-        InputStream is = getClass().getResourceAsStream("Sun.png");
+        InputStream is = getClass().getResourceAsStream("ObjectImages/Sun.png");
 
         try {
             img = ImageIO.read(is);

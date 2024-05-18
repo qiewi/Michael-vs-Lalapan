@@ -14,6 +14,7 @@ public class MyButton {
 	private Rectangle bounds;
 	private boolean mouseHover, mousePressed, enable, potentialSwapInventory, potentialSwapDeck, firstSwap, isJustText;
 	private Image image, hideImage;
+	private Color bodyColor = new Color(90, 43, 20);
 	
 	// For Inventory Buttons
 	public MyButton(int x, int y, int width, int height, Image image, boolean enable, boolean potentialSwapInventory, boolean firstSwap) {
@@ -161,7 +162,7 @@ public class MyButton {
 
 	private void drawBody(Graphics g) {
 		if (isJustText != true) {
-			g.setColor(new Color(90, 43, 20));
+			g.setColor(bodyColor);
 			g.fillRect(x, y, width, height);
 		}
 		
@@ -278,5 +279,9 @@ public class MyButton {
 
 	public Image getHideImage() {
 		return hideImage;
+	}
+
+	public void setBodyColor(Color color) {
+		this.bodyColor = color;
 	}
 }

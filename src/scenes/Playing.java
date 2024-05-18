@@ -234,8 +234,9 @@ public class Playing extends GameScene implements SceneMethods {
 		
     }
 
-	public void clearPlants() {
+	public void clearAll() {
 		plantsManager.clearPlants();
+		zombiesManager.clearZombie();
 	}
 
 	public String[] getPlantDeckNames () {
@@ -244,6 +245,10 @@ public class Playing extends GameScene implements SceneMethods {
 
 	public PlantsManager getPlantsManager() {
 		return plantsManager;
+	}
+
+	public ZombiesManager getZombiesManager() {
+		return zombiesManager;
 	}
 
 	public TopBar getTopBar() {

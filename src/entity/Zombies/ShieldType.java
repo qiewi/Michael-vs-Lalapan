@@ -1,10 +1,10 @@
 package entity.Zombies;
 
-public class ShieldZomB extends Zombie {
+public class ShieldType extends Zombie {
 
     private boolean shield_on = true;
 
-    public ShieldZomB(String name, int extra_health, boolean shield_on, int x, int y) {
+    public ShieldType(String name, int extra_health, boolean shield_on, int x, int y) {
         super(name, 100 + extra_health, 100, 1, false, x, y);
         this.shield_on = shield_on;
     }
@@ -17,7 +17,11 @@ public class ShieldZomB extends Zombie {
         this.shield_on = head;
     }
 
-    public  void attack() {
+    public void action() {
+        
+    }
+    
+    public void actionStop() {
         
     }
 
