@@ -68,9 +68,6 @@ public class GameOver extends GameScene implements SceneMethods {
     @Override
     public void mouseClicked(int x, int y) {
 
-        game.getPreparation().setSelectedClear(true);
-        game.getPreparation().refreshInventoryAndDeck();
-
         if (bTryAgain.getBounds().contains(x, y)) {
             setGameState(PREPARATION); 
         } else if (bExit.getBounds().contains(x, y)) {

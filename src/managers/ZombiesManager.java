@@ -60,8 +60,12 @@ public class ZombiesManager {
 				z.startAttacking();
 			}
 
+			if (z.getHealth() <= 0) {
+				zombieIterator.remove();
+			}
+
 			// Game Over
-			if (z.getX() <= 220) {
+			if (z.getX() <= 90) {
 				setGameState(GAMEOVER);
 			}
 		}
@@ -90,6 +94,24 @@ public class ZombiesManager {
 		return false;
 	}
 
+	public static Zombie checkZombiesInPos(int x, int y) {
+		Zombie zombie = null;
+		for (Zombie z : zombies) {
+			if ((int) z.getX() == x && (int) z.getY() == y){
+				zombie = z;
+			}
+		}
+		return zombie;
+	}
+
+	public static void takeDamage(Zombie zombie, int damage) {
+		for (Zombie z : zombies) {
+			if (z.equals(zombie)) {
+				z.takeDamage(damage);
+			}
+		}
+	}
+
 	public void addZombie(int x, int y) {
 		Random random = new Random();
 		int zombieType = random.nextInt(4);
@@ -108,5 +130,9 @@ public class ZombiesManager {
 
 	private void drawZombie(Zombie z, Graphics g) {
 		g.drawImage(z.getImage(), (int) z.getX(), (int) z.getY() - 75, null);
+	}
+
+	public static ArrayList<Zombie> getZombies(){
+		return zombies;
 	}
 }

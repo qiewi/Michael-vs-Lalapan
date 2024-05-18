@@ -16,7 +16,6 @@ import managers.PlantsManager;
 public abstract class Zombie extends Entity implements Action {
     private boolean is_aquatic;
     private BufferedImage image;
-    private boolean moving = true;
     private boolean attacking = false;
 
     private Timer attackTimer;
@@ -54,6 +53,10 @@ public abstract class Zombie extends Entity implements Action {
         }
     }
 
+    public void takeDamage(int damage) {
+        this.setHealth(this.getHealth() - damage);
+    }
+
     public BufferedImage getZombieImage(String name) {
         BufferedImage img = null;
         InputStream is = getClass().getResourceAsStream("ZombiesImage/" + name + ".png");
@@ -66,6 +69,7 @@ public abstract class Zombie extends Entity implements Action {
 
         return img;
     }
+    
 
     public boolean getAquatic() {
         return is_aquatic;
@@ -77,14 +81,6 @@ public abstract class Zombie extends Entity implements Action {
 
     public void setImage(BufferedImage image) {
         this.image = image;
-    }
-
-    public boolean getMoving() {
-        return moving;
-    }
-
-    public void setMoving(boolean moving) {
-        this.moving = moving;
     }
 
     public boolean getAttacking() {
