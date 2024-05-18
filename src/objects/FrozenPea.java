@@ -1,6 +1,4 @@
-package objects.ObjectImages;
-
-import objects.Pea;
+package objects;
 
 public class FrozenPea extends Pea {
 

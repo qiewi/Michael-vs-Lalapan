@@ -84,7 +84,7 @@ public class TopBar {
 
 	public void mouseClicked(int x, int y) {
 		if (bMenu.getBounds().contains(x, y))
-            playing.clearPlants();
+            playing.clearAll();
             playing.getGame().getPreparation().setSelectedClear(true);
             playing.getGame().getPreparation().refreshInventoryAndDeck();
             setGameState(MENU);

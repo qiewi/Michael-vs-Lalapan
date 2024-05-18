@@ -33,6 +33,11 @@ public class Render {
                 game.getPlaying().render(g);
                 break;
             
+            case GAMEOVER:
+
+                game.getGameOver().render(g);
+                break;
+            
             case PLANTSLIST:
 
                 game.getPlantsList().render(g);

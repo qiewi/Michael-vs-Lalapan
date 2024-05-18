@@ -1,5 +1,6 @@
 package managers;
 
+import static main.GameStates.GAMEOVER;
 import static main.GameStates.MENU;
 import static main.GameStates.setGameState;
 
@@ -29,7 +30,6 @@ public class ZombiesManager {
 		zombies = new ArrayList<>();
 		plants = PlantsManager.getPlants();
 		scheduler = Executors.newScheduledThreadPool(1);
-		scheduleZombieGeneration();
 	}
 
 	public void update() {
@@ -55,20 +55,20 @@ public class ZombiesManager {
 	
 			// Move the zombie if it hasn't attacked
 			if (!attacked) {
-				z.move(-0.3f, 0);
+				z.move(-3f, 0);
 				z.setAttacking(false);  // Stop attacking when moving
 			} else {
 				z.startAttacking();
 			}
 
 			// Game Over
-			// if (z.getX() <= 250) {
-			// 	setGameState(MENU);
-			// }
+			if (z.getX() <= 250) {
+				setGameState(GAMEOVER);
+			}
 		}
 	}
 
-	private void scheduleZombieGeneration() {
+	public void scheduleZombieGeneration() {
 		Runnable addZombieTask = () -> {
 			Random rand = new Random();
 			int[] positions = new int[] {200, 290, 380, 470, 560, 650};
@@ -93,6 +93,10 @@ public class ZombiesManager {
 
 	public void addZombie(int x, int y) {
 		zombies.add(ZombieFactory.CreateZombie("Normal", x, y));
+	}
+
+	public void clearZombie() {
+		zombies.clear();
 	}
 
 	public void draw(Graphics g) {

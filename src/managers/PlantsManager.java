@@ -7,7 +7,6 @@ import java.util.Iterator;
 import entity.Plants.Plant;
 import entity.Plants.PlantFactory;
 import entity.Zombies.Zombie;
-import objects.Pea;
 import objects.Sun;
 import scenes.Playing;
 
