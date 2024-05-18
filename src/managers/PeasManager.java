@@ -30,7 +30,7 @@ public class PeasManager {
 			while (zombieIterator.hasNext()) {
 				Zombie z = zombieIterator.next();
 	
-				if (((int) z.getX() >= (int) p.getX() && (int) z.getX() <= (int) p.getX() + 30) && ((int) z.getY() == (int) p.getY())) {
+				if (((int) z.getX() >= (int) p.getX() && (int) z.getX() <= (int) p.getX() + 10) && ((int) z.getY() == (int) p.getY())) {
                     System.out.println("Pea hit zombie at " + (int) p.getX() + ", " + (int) p.getY());
                     ZombiesManager.takeDamage(z, 25);
 					collide = true;
