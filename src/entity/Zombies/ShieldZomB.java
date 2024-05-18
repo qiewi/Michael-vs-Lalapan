@@ -17,7 +17,11 @@ public class ShieldZomB extends Zombie {
         this.shield_on = head;
     }
 
-    public  void attack() {
+    public void action() {
+        
+    }
+    
+    public void actionStop() {
         
     }
 

@@ -17,7 +17,11 @@ public class HeadwearZomB extends Zombie {
         this.head_on = head;
     }
 
-    public  void attack() {
+    public void action() {
+        
+    }
+    
+    public void actionStop() {
         
     }
 

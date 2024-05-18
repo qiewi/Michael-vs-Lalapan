@@ -17,7 +17,11 @@ public class VaultingZombie extends Zombie {
         this.vault_on = vault;
     }
 
-    public void attack() {
+    public void action() {
+        
+    }
+    
+    public void actionStop() {
         
     }
 
