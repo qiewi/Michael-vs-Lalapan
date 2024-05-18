@@ -122,6 +122,8 @@ public class MyButton {
 	
 
 	private void drawBody(Graphics g) {
+		if (isJustText != true) {
+			g.setColor(bodyColor);
 		if (forSunText != true) {
 			g.setColor(new Color(90, 43, 20));
 			g.fillRect(x, y, width, height);
@@ -236,5 +238,9 @@ public class MyButton {
 
 	public Image getHideImage() {
 		return hideImage;
+	}
+
+	public void setBodyColor(Color color) {
+		this.bodyColor = color;
 	}
 }

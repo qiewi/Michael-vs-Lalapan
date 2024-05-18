@@ -1,11 +1,18 @@
 package managers;
 
+import static main.GameStates.GAMEOVER;
+import static main.GameStates.MENU;
+import static main.GameStates.setGameState;
+
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Random;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
+import entity.Plants.Plant;
 import entity.Zombies.Zombie;
 import entity.Zombies.ZombieFactory;
 import scenes.Playing;
@@ -14,108 +21,68 @@ import entity.Plants.Plant;
 
 public class ZombiesManager {
     private Playing playing;
-    private static ArrayList<Zombie> zombies;
-    private static ArrayList<Zombie> zombiesWalk;
-    private static ArrayList<Zombie> zombiesEat;
+	private static ArrayList<Zombie> zombies;
+	private static ArrayList<Plant> plants;
+	private ScheduledExecutorService scheduler;
+	private static final int INITIAL_ZOMBIE_COUNT = 10;
+	private static final int ZOMBIE_GENERATION_DELAY = 10;
 
-    private PlantsManager PM;
-    private ArrayList<Plant> plants;
-    private static ArrayList<Plant> plantsUnharmed;
-    private static ArrayList<Plant> plantsAttacked;
+	public ZombiesManager(Playing playing) {
+		this.playing = playing;
+		zombies = new ArrayList<>();
+		plants = PlantsManager.getPlants();
+		scheduler = Executors.newScheduledThreadPool(1);
+	}
 
-    public ZombiesManager(Playing playing) {
-        this.playing = playing;
+	public void update() {
+		Iterator<Zombie> zombieIterator = zombies.iterator();
+		while (zombieIterator.hasNext()) {
+			Zombie z = zombieIterator.next();
+			boolean attacked = false;
+	
+			// Iterate over the unharmed plants
+			Iterator<Plant> plantIterator = plants.iterator();
+			while (plantIterator.hasNext()) {
+				Plant p = plantIterator.next();
+	
+				// Check if zombie and plant are at the same position
+				if (((int) z.getX() == (int) p.getX()) && ((int) z.getY() == (int) p.getY())) {
+					z.setAttacking(true);
+					attacked = true;
+					break;
+				} else {
+					z.setAttacking(false);
+				}
+			}
+	
+			// Move the zombie if it hasn't attacked
+			if (!attacked) {
+				z.move(-3f, 0);
+				z.setAttacking(false);  // Stop attacking when moving
+			} else {
+				z.startAttacking();
+			}
 
-		// ditaro di inisialiasi
-        zombies = new ArrayList<>();
-        zombiesWalk = new ArrayList<>();
-        zombiesEat = new ArrayList<>();
-        plantsUnharmed = new ArrayList<>();
-        plantsAttacked = new ArrayList<>();
-        initializeZombie();
+			// Game Over
+			if (z.getX() <= 250) {
+				setGameState(GAMEOVER);
+			}
+		}
+	}
 
-        PM = new PlantsManager();
-    }
+	public void scheduleZombieGeneration() {
+		Runnable addZombieTask = () -> {
+			Random rand = new Random();
+			int[] positions = new int[] {200, 290, 380, 470, 560, 650};
+			int pos = rand.nextInt(positions.length);
+			addZombie(990, positions[pos]);
 
-    public void update() {
-        plants = PM.getPlants();
-        plantsUnharmed = new ArrayList<>(plants); // Create a copy of the plants list
-
-        List<Zombie> zombiesToWalk = new ArrayList<>();
-        List<Zombie> zombiesToEat = new ArrayList<>();
-        List<Plant> plantsToUnharm = new ArrayList<>();
-        List<Plant> plantsToAttack = new ArrayList<>();
-
-        // Iterate over the zombies that are walking
-        Iterator<Zombie> zombieIterator = zombiesWalk.iterator();
-        while (zombieIterator.hasNext()) {
-            Zombie z = zombieIterator.next();
-            boolean attacked = false;
-
-            // Iterate over the unharmed plants
-            Iterator<Plant> plantIterator = plantsUnharmed.iterator();
-            while (plantIterator.hasNext()) {
-                Plant p = plantIterator.next();
-
-                // Check if zombie and plant are at the same position
-                if (((int) z.getX() == (int) p.getX()) && ((int) z.getY() == (int) p.getY())) {
-                    zombieIterator.remove();
-                    plantIterator.remove();
-                    plantsToAttack.add(p);
-                    attacked = true;
-                    break;
-                } else {
-                    plantsToUnharm.add(p);
-                }
-            }
-
-            // Move the zombie if it hasn't attacked
-            if (!attacked) {
-                z.move(-0.3f, 0);
-                zombiesToWalk.add(z);
-            } else {
-                zombiesToEat.add(z);
-            }
-        }
-
-        // Update the lists
-        zombiesWalk = new ArrayList<>(zombiesToWalk);
-        zombiesEat = new ArrayList<>(zombiesToEat);
-        plantsUnharmed = new ArrayList<>(plantsToUnharm);
-        plantsAttacked = new ArrayList<>(plantsToAttack);
-
-        // Check the health of attacked plants and handle zombies accordingly
-        Iterator<Zombie> eatingZombieIterator = zombiesEat.iterator();
-        Iterator<Plant> attackedPlantIterator = plantsAttacked.iterator();
-        while (eatingZombieIterator.hasNext() && attackedPlantIterator.hasNext()) {
-            Zombie z = eatingZombieIterator.next();
-            Plant p = attackedPlantIterator.next();
-
-            System.out.println("test " + p.getHealth());
-            z.startAttacking(p);
-            System.out.println("test " + p.getHealth());
-            if (p.getHealth() <= 0) {
-				System.out.println("test " + p.getHealth());
-                eatingZombieIterator.remove();
-                attackedPlantIterator.remove();
-				zombiesWalk.add(z);
-                zombiesEat.remove(z);
-				plantsUnharmed.add(p);
-                plantsAttacked.add(p);
-				System.out.println(p.getHealth());
-            }
-        }
-    }
-
-    private void initializeZombie() {
-        int[] position = new int[]{200, 290, 380, 470, 560, 650};
-
-        for (int i = 0; i < 10; i++) {
-            Random rand = new Random();
-            int pos = rand.nextInt(5) + 1;
-            addZombie(990, position[pos]);
-        }
-    }
+			if (zombies.size() >= INITIAL_ZOMBIE_COUNT) {
+				scheduler.shutdown(); // Stop scheduling once the initial number of zombies are generated
+			}
+		};
+		scheduler.scheduleAtFixedRate(addZombieTask, 0, ZOMBIE_GENERATION_DELAY, TimeUnit.SECONDS);
+	}
 
     public static boolean checkZombiesInLane(int y) {
         for (Zombie z : zombies) {
@@ -126,11 +93,13 @@ public class ZombiesManager {
         return false;
     }
 
-    public void addZombie(int x, int y) {
-        Zombie newZombie = ZombieFactory.CreateZombie("Normal", x, y);
-        zombies.add(newZombie);
-        zombiesWalk.add(newZombie);
-    }
+	public void addZombie(int x, int y) {
+		zombies.add(ZombieFactory.CreateZombie("Normal", x, y));
+	}
+
+	public void clearZombie() {
+		zombies.clear();
+	}
 
     public void draw(Graphics g) {
         for (Zombie z : zombies)

@@ -2,6 +2,7 @@ package main;
 
 public enum GameStates {
     PLAYING,
+    GAMEOVER,
     PREPARATION,
     HELP,
     MENU,

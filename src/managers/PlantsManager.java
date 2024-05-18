@@ -2,9 +2,11 @@ package managers;
 
 import java.awt.Graphics;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import entity.Plants.Plant;
 import entity.Plants.PlantFactory;
+import entity.Zombies.Zombie;
 import objects.Sun;
 import scenes.Playing;
 
@@ -22,9 +24,14 @@ public class PlantsManager {
 	}
 
 	public void update() {
-		// for (Plant p : plants) {
-		// 	p.action();
-		// }
+		Iterator<Plant> iterator = plants.iterator();
+        while (iterator.hasNext()) {
+            Plant plant = iterator.next();
+            if (plant.getHealth() <= 0) {
+				plant.actionStop();
+				iterator.remove();
+			}
+        }
 	}
 
 	public void addPlant(String name, int x, int y) {
@@ -37,6 +44,24 @@ public class PlantsManager {
 			plantCreated = null;
 		}
         
+	}
+
+	public static Plant checkPlantsInPos(int x, int y) {
+		Plant plant = null;
+		for (Plant p : plants) {
+			if ((int) p.getX() == x && (int) p.getY() == y){
+				plant = p;
+			}
+		}
+		return plant;
+	}
+
+	public static void takeDamage(Plant plant, Zombie zombie) {
+		for (Plant p : plants) {
+			if (p.equals(plant)) {
+				p.takeDamage(zombie);
+			}
+		}
 	}
 
     private boolean checkPlants(int x, int y) {
@@ -109,7 +134,7 @@ public class PlantsManager {
         }
 	}
 
-	public ArrayList<Plant> getPlants() {
+	public static ArrayList<Plant> getPlants() {
 		return plants;
 	}
     

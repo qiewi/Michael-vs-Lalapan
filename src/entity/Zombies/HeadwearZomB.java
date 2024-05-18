@@ -19,9 +19,9 @@ public class HeadwearZomB extends Zombie implements Action {
     }
 
     public void action() {
-
+        
     }
-
+    
     public void actionStop() {
         
     }

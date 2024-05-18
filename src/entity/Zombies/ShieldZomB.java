@@ -17,11 +17,11 @@ public class ShieldZomB extends Zombie implements Action {
     public void setShield(boolean shield_on) {
         this.shield_on = shield_on;
     }
-    
+
     public void action() {
-
+        
     }
-
+    
     public void actionStop() {
         
     }

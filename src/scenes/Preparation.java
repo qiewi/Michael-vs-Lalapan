@@ -305,6 +305,8 @@ public class Preparation extends GameScene implements SceneMethods {
                 if (deckFull) {
                     game.getPlaying().createPlantDeck(this.inventory.getPlantDeckNames());
                     game.getPlaying().getTopBar().updateButtons();
+                    game.getPlaying().getZombiesManager().clearZombie();
+                    game.getPlaying().getZombiesManager().scheduleZombieGeneration();
                     setGameState(PLAYING);
                     //nanti pindain ke playing
                     sun.startMorning();

@@ -39,7 +39,7 @@ public abstract class Plant extends Entity implements Action {
     }
 
     public void takeDamage(Zombie Zombies) {
-
+        this.setHealth(this.getHealth() - Zombies.getAttackDamage());
     }
 
     public int getCost() {

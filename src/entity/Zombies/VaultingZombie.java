@@ -20,9 +20,9 @@ public class VaultingZombie extends Zombie implements Action {
     }
 
     public void action() {
-
+        
     }
-
+    
     public void actionStop() {
         
     }

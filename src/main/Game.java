@@ -2,6 +2,7 @@ package main;
 
 import javax.swing.JFrame;
 
+import scenes.GameOver;
 import scenes.Help;
 import scenes.Menu;
 import scenes.PlantsList;
@@ -20,6 +21,7 @@ public class Game extends JFrame implements Runnable{
     private Render render;
     private Menu menu;
     private Playing playing;
+    private GameOver gameOver;
     private Preparation preparation;
     private Help help;
     private PlantsList plantsList;
@@ -46,6 +48,7 @@ public class Game extends JFrame implements Runnable{
         menu = new Menu(this);
         preparation = new Preparation(this);
         playing = new Playing(this);
+        gameOver = new GameOver(this);
         help = new Help(this);
         plantsList = new PlantsList(this);
         zombiesList = new ZombiesList(this);
@@ -137,6 +140,10 @@ public class Game extends JFrame implements Runnable{
 
     public Playing getPlaying() {
         return playing;
+    }
+
+    public GameOver getGameOver() {
+        return gameOver;
     }
 
     public Preparation getPreparation() {
