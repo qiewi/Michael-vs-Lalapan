@@ -37,7 +37,7 @@ public abstract class Zombie extends Entity implements Action {
             if (this.getAttacking()) {
                 Plant plantAttacked = PlantsManager.checkPlantsInPos((int) this.getX(), (int) this.getY());
                 PlantsManager.takeDamage(plantAttacked, this);
-                System.out.println("Attacking!");
+                System.out.println("Attacking " + plantAttacked.getName() + " at " + ((int) plantAttacked.getX() / 80 - 2) + ", " + ((int) plantAttacked.getY() / 90 - 1));
             }
         });
         attackTimer.setInitialDelay(0);

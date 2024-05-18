@@ -1,7 +1,6 @@
 package managers;
 
 import static main.GameStates.GAMEOVER;
-import static main.GameStates.MENU;
 import static main.GameStates.setGameState;
 
 import java.awt.Graphics;
@@ -57,14 +56,14 @@ public class ZombiesManager {
 	
 			// Move the zombie if it hasn't attacked
 			if (!attacked) {
-				z.move(-3f, 0);
+				z.move(-0.3f, 0);
 				z.setAttacking(false);  // Stop attacking when moving
 			} else {
 				z.startAttacking();
 			}
 
 			// Game Over
-			if (z.getX() <= 250) {
+			if (z.getX() <= 220) {
 				setGameState(GAMEOVER);
 			}
 		}
@@ -94,7 +93,10 @@ public class ZombiesManager {
     }
 
 	public void addZombie(int x, int y) {
-		zombies.add(ZombieFactory.CreateZombie("Normal", x, y));
+		Random random = new Random();
+		int zombieType = random.nextInt(4);
+		String[] zombieTypes = {"Normal", "Conehead", "Buckethead", "Football", "Flag"};
+		zombies.add(ZombieFactory.CreateZombie(zombieTypes[zombieType], x, y));
 	}
 
 	public void clearZombie() {
@@ -106,7 +108,7 @@ public class ZombiesManager {
             drawZombie(z, g);
     }
 
-    private void drawZombie(Zombie z, Graphics g) {
-        g.drawImage(z.getImage(), (int) z.getX(), (int) z.getY() - 35, null);
-    }
+	private void drawZombie(Zombie z, Graphics g) {
+		g.drawImage(z.getImage(), (int) z.getX(), (int) z.getY() - 75, null);
+	}
 }
