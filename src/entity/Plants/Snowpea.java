@@ -1,5 +1,7 @@
 package entity.Plants;
 
+import entity.Action;
+
 public class SnowPea extends Plant{
     public SnowPea(int x, int y) {
         super("SnowPea", 175, 100, 25, 4, -1, 10, false, x, y);
@@ -7,5 +9,9 @@ public class SnowPea extends Plant{
     }
 
     public void action() {
+    }
+
+    public void actionStop() {
+    
     }
 }

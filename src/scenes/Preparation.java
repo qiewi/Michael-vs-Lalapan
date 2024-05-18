@@ -15,8 +15,8 @@ import java.io.InputStream;
 import java.awt.Image;
 
 import main.Game;
+import objects.Sun;
 import ui.MyButton;
-import entity.Sun;
 
 public class Preparation extends GameScene implements SceneMethods {
     private Inventory inventory;

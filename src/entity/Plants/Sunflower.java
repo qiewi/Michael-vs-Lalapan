@@ -3,8 +3,8 @@ package entity.Plants;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import entity.Sun;
 import managers.SunDropManager;
+import objects.Sun;
 
 public class Sunflower extends Plant {
     private Sun sun;
@@ -19,13 +19,13 @@ public class Sunflower extends Plant {
 
         // Inisiasi untuk penambahan sun
         sun = new Sun();
-        addSunSF();
+        action();
     }
 
     Timer timer = new Timer();
     
 
-    public void addSunSF() {
+    public void action() {
         timer = new Timer();
         sunTask = new TimerTask() {
             public void run() {
@@ -36,14 +36,11 @@ public class Sunflower extends Plant {
         timer.scheduleAtFixedRate(sunTask, 0, 3000);
     }
 
-    public void stopSunSF() {
+    public void actionStop() {
         if (timer != null) {
             sunTask.cancel();
             timer.cancel();
             timer.purge();
         }
-    }
-
-    public void action() {
     }
 }

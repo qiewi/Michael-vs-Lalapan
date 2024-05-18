@@ -1,4 +1,4 @@
-package entity;
+package objects;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;

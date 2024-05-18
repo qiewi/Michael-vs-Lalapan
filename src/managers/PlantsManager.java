@@ -5,8 +5,8 @@ import java.util.ArrayList;
 
 import entity.Plants.Plant;
 import entity.Plants.PlantFactory;
+import objects.Sun;
 import scenes.Playing;
-import entity.Sun;
 
 public class PlantsManager {
     private Playing playing;
@@ -19,7 +19,9 @@ public class PlantsManager {
 	}
 
 	public void update() {
-		// plant shoots or action
+		// for (Plant p : plants) {
+		// 	p.action();
+		// }
 	}
 
 	public void addPlant(String name, int x, int y) {
@@ -27,7 +29,10 @@ public class PlantsManager {
         if (checkNonAquatic(plantCreated, x, y) && !checkPlants(x, y) && checkCost(plantCreated, sun)) {
                 plants.add(plantCreated);
 				sun.reduceSun(plantCreated.getCost());
-        }
+        } else {
+			plantCreated.actionStop();
+			plantCreated = null;
+		}
         
 	}
 
@@ -72,12 +77,19 @@ public class PlantsManager {
 
     public void clearPlants() {
 		for (Plant p : plants) {
-			if (p instanceof entity.Plants.Sunflower) {
-				((entity.Plants.Sunflower) p).stopSunSF();
-			}
+			p.actionStop();
 		}
         plants.clear();
     }
+
+	public void deletePlantsAt(int x, int y) {
+		for (int i = 0; i < plants.size(); i++) {
+			if (plants.get(i).getX() == x && plants.get(i).getY() == y) {
+				plants.get(i).actionStop();
+				plants.remove(i);
+			}
+		}
+	}
 
 	public void draw(Graphics g) {
 		for (Plant p : plants)

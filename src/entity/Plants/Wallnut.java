@@ -5,5 +5,13 @@ public class WallNut extends Plant{
         super("WallNut", 50, 1000, 0, 0, 0, 20, false, x, y);
         this.setImage(getPlantImage("WallNut"));
     }
+
+    @Override
+    public void action() {
+    }
+
+    public void actionStop() {
+    
+    }
     
 }
