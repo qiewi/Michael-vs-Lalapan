@@ -1,23 +1,28 @@
 package entity.Zombies;
 
-public class ShieldZomB extends Zombie {
+import entity.Action;
+
+public class ShieldZomB extends Zombie implements Action {
 
     private boolean shield_on = true;
 
-    public ShieldZomB(String name, int extra_health, boolean shield_on, int x, int y) {
-        super(name, 100 + extra_health, 100, 1, false, x, y);
-        this.shield_on = shield_on;
+    public ShieldZomB(int x, int y) {
+        super("Shield Zombie", 100 + 200, 100, 1, false, x, y);
     }
 
     public boolean getShield() {
         return shield_on;
     }
 
-    public void setShield(boolean head) {
-        this.shield_on = head;
+    public void setShield(boolean shield_on) {
+        this.shield_on = shield_on;
+    }
+    
+    public void action() {
+
     }
 
-    public  void attack() {
+    public void actionStop() {
         
     }
 

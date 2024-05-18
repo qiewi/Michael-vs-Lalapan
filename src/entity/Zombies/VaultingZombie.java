@@ -1,11 +1,13 @@
 package entity.Zombies;
 
-public class VaultingZombie extends Zombie {
+import entity.Action;
+
+public class VaultingZombie extends Zombie implements Action {
 
     private boolean vault_on = true;
 
     public VaultingZombie(String name, int extra_health, boolean vault_on, int x, int y) {
-        super(name, 100 + extra_health, 100, 1, false, x ,y);
+        super("Vaulting Zombie", 100 + extra_health, 100, 1, false, x ,y);
         this.vault_on = vault_on;
     }
 
@@ -17,7 +19,11 @@ public class VaultingZombie extends Zombie {
         this.vault_on = vault;
     }
 
-    public void attack() {
+    public void action() {
+
+    }
+
+    public void actionStop() {
         
     }
 

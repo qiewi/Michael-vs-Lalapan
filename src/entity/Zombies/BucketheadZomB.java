@@ -1,15 +1,13 @@
 package entity.Zombies;
 
 import entity.Action;
-import entity.Plants.Plant;
 
-public class NormalZomB extends Zombie implements Action {
+public class BucketheadZomB extends HeadwearZomB implements Action {
 
-    public NormalZomB(int x, int y) {
-        super("Normal Zombie", 125, 100, 1, false, x, y);
-        this.setImage(getZombieImage("Normal"));
+    public BucketheadZomB(int x, int y) {
+        super("Buckethead Zombie", 25, x, y);
     }
-    
+
     public void action() {
 
     }
@@ -25,5 +23,4 @@ public class NormalZomB extends Zombie implements Action {
     /*    public void takeDamage(Plant Tanaman) {
 
         } */
-
 }

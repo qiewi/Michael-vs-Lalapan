@@ -6,7 +6,7 @@ public class ZombieFactory {
 
         if (name.equals("Normal")) {
             zombie = new NormalZomB(x, y);
-        } 
+        }
             
         return zombie;
     

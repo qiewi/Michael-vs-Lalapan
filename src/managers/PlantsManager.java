@@ -10,12 +10,15 @@ import scenes.Playing;
 
 public class PlantsManager {
     private Playing playing;
-	private ArrayList<Plant> plants = new ArrayList<>();
+	private static ArrayList<Plant> plants = new ArrayList<>();
 	private Sun sun;
 
 	public PlantsManager(Playing playing) {
 		this.playing = playing;
 		sun = new Sun();
+	}
+
+	public PlantsManager() {
 	}
 
 	public void update() {
@@ -52,16 +55,18 @@ public class PlantsManager {
 		if (y >= 380 && y <= 470) {
 			if (plant.getAquaStatus() == false) {
                 plantable = false;
-				for (Plant p : plants) {
-					if (p.getX() == x && p.getY() == y) {
-						if (p.getName().equals("LilyPad")) {
-							if (plant.getAquaStatus() == false) {
-								plantable = true;
-							}
-						} 
-					}
+			}
+			for (Plant p : plants) {
+				if (p.getX() == x && p.getY() == y) {
+					if (p.getName().equals("LilyPad")) {
+						if (plant.getAquaStatus() == false) {
+							plantable = true;
+						} else {
+							plantable = false;
+						}
+					} 
 				}
-			} 
+			}
 		} else {
 			if (plant.getAquaStatus() == true) {
                 plantable = false;

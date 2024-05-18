@@ -1,12 +1,13 @@
 package entity.Zombies;
 
-public class HeadwearZomB extends Zombie {
+import entity.Action;
+
+public class HeadwearZomB extends Zombie implements Action {
 
     private boolean head_on = true;
 
-    public HeadwearZomB(String name, int extra_health, boolean head_on, int x, int y) {
+    public HeadwearZomB(String name, int extra_health, int x, int y) {
         super(name, 100 + extra_health, 100, 1, false, x, y);
-        this.head_on = head_on;
     }
 
     public boolean setHead() {
@@ -17,7 +18,11 @@ public class HeadwearZomB extends Zombie {
         this.head_on = head;
     }
 
-    public  void attack() {
+    public void action() {
+
+    }
+
+    public void actionStop() {
         
     }
 
