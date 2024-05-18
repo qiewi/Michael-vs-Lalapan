@@ -74,7 +74,7 @@ public class ZombiesManager {
 	public void scheduleZombieGeneration() {
 		Runnable addZombieTask = () -> {
 			Random rand = new Random();
-			int[] positions = new int[] {200, 290, 380, 470, 560, 650};
+			int[] positions = new int[] {200, 290,  560, 650};
 			int pos = rand.nextInt(positions.length);
 			addZombie(990, positions[pos]);
 

@@ -107,7 +107,7 @@ public class Playing extends GameScene implements SceneMethods {
 				System.out.println("Image is null. Check the file format and content.");
 			} else {
 				// Per Tiles 80 x 90
-				g.drawImage(img, xArrow, yArrow, null);
+				g.drawImage(img, xArrow, yArrow - 30, null);
 			}
 		}
 	}
