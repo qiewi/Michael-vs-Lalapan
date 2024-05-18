@@ -1,11 +1,11 @@
 package entity.Zombies;
 
-public class HeadwearZomB extends Zombie {
+public class HeadwearType extends Zombie {
 
-    private boolean head_on = true;
+    private boolean head_on;
 
-    public HeadwearZomB(String name, int extra_health, boolean head_on, int x, int y) {
-        super(name, 100 + extra_health, 100, 1, false, x, y);
+    public HeadwearType(String name, int extra_health, boolean head_on, int x, int y) {
+        super(name, 125 + extra_health, 100, 1, false, x, y);
         this.head_on = head_on;
     }
 
