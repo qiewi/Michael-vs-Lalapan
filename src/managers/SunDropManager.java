@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 
+import entity.Plants.Plant;
 import objects.Sun;
 import scenes.Playing;
 
@@ -56,6 +57,10 @@ public class SunDropManager {
 	private void drawSunDrop(SunDrop s, Graphics g) {
 		g.drawImage(s.getImage(), (int) s.getX(), (int) s.getY(), null);
 	}
+
+    public void clearSun() {
+        activeSuns.clear();
+    }
 }
 
 class SunDrop {

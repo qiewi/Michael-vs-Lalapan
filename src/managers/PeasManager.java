@@ -17,7 +17,7 @@ public class PeasManager {
 
     public PeasManager(Playing playing) {
 		this.playing = playing;
-        this.zombies = ZombiesManager.getZombies();
+        zombies = ZombiesManager.getZombies();
 	}
 
 	public void update() {
@@ -35,7 +35,7 @@ public class PeasManager {
                     ZombiesManager.takeDamage(z, 25);
 					collide = true;
 					break;
-				} 
+				}
 
 			}
 	
@@ -72,5 +72,9 @@ public class PeasManager {
 
     public int getPeasSize() {
         return peasSize;
+    }
+
+	public void clearPeas() {
+        peas.clear();
     }
 }

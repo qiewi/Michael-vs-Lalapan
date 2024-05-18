@@ -237,6 +237,10 @@ public class Playing extends GameScene implements SceneMethods {
 	public void clearAll() {
 		plantsManager.clearPlants();
 		zombiesManager.clearZombie();
+		sunDropManager.clearSun();
+		peasManager.clearPeas();
+		xArrow = 270;
+		yArrow = 200;
 	}
 
 	public String[] getPlantDeckNames () {

@@ -13,9 +13,11 @@ import static main.GameStates.*;
 
 public class GameOver extends GameScene implements SceneMethods {
     private MyButton bTryAgain, bExit;
+    private Playing playing;
 
     public GameOver(Game game) {
         super(game);
+        playing = game.getPlaying();
         initButtons();
     }
 
@@ -69,6 +71,7 @@ public class GameOver extends GameScene implements SceneMethods {
     public void mouseClicked(int x, int y) {
 
         if (bTryAgain.getBounds().contains(x, y)) {
+            playing.clearAll();
             setGameState(PREPARATION); 
         } else if (bExit.getBounds().contains(x, y)) {
             setGameState(MENU); 

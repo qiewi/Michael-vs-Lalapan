@@ -12,11 +12,17 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import entity.Plants.Plant;
+import entity.Zombies.Buckethead;
+import entity.Zombies.Conehead;
+import entity.Zombies.Football;
+import entity.Zombies.HeadwearType;
+import entity.Zombies.Screendoor;
+import entity.Zombies.Polevault;
+import entity.Zombies.ShieldType;
+import entity.Zombies.VaultingType;
 import entity.Zombies.Zombie;
 import entity.Zombies.ZombieFactory;
 import scenes.Playing;
-
-import entity.Plants.Plant;
 
 public class ZombiesManager {
     private Playing playing;
@@ -46,9 +52,13 @@ public class ZombiesManager {
 	
 				// Check if zombie and plant are at the same position
 				if (((int) z.getX() == (int) p.getX()) && ((int) z.getY() == (int) p.getY())) {
-					z.setAttacking(true);
-					attacked = true;
-					break;
+					if (z instanceof VaultingType && ((VaultingType) z).getVault()) {
+						z.action();
+					} else {
+						z.setAttacking(true);
+						attacked = true;
+						break;
+					}
 				} else {
 					z.setAttacking(false);
 				}
@@ -87,14 +97,14 @@ public class ZombiesManager {
 		scheduler.scheduleAtFixedRate(addZombieTask, 0, ZOMBIE_GENERATION_DELAY, TimeUnit.SECONDS);
 	}
 
-    public static boolean checkZombiesInLane(int y) {
-        for (Zombie z : zombies) {
-            if (z.getY() == y) {
-                return true;
-            }
-        }
-        return false;
-    }
+	public static boolean checkZombiesInLane(int y) {
+		for (Zombie z : zombies) {
+			if (z.getY() == y) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	public static Zombie checkZombiesInPos(int x, int y) {
 		Zombie zombie = null;
@@ -110,14 +120,31 @@ public class ZombiesManager {
 		for (Zombie z : zombies) {
 			if (z.equals(zombie)) {
 				z.takeDamage(damage);
+				if (z instanceof HeadwearType && (z.getHealth() == ((HeadwearType) z).getDefHealth())) {
+					if (z instanceof Buckethead) {
+                        ((Buckethead) z).setHead(false);
+						z.setImage(z.getZombieImage("Normal"));
+                    } else if (z instanceof Conehead) {
+                        ((Conehead) z).setHead(false);
+						z.setImage(z.getZombieImage("Normal"));
+                    } else if (z instanceof Football) {
+                        ((Football) z).setHead(false);
+						// z.setImage(z.getZombieImage("Normal"));
+                    }
+				} else if (z instanceof ShieldType && (z.getHealth() == ((ShieldType) z).getDefHealth())) {
+					if (z instanceof Screendoor) {
+                        ((Screendoor) z).setShield(false);
+						z.setImage(z.getZombieImage("Normal"));
+                    }
+				}
 			}
 		}
 	}
 
 	public void addZombie(int x, int y) {
 		Random random = new Random();
-		int zombieType = random.nextInt(4);
-		String[] zombieTypes = {"Normal", "Conehead", "Buckethead", "Football", "Flag"};
+		String[] zombieTypes = {"Normal", "Conehead", "Buckethead", "Football", "Screendoor", "Polevault"}; //flag belom
+		int zombieType = random.nextInt(zombieTypes.length);
 		zombies.add(ZombieFactory.CreateZombie(zombieTypes[zombieType], x, y));
 	}
 
@@ -125,10 +152,10 @@ public class ZombiesManager {
 		zombies.clear();
 	}
 
-    public void draw(Graphics g) {
-        for (Zombie z : zombies)
-            drawZombie(z, g);
-    }
+	public void draw(Graphics g) {
+		for (Zombie z : zombies)
+			drawZombie(z, g);
+	}
 
 	private void drawZombie(Zombie z, Graphics g) {
 		g.drawImage(z.getImage(), (int) z.getX(), (int) z.getY() - 75, null);

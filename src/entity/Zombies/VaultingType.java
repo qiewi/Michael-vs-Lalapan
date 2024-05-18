@@ -12,13 +12,14 @@ public class VaultingType extends Zombie {
     public boolean getVault() {
         return vault_on;
     }
-
-    public void setVault(boolean vault) {
-        this.vault_on = vault;
+    
+    public void setVault(boolean vault_on) {
+        this.vault_on = vault_on;
     }
 
     public void action() {
-        
+        setX(getX() - 80);
+        setVault(false);
     }
     
     public void actionStop() {
