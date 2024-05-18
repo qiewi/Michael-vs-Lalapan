@@ -1,7 +1,6 @@
 package managers;
 
 import static main.GameStates.GAMEOVER;
-import static main.GameStates.MENU;
 import static main.GameStates.setGameState;
 
 import java.awt.Graphics;

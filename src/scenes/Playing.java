@@ -113,7 +113,7 @@ public class Playing extends GameScene implements SceneMethods {
 	}
 
 	private void initSunText() {
-        sunText = new MyButton(true, String.valueOf(sun.getSun()), startXSun, startYSun, SunWidth, SunHeight);
+        sunText = new MyButton(String.valueOf(sun.getSun()), startXSun, startYSun, SunWidth, SunHeight, true);
     }
 
 	private void drawSunText(Graphics g) {

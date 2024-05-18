@@ -138,7 +138,7 @@ public class Preparation extends GameScene implements SceneMethods {
     }
 
     private void initSunText() {
-        sunText = new MyButton(true, String.valueOf(sun.getSun()), startXSun, startYSun, SunWidth, SunHeight);
+        sunText = new MyButton(String.valueOf(sun.getSun()), startXSun, startYSun, SunWidth, SunHeight, true);
     }
     
     private void initMenuButton() {
@@ -155,7 +155,7 @@ public class Preparation extends GameScene implements SceneMethods {
             for (int j = 0; j < 8; j++) {
                 int x = startX + (j % 8) * (buttonWidth + spacing);
                 int y = startY + (j / 8) * (buttonHeight + spacing);
-                inventoryButtons[i*8+j] = new MyButton(x, y, buttonWidth, buttonHeight, null, false, false, false);
+                inventoryButtons[i*8+j] = new MyButton(x, y, buttonWidth, buttonHeight, null);
             }
             startY = startY + buttonHeight + spacing;
         }
@@ -163,14 +163,15 @@ public class Preparation extends GameScene implements SceneMethods {
         // Initialize deck buttons
         for (int i = 0; i < 6; i++) {
             int x = startXDeck + i * (buttonWidth + spacing);
-            deckButtons[i] = new MyButton(x, startYDeck, buttonWidth, buttonHeight, null, false, false, false);
+            deckButtons[i] = new MyButton(x, startYDeck, buttonWidth, buttonHeight, null);
         }
 
         // Initialize panel buttons
         String[] panelButtonsTexts = {"CLEAR", "SWAP", "START"};
         for (int i = 0; i < 3; i++) {
             int x = startXPanel + i * (buttonWidthPanel + spacingPanel);
-            panelButtons[i] = new MyButton(panelButtonsTexts[i], x, startYPanel, buttonWidthPanel, buttonHeightPanel, true);
+            panelButtons[i] = new MyButton(panelButtonsTexts[i], x, startYPanel, buttonWidthPanel, buttonHeightPanel);
+            panelButtons[i].setEnabled(true);
         }
 
         refreshInventoryAndDeck();
@@ -209,13 +210,13 @@ public class Preparation extends GameScene implements SceneMethods {
                 inventoryButtons[i].setImage(img);
                 inventoryButtons[i].setEnabled(true);
                 if (selectedSwap) {
-                    inventoryButtons[i].setPotentialSwapInventory(true);
+                    inventoryButtons[i].setPotentialSwap(true);
                     if (firstIndexSwapInventory != -1) {
                         inventoryButtons[firstIndexSwapInventory].setFirstSwap(true);
                     }
                 } else {
                     for (MyButton button : inventoryButtons) {
-                        button.setPotentialSwapInventory(false);
+                        button.setPotentialSwap(false);
                     }
                     inventoryButtons[i].setFirstSwap(false);
                 }
@@ -232,13 +233,13 @@ public class Preparation extends GameScene implements SceneMethods {
                 deckButtons[i].setImage(img);
                 deckButtons[i].setEnabled(true);
                 if (selectedSwap) {
-                    deckButtons[i].setPotentialSwapDeck(true);
+                    deckButtons[i].setPotentialSwap(true);
                     if (firstIndexSwapDeck != -1) {
                         deckButtons[firstIndexSwapDeck].setFirstSwap(true);
                     }
                 } else {
                     for (MyButton button : deckButtons) {
-                        button.setPotentialSwapDeck(false);
+                        button.setPotentialSwap(false);
                     }
                     deckButtons[i].setFirstSwap(false);
                 }

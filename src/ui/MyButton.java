@@ -9,279 +9,237 @@ import java.awt.Font;
 
 public class MyButton {
 
-	public int x, y, width, height, id;
-	private String text, name;
-	private Rectangle bounds;
-	private boolean mouseHover, mousePressed, enable, potentialSwapInventory, potentialSwapDeck, firstSwap, isJustText;
-	private Image image, hideImage;
-	private Color bodyColor = new Color(90, 43, 20);
-	
-	// For Inventory Buttons
-	public MyButton(int x, int y, int width, int height, Image image, boolean enable, boolean potentialSwapInventory, boolean firstSwap) {
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
-		this.id = -1;
-		this.image = image;
-		this.enable = enable;
-		this.potentialSwapInventory = potentialSwapInventory;
-		this.firstSwap = firstSwap;
+ public int x, y, width, height, id;
+ private String text, name;
+ private Rectangle bounds;
+ private boolean mouseHover, mousePressed, enable = false, potentialSwap = false, firstSwap = false, forSunText;
+ private Image image, hideImage;
+ private Color bodyColor = new Color(90, 43, 20);
+ 
+ // For Cards Buttons
+ public MyButton(int x, int y, int width, int height, Image image) {
+  this.x = x;
+  this.y = y;
+  this.width = width;
+  this.height = height;
+  this.id = -1;
+  this.image = image;
 
-		initBounds();
-	}
+  initBounds();
+ }
 
-	// For Deck Buttons
-	public MyButton(int x, int y, int width, int height, Image image) {
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
-		this.id = -1;
-		this.image = image;
+ // For Ingame Deck Buttons
+ public MyButton(String name, int x, int y, int width, int height, Image image) {
+  this.name = name;
+  this.x = x;
+  this.y = y;
+  this.width = width;
+  this.height = height;
+  this.id = -1;
+  this.image = image;
 
-		initBounds();
-	}
+  initBounds();
+ }
+ 
+ // For Normal Buttons
+ public MyButton(String text, int x, int y, int width, int height) {
+  this.text = text;
+  this.x = x;
+  this.y = y;
+  this.width = width;
+  this.height = height;
+  this.id = -1;
 
-	// For Ingame Deck Buttons
-	public MyButton(String name, int x, int y, int width, int height, Image image) {
-		this.name = name;
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
-		this.id = -1;
-		this.image = image;
+  initBounds();
+ }
 
-		initBounds();
-	}
+ // For Tile Buttons
+ public MyButton(String text, int x, int y, int width, int height, int id) {
+  this.text = text;
+  this.x = x;
+  this.y = y;
+  this.width = width;
+  this.height = height;
+  this.id = id;
 
-	// For Panel Buttons
-	public MyButton(String text, int x, int y, int width, int height, boolean enable) {
-		this.text = text;
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
-		this.id = -1;
-		this.enable = enable;
+  initBounds();
+ }
 
-		initBounds();
-	}
-	
-	// For Normal Buttons
-	public MyButton(String text, int x, int y, int width, int height) {
-		this.text = text;
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
-		this.id = -1;
+ // For Text Buttons
+ public MyButton(String text, int x, int y, int width, int height, boolean forSunText) {
+  this.text = text;
+  this.x = x;
+  this.y = y;
+  this.width = width;
+  this.height = height;
+  this.id = -1;
+  this.forSunText = forSunText;
 
-		initBounds();
-	}
+  initBounds();
+ }
 
-	// For Tile Buttons
-	public MyButton(String text, int x, int y, int width, int height, int id) {
-		this.text = text;
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
-		this.id = id;
+ private void initBounds() {
+  this.bounds = new Rectangle(x, y, width, height);
+ }
 
-		initBounds();
-	}
+ public void draw(Graphics g) {
+  // Body
+  drawBody(g);
 
-	// For Text Buttons
-	public MyButton(boolean isJustText, String text, int x, int y, int width, int height) {
-		this.isJustText = isJustText;
-		this.text = text;
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
-		this.id = -1;
+  // Border
+  drawBorder(g);
 
-		initBounds();
-	}
+  // Text
+  drawText(g);
+ }
 
-	private void initBounds() {
-		this.bounds = new Rectangle(x, y, width, height);
-	}
+ private void drawBorder(Graphics g) {
+  // g.setColor(Color.black);
 
-	public void draw(Graphics g) {
-		// Body
-		drawBody(g);
+  if (forSunText != true) {
+   if (text != null) {
+    g.setColor(new Color(52,120,8));
+   }
+   g.drawRect(x, y, width, height);
 
-		// Border
-		drawBorder(g);
+   if ((mouseHover || mousePressed) && enable) {
+    g.setColor(new Color(206, 151, 38));
+    g.drawRect(x + 1, y + 1, width - 2, height - 2);
+    g.drawRect(x + 2, y + 2, width - 4, height - 4);
+   }
+  
+   if (potentialSwap) {
+    g.setColor(Color.YELLOW);
+    g.drawRect(x - 2, y - 2, width + 4, height + 4);
+   }
+  
+   if (firstSwap) {
+    g.setColor(Color.RED);
+    g.drawRect(x - 2, y - 2, width + 4, height + 4);
+   }
+  }
+  
+ }
+ 
 
-		// Text
-		drawText(g);
-	}
+ private void drawBody(Graphics g) {
+  if (forSunText != true) {
+   g.setColor(bodyColor);
+   g.fillRect(x, y, width, height);
+  }
+  
+  if (image != null) {
+   int imgX = x + (width - image.getWidth(null)) / 2;
+   int imgY = y + (height - image.getHeight(null)) / 2;
+   g.drawImage(image, imgX, imgY, null);
+   if (!enable) {
+    g.setColor(new Color(0, 0, 0, 128));
+    g.fillRect(x, y, width, height);
+   }
+  }
+ }
+ 
 
-	private void drawBorder(Graphics g) {
-		// g.setColor(Color.black);
+ private void drawText(Graphics g) {
+  if (text != null) {
+   // Set font
+   Font font = new Font("Times New Roman", Font.BOLD, 21);
+   g.setFont(font);
+   
+   // Set color
+   g.setColor(new Color(52,120,8));
 
-		if (isJustText != true) {
-			if (text != null) {
-				g.setColor(new Color(52,120,8));
-			}
-			g.drawRect(x, y, width, height);
-			
-			if (mousePressed && enable) {
-				g.drawRect(x + 1, y + 1, width - 2, height - 2);
-				g.drawRect(x + 2, y + 2, width - 4, height - 4);
-			}
+   if (mouseHover || mousePressed) {
+    g.setColor(new Color(206, 151, 38));
+   }
 
-			if ((mouseHover || mousePressed) && enable) {
-				g.setColor(new Color(206, 151, 38));
-				g.drawRect(x + 1, y + 1, width - 2, height - 2);
-				g.drawRect(x + 2, y + 2, width - 4, height - 4);
-			}
-		
-			if (potentialSwapInventory) {
-				g.setColor(Color.YELLOW);
-				g.drawRect(x - 2, y - 2, width + 4, height + 4);
-			} 
-		
-			if (potentialSwapDeck) {
-				g.setColor(Color.YELLOW);
-				g.drawRect(x - 2, y - 2, width + 4, height + 4);
-			}
-		
-			if (firstSwap) {
-				g.setColor(Color.RED);
-				g.drawRect(x - 2, y - 2, width + 4, height + 4);
-			}
-		}
-		
-	}
-	
+   if (forSunText == true) {
+    g.setColor(Color.BLACK);
+   }
 
-	private void drawBody(Graphics g) {
-		if (isJustText != true) {
-			g.setColor(bodyColor);
-			g.fillRect(x, y, width, height);
-		}
-		
-		if (image != null) {
-			int imgX = x + (width - image.getWidth(null)) / 2;
-			int imgY = y + (height - image.getHeight(null)) / 2;
-			g.drawImage(image, imgX, imgY, null);
-			if (!enable) {
-				g.setColor(new Color(0, 0, 0, 128));
-				g.fillRect(x, y, width, height);
-			}
-		}
-	}
-	
+   // Draw text
+   int textWidth = g.getFontMetrics(font).stringWidth(text);
+   int textHeight = g.getFontMetrics(font).getHeight();
+   g.drawString(text, x + (width - textWidth) / 2, y + (height + textHeight - 9) / 2);
+   
+  }
+ }
+ 
 
-	private void drawText(Graphics g) {
-		if (text != null) {
-			// Set font
-			Font font = new Font("Times New Roman", Font.BOLD, 21); // Change "Arial" to your desired font name, adjust size and style as needed
-			g.setFont(font);
-			
-			// Set color
-			g.setColor(new Color(52,120,8));
+ public boolean isEnabled() {
+  return enable;
+ }
+ 
+ public void setEnabled(boolean enable) {
+  this.enable = enable;
+ }
 
-			if (mouseHover || mousePressed) {
-				g.setColor(new Color(206, 151, 38));
-			}
+ public boolean getFirstSwap() {
+  return firstSwap;
+ }
+ 
+ public void setFirstSwap(boolean firstSwap) {
+  this.firstSwap = firstSwap;
+ }
 
-			if (isJustText == true) {
-				g.setColor(Color.BLACK);
-			}
+ public void setPotentialSwap(boolean potentialSwap) {
+  this.potentialSwap = potentialSwap;
+ }
 
-			// Draw text
-			int textWidth = g.getFontMetrics(font).stringWidth(text);
-			int textHeight = g.getFontMetrics(font).getHeight();
-			g.drawString(text, x + (width - textWidth) / 2, y + (height + textHeight - 9) / 2);
-			
-		}
-	}
-	
+ public void resetBooleans() {
+  this.mouseHover = false;
+  this.mousePressed = false;
+ }
 
-	public boolean isEnabled() {
-		return enable;
-	}
-	
-	public void setEnabled(boolean enable) {
-		this.enable = enable;
-	}
+ public void setMousePressed(boolean mousePressed) {
+  this.mousePressed = mousePressed;
+ }
 
-	public boolean getFirstSwap() {
-		return firstSwap;
-	}
-	
-	public void setFirstSwap(boolean firstSwap) {
-		this.firstSwap = firstSwap;
-	}
+ public void setMouseHover(boolean mouseHover) {
+  this.mouseHover = mouseHover;
+ }
 
-	public void setPotentialSwapInventory(boolean potentialSwapInventory) {
-		this.potentialSwapInventory = potentialSwapInventory;
-	}
+ public Rectangle getBounds() {
+  return bounds;
+ }
 
-	public void setPotentialSwapDeck(boolean potentialSwapDeck) {
-		this.potentialSwapDeck = potentialSwapDeck;
-	}
+ public int getId() {
+  return id;
+ }
 
-	public void resetBooleans() {
-		this.mouseHover = false;
-		this.mousePressed = false;
-	}
+ public void setText(String text) {
+  this.text = text;
+ }
 
-	public void setMousePressed(boolean mousePressed) {
-		this.mousePressed = mousePressed;
-	}
+ public String getText() {
+  return text;
+ }
 
-	public void setMouseHover(boolean mouseHover) {
-		this.mouseHover = mouseHover;
-	}
+ public void setName(String name) {
+  this.name = name;
+ }
 
-	public Rectangle getBounds() {
-		return bounds;
-	}
+ public String getName() {
+  return name;
+ }
 
-	public int getId() {
-		return id;
-	}
+ public void setImage(Image image) {
+  this.image = image;
+ }
 
-	public void setText(String text) {
-		this.text = text;
-	}
+ public Image getImage() {
+  return image;
+ }
 
-	public String getText() {
-		return text;
-	}
+ public void setHideImage(Image hideImage) {
+  this.hideImage = hideImage;
+ }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+ public Image getHideImage() {
+  return hideImage;
+ }
 
-	public String getName() {
-		return name;
-	}
-
-	public void setImage(Image image) {
-		this.image = image;
-	}
-
-	public Image getImage() {
-		return image;
-	}
-
-	public void setHideImage(Image hideImage) {
-		this.hideImage = hideImage;
-	}
-
-	public Image getHideImage() {
-		return hideImage;
-	}
-
-	public void setBodyColor(Color color) {
-		this.bodyColor = color;
-	}
+ public void setBodyColor(Color color) {
+  this.bodyColor = color;
+ }
 }
