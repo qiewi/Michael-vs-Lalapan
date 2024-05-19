@@ -146,12 +146,12 @@ public class Preparation extends GameScene implements SceneMethods {
     }
     
     private void initButtons() {
-        inventoryButtons = new MyButton[16];
+        inventoryButtons = new MyButton[40];
         deckButtons = new MyButton[6];
         panelButtons = new MyButton[3];
 
         // Initialize inventory buttons
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 8; j++) {
                 int x = startX + (j % 8) * (buttonWidth + spacing);
                 int y = startY + (j / 8) * (buttonHeight + spacing);
