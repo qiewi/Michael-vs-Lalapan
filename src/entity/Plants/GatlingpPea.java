@@ -9,7 +9,7 @@ import managers.PeasManager;
 import managers.ZombiesManager;
 
 public class GatlingpPea extends Plant {
-    private Timer shootTimer;
+    private Timer shootTimer, secondTimer, thirdTimer, fourthTimer;
     
     public GatlingpPea(int x, int y) {
         super("GatlingPea", 250, 100, 25, 8, -1, 10, false, x, y);
@@ -21,19 +21,50 @@ public class GatlingpPea extends Plant {
         shootTimer = new Timer(2000, (ActionEvent e) -> {
             if (ZombiesManager.checkZombiesInLane((int) this.getY())) {
                 PeasManager.addPeaInLane((int) this.getX() + 50, (int) this.getY(), "Normal");
-                PeasManager.addPeaInLane((int) this.getX() + 80, (int) this.getY(), "Normal");
-                PeasManager.addPeaInLane((int) this.getX() + 110, (int) this.getY(), "Normal");
-                PeasManager.addPeaInLane((int) this.getX() + 140, (int) this.getY(), "Normal");
+                
+                secondTimer = new Timer(50, (ActionEvent e2) -> {
+                    if (ZombiesManager.checkZombiesInLane((int) this.getY())) {
+                        PeasManager.addPeaInLane((int) this.getX() + 50, (int) this.getY(), "Normal");
+                        
+                        thirdTimer = new Timer(50, (ActionEvent e3) -> {
+                            if (ZombiesManager.checkZombiesInLane((int) this.getY())) {
+                                PeasManager.addPeaInLane((int) this.getX() + 50, (int) this.getY(), "Normal");
+                                
+                                fourthTimer = new Timer(50, (ActionEvent e4) -> {
+                                    if (ZombiesManager.checkZombiesInLane((int) this.getY())) {
+                                        PeasManager.addPeaInLane((int) this.getX() + 50, (int) this.getY(), "Normal");
+                                    }
+                                });
+                                fourthTimer.setRepeats(false);
+                                fourthTimer.start();
+                            }
+                        });
+                        thirdTimer.setRepeats(false);
+                        thirdTimer.start();
+                    }
+                });
+                secondTimer.setRepeats(false);
+                secondTimer.start();
             }
         });
-
         shootTimer.start();
     }
 
+
     public void actionStop() { // mungkin bakal taro di interface
+       
         if (shootTimer != null && shootTimer.isRunning()) {
             shootTimer.stop();
         } 
+        if (secondTimer != null && secondTimer.isRunning()) {
+            secondTimer.stop();
+        }
+        if (thirdTimer != null && thirdTimer.isRunning()) {
+            thirdTimer.stop();
+        }
+        if (fourthTimer != null && fourthTimer.isRunning()) {
+            fourthTimer.stop();
+        }
     }
 
 }
