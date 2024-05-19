@@ -240,6 +240,7 @@ public class Playing extends GameScene implements SceneMethods {
     }
 
 	public void clearAll() {
+		sun.resetTick();
 		plantsManager.clearPlants();
 		zombiesManager.clearZombie();
 		sunDropManager.clearSun();

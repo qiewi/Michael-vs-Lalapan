@@ -33,28 +33,23 @@ public class Sun {
     public void addSunMorning() {
         int period = generateRandomPeriod(5, 10) * 1000;
 
-        if (morning = true) {
-            timer.scheduleAtFixedRate(new TimerTask() {
-                public void run() {
-                    if (tick < 100)
-                        SunDropManager.addSunDrop();
-                }
-            }, 1000, period);
-        }
-        
+        timer.scheduleAtFixedRate(new TimerTask() {
+            public void run() {
+                if (morning)
+                    SunDropManager.addSunDrop();
+            }
+        }, 1000, period);        
     }
 
     public void increaseTick() {
-        if (morning) {
-            tickTimer.scheduleAtFixedRate(new TimerTask() {
-                public void run() {
-                    tick++;
-                    if (tick >= 100) {
-                        morning = false;
-                    }
+        tickTimer.scheduleAtFixedRate(new TimerTask() {
+            public void run() {
+                tick++;
+                if (tick >= 100) {
+                    morning = false;
                 }
-            }, 1000, 1000);
-        }
+            }
+        }, 1000, 1000);
     }
 
     private int generateRandomPeriod(int minSeconds, int maxSeconds) {
@@ -101,6 +96,10 @@ public class Sun {
 
     public boolean getMorning() {
         return morning;
+    }
+
+    public void resetTick() {
+        tick = 0;
     }
 }
 
