@@ -3,10 +3,12 @@ package entity.Zombies;
 public class VaultingType extends Zombie {
 
     private boolean vault_on = true;
+    private float speed = -0.3f;
 
     public VaultingType(String name, int extra_health, boolean vault_on, int x, int y) {
         super(name, 100 + extra_health, 100, 1, false, x ,y);
         this.vault_on = vault_on;
+        setSpeed(speed);
     }
 
     public boolean getVault() {
@@ -18,8 +20,9 @@ public class VaultingType extends Zombie {
     }
 
     public void action() {
-        setX(getX() - 80);
         setVault(false);
+        setX(getX()-80);
+        setSpeed(-0.15f);
     }
     
     public void actionStop() {

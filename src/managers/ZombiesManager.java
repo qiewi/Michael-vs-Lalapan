@@ -66,7 +66,7 @@ public class ZombiesManager {
 	
 			// Move the zombie if it hasn't attacked
 			if (!attacked) {
-				z.move(-0.15f, 0);
+				z.move(z.getSpeed(), 0);
 				z.setAttacking(false);  // Stop attacking when moving
 			} else {
 				z.startAttacking();

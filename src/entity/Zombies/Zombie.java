@@ -20,6 +20,7 @@ public abstract class Zombie extends Entity implements Action {
     private boolean is_aquatic;
     private BufferedImage image;
     private boolean attacking = false;
+    private float speed = -0.15f;
 
     private Timer attackTimer;
     private boolean isTimerRunning;
@@ -92,6 +93,14 @@ public abstract class Zombie extends Entity implements Action {
 
     public void setAttacking(boolean attacking) {
         this.attacking = attacking;
+    }
+
+    public void setSpeed(float speed) {
+        this.speed = speed;
+    }
+
+    public float getSpeed() {
+        return speed;
     }
 
     //public abstract void takeDamage(Plant Tanaman);
