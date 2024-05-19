@@ -18,14 +18,14 @@ public class Sun {
     boolean morning = false;
 
     // Nanti pindain method ke playing
-    public void startMorning() {
-        sun = 25;
+    public void startMorning() {   // bikin tick untuk si zombie
+        sun = 50;
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
                 morning = !morning;
                 addSunMorning();
             }
-        }, 0000, 100000);
+        }, 0000, 100000); // bikin timer baru
     }
 
     public void addSunMorning() {

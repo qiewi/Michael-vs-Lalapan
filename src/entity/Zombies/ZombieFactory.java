@@ -14,6 +14,8 @@ public class ZombieFactory {
             zombie = new Football(x, y);
         } else if (name.equals("Flag")) {
             zombie = new Flag(x, y);
+        } else if (name.equals("Newspaper")) {
+            zombie = new Newspaper(x, y);
         } else if (name.equals("Screendoor")) {
             zombie = new Screendoor(x, y);
         } else if (name.equals("Polevault")) {
