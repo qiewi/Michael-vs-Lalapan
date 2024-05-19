@@ -143,7 +143,7 @@ public class ZombiesManager {
 
 	public void addZombie(int x, int y) {
 		Random random = new Random();
-		String[] zombieTypes = {"Normal", "Conehead", "Buckethead", "Football", "Screendoor", "Polevault"}; //flag belom
+		String[] zombieTypes = {"Normal", "Conehead", "Buckethead", "Football", "Screendoor"}; //flag belom // Pole Vault nnt aja tunggu fixed
 		int zombieType = random.nextInt(zombieTypes.length);
 		zombies.add(ZombieFactory.CreateZombie(zombieTypes[zombieType], x, y));
 	}

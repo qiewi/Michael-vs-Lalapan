@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 
-import entity.Plants.Plant;
 import objects.Sun;
 import scenes.Playing;
 
