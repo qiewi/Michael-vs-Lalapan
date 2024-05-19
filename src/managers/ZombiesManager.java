@@ -85,13 +85,15 @@ public class ZombiesManager {
 
 	public void scheduleZombieGeneration() { // ambil tick dari sun 
 		Runnable addZombieTask = () -> { // ubah
-			if (zombies.size() >= INITIAL_ZOMBIE_COUNT) {
-				return;
-			} else {
-				Random rand = new Random();
-				int[] positions = new int[] {200, 290,  560, 650};
-				int pos = rand.nextInt(positions.length);
-				addZombie(990, positions[pos]);
+			if (playing.getPlayingSun().getTick() >= 20 && playing.getPlayingSun().getTick() <= 160) {
+				if (zombies.size() >= INITIAL_ZOMBIE_COUNT) {
+					return;
+				} else {
+					Random rand = new Random();
+					int[] positions = new int[] {200, 290, 560, 650};
+					int pos = rand.nextInt(positions.length);
+					addZombie(990, positions[pos]);
+				}
 			}
 		};
 		scheduler.scheduleAtFixedRate(addZombieTask, 0, ZOMBIE_GENERATION_DELAY, TimeUnit.SECONDS);
@@ -143,7 +145,7 @@ public class ZombiesManager {
 
 	public void addZombie(int x, int y) {
 		Random random = new Random();
-		String[] zombieTypes = { "Screendoor", "Newspaper", "Polevault", "Flag"}; //flag belom // Pole Vault nnt aja tunggu fixed
+		String[] zombieTypes = {"Normal", "Conehead", "Buckethead", "Football", "Screendoor", "Newspaper", "Polevault", "Flag"}; //flag belom // Pole Vault nnt aja tunggu fixed
 		int zombieType = random.nextInt(zombieTypes.length);
 		zombies.add(ZombieFactory.CreateZombie(zombieTypes[zombieType], x, y));
 	}

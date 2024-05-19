@@ -13,33 +13,48 @@ import managers.SunDropManager;
 
 public class Sun {  
     private static int sun = 25;
+    private static int tick = 0;
     public BufferedImage image = setSunImage();
     Timer timer = new Timer();
-    boolean morning = false;
+    Timer tickTimer = new Timer();
+    private static boolean morning = true;
 
     // Nanti pindain method ke playing
     public void startMorning() {   // bikin tick untuk si zombie
         sun = 50;
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
-                morning = !morning;
+                increaseTick();
                 addSunMorning();
             }
-        }, 0000, 100000); // bikin timer baru
+        }, 0000, 200000); // bikin timer baru
     }
 
     public void addSunMorning() {
         int period = generateRandomPeriod(5, 10) * 1000;
 
-        if (morning) {
+        if (morning = true) {
             timer.scheduleAtFixedRate(new TimerTask() {
                 public void run() {
-                    SunDropManager.addSunDrop();
-                    // sun += 25;
+                    if (tick < 100)
+                        SunDropManager.addSunDrop();
                 }
             }, 1000, period);
         }
         
+    }
+
+    public void increaseTick() {
+        if (morning) {
+            tickTimer.scheduleAtFixedRate(new TimerTask() {
+                public void run() {
+                    tick++;
+                    if (tick >= 100) {
+                        morning = false;
+                    }
+                }
+            }, 1000, 1000);
+        }
     }
 
     private int generateRandomPeriod(int minSeconds, int maxSeconds) {
@@ -78,6 +93,14 @@ public class Sun {
 
     public BufferedImage getImage() {
         return image;
+    }
+
+    public int getTick() {
+        return tick;
+    }
+
+    public boolean getMorning() {
+        return morning;
     }
 }
 
