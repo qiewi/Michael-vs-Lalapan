@@ -12,16 +12,19 @@ import javax.imageio.ImageIO;
 import managers.SunDropManager;
 
 public class Sun {  
-    private static int sun = 25;
-    private static int tick = 0;
+    private static int sun;
+    private static int tick;
     public BufferedImage image = setSunImage();
-    Timer timer = new Timer();
-    Timer tickTimer = new Timer();
+    public static Timer timer;
+    public static Timer tickTimer;
     private static boolean morning = true;
-
+    
     // Nanti pindain method ke playing
     public void startMorning() {   // bikin tick untuk si zombie
+        tick = 0;
         sun = 50;
+        timer = new Timer();
+        tickTimer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
                 increaseTick();
@@ -99,6 +102,11 @@ public class Sun {
     }
 
     public void resetTick() {
+        timer.cancel();
+        tickTimer.cancel();
+
+        timer.purge();
+        tickTimer.purge();
         tick = 0;
     }
 }

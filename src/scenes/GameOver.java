@@ -74,6 +74,7 @@ public class GameOver extends GameScene implements SceneMethods {
             playing.clearAll();
             setGameState(PREPARATION); 
         } else if (bExit.getBounds().contains(x, y)) {
+            playing.clearAll();
             setGameState(MENU); 
         }
     }
