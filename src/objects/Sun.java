@@ -21,8 +21,8 @@ public class Sun {
     
     // Nanti pindain method ke playing
     public void startMorning() {   // bikin tick untuk si zombie
-        tick = 0;
-        sun = 50;
+        tick = 20;
+        sun = 200;
         timer = new Timer();
         tickTimer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
@@ -93,7 +93,7 @@ public class Sun {
         return image;
     }
 
-    public int getTick() {
+    public static int getTick() {
         return tick;
     }
 

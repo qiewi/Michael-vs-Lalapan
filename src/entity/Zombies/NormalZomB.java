@@ -15,7 +15,6 @@ public class NormalZomB extends Zombie {
     }
 
     public  void attack() {
-        
     }
 
     

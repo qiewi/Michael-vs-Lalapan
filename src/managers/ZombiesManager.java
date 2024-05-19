@@ -22,6 +22,7 @@ import entity.Zombies.ShieldType;
 import entity.Zombies.VaultingType;
 import entity.Zombies.Zombie;
 import entity.Zombies.ZombieFactory;
+import objects.Sun;
 import scenes.Playing;
 
 public class ZombiesManager {
@@ -66,10 +67,15 @@ public class ZombiesManager {
 	
 			// Move the zombie if it hasn't attacked
 			if (!attacked) {
-				z.move(z.getSpeed() -5f, 0);
+				z.move(z.getSpeed(), 0);
 				z.setAttacking(false);  // Stop attacking when moving
 			} else {
 				z.startAttacking();
+			}
+
+			if (z.getFrozenTick() != -1 && z.getFrozenTick() + 3 <= Sun.getTick()) {
+				z.setSpeed(z.getBeforeSpeed());
+				z.setFrozenTick(-1);
 			}
 
 			if (z.getHealth() <= 0) {
@@ -85,7 +91,7 @@ public class ZombiesManager {
 
 	public void scheduleZombieGeneration() { // ambil tick dari sun 
 		Runnable addZombieTask = () -> { // ubah
-			if (playing.getPlayingSun().getTick() >= 20 && playing.getPlayingSun().getTick() <= 160) {
+			if (Sun.getTick() >= 20 && Sun.getTick() <= 160) {
 				if (zombies.size() >= INITIAL_ZOMBIE_COUNT) {
 					return;
 				} else {
@@ -116,6 +122,22 @@ public class ZombiesManager {
 			}
 		}
 		return zombie;
+	}
+
+	public static void slowZombies(Zombie zombie) {
+		for (Zombie z : zombies) {
+			if (z.equals(zombie)) {
+				System.out.println("Zombie Slowed");
+				z.setFrozenTick(Sun.getTick());
+				z.setSpeed(-0.05f);
+
+				if (z instanceof VaultingType) {
+					z.setBeforeSpeed(-0.3f);
+				} else {
+					z.setBeforeSpeed(-0.15f);
+				}
+			}
+		}
 	}
 
 	public static void takeDamage(Zombie zombie, int damage) {

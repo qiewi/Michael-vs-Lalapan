@@ -21,7 +21,9 @@ public abstract class Zombie extends Entity implements Action {
     private BufferedImage image;
     private boolean attacking = false;
     private float speed = -0.15f;
+    private float beforeSpeed = -0.15f;
 
+    private int frozenTick = -1;
     private Timer attackTimer;
     private boolean isTimerRunning;
 
@@ -101,6 +103,22 @@ public abstract class Zombie extends Entity implements Action {
 
     public float getSpeed() {
         return speed;
+    }
+
+    public void setBeforeSpeed(float beforeSpeed) {
+        this.beforeSpeed = beforeSpeed;
+    }
+
+    public float getBeforeSpeed() {
+        return beforeSpeed;
+    }
+
+    public void setFrozenTick(int frozenTick) {
+        this.frozenTick = frozenTick;
+    }
+
+    public int getFrozenTick() {
+        return frozenTick;
     }
 
     //public abstract void takeDamage(Plant Tanaman);

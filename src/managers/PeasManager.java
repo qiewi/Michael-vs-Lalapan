@@ -6,6 +6,8 @@ import java.util.Iterator;
 
 import entity.Plants.Plant;
 import entity.Zombies.Zombie;
+import objects.FrozenPea;
+import objects.NormalPea;
 import objects.Pea;
 import scenes.Playing;
 
@@ -33,6 +35,9 @@ public class PeasManager {
 				if (((int) z.getX() >= (int) p.getX() && (int) z.getX() <= (int) p.getX() + 10) && ((int) z.getY() == (int) p.getY())) {
                     System.out.println("Pea hit zombie at " + (int) p.getX() + ", " + (int) p.getY());
                     ZombiesManager.takeDamage(z, 25);
+                    if (p instanceof FrozenPea) {
+                        ZombiesManager.slowZombies(z);
+                    }
 					collide = true;
 					break;
 				}
@@ -51,10 +56,10 @@ public class PeasManager {
 	public static void addPeaInLane(int x, int y, String name) {
         switch (name) {
             case "Normal":
-                peas.add(new Pea(x, y, "Normal"));
+                peas.add(new NormalPea(x, y));
                 break;
             case "Frozen":
-                peas.add(new Pea(x, y, "Frozen"));
+                peas.add(new FrozenPea(x, y));
                 break;
             default:
                 break;
