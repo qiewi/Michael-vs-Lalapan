@@ -12,7 +12,7 @@ import javax.imageio.ImageIO;
 import managers.SunDropManager;
 
 public class Sun {  
-    private static int sun;
+    private static int sun = 50;
     private static int tick;
     public BufferedImage image = setSunImage();
     public static Timer timer;

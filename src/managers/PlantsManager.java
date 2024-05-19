@@ -4,8 +4,10 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import entity.Plants.Lilypad;
 import entity.Plants.Plant;
 import entity.Plants.PlantFactory;
+import entity.Plants.Tallnut;
 import entity.Zombies.Zombie;
 import objects.Sun;
 import scenes.Playing;
@@ -112,7 +114,7 @@ public class PlantsManager {
         plants.clear();
     }
 
-	public void deletePlantsAt(int x, int y) {
+	public static void deletePlantsAt(int x, int y) {
 		for (int i = 0; i < plants.size(); i++) {
 			if (plants.get(i).getX() == x && plants.get(i).getY() == y) {
 				plants.get(i).actionStop();
@@ -127,10 +129,12 @@ public class PlantsManager {
 	}
 
 	private void drawPlants(Plant plant, Graphics g) {
-        if (plant.getName().equals("LilyPad")) {
+        if (plant instanceof Lilypad) {
             g.drawImage(plant.getImage(), (int) plant.getX() - 15, (int) plant.getY() + 10, null);
+        } else if (plant instanceof Tallnut) {
+		    g.drawImage(plant.getImage(), (int) plant.getX() - 15, (int) plant.getY() - 45, null); // work di x nya coba
         } else {
-		    g.drawImage(plant.getImage(), (int) plant.getX() - 15, (int) plant.getY(), null); // work di x nya coba
+		    g.drawImage(plant.getImage(), (int) plant.getX() - 15, (int) plant.getY() - 10, null); // work di x nya coba
         }
 	}
 

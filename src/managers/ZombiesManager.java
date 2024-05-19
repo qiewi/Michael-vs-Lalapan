@@ -12,6 +12,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import entity.Plants.Plant;
+import entity.Plants.Tallnut;
+import entity.Plants.Tanglekelp;
 import entity.Zombies.Buckethead;
 import entity.Zombies.Conehead;
 import entity.Zombies.Football;
@@ -54,8 +56,17 @@ public class ZombiesManager {
 				// Check if zombie and plant are at the same position
 				if (((int) z.getX() == (int) p.getX()) && ((int) z.getY() == (int) p.getY())) {
 					if (z instanceof VaultingType && ((VaultingType) z).getVault()) {
-						z.action();
+						if (!(p instanceof Tallnut))
+							z.action();
+						else
+							((VaultingType) z).setVault(false);
+							z.setSpeed(-0.15f);
 					} else {
+						if (p instanceof Tanglekelp) {
+							plantIterator.remove();
+							zombieIterator.remove();
+							break;
+						}
 						z.setAttacking(true);
 						attacked = true;
 						break;
@@ -96,7 +107,7 @@ public class ZombiesManager {
 					return;
 				} else {
 					Random rand = new Random();
-					int[] positions = new int[] {200, 290, 560, 650};
+					int[] positions = new int[] {200, 290, 380, 470, 560, 650};
 					int pos = rand.nextInt(positions.length);
 					addZombie(990, positions[pos]);
 				}
@@ -165,9 +176,19 @@ public class ZombiesManager {
 		}
 	}
 
+	public static void deleteZombieAt(int x, int y) {
+		Iterator<Zombie> zombieIterator = zombies.iterator();
+		while (zombieIterator.hasNext()) {
+			Zombie z = zombieIterator.next();
+			if ((int) z.getX() == x && (int) z.getY() == y) {
+				zombieIterator.remove();
+			}
+		}
+	}
+
 	public void addZombie(int x, int y) {
 		Random random = new Random();
-		String[] zombieTypes = {"Polevault"}; //flag belom // Pole Vault nnt aja tunggu fixed
+		String[] zombieTypes = {"Normal", ""}; //flag belom // Pole Vault nnt aja tunggu fixed
 		int zombieType = random.nextInt(zombieTypes.length);
 		zombies.add(ZombieFactory.CreateZombie(zombieTypes[zombieType], x, y));
 	}
@@ -182,7 +203,7 @@ public class ZombiesManager {
 	}
 
 	private void drawZombie(Zombie z, Graphics g) {
-		g.drawImage(z.getImage(), (int) z.getX(), (int) z.getY() - 75, null);
+		g.drawImage(z.getImage(), (int) z.getX(), (int) z.getY() - 90, null);
 	}
 
 	public static ArrayList<Zombie> getZombies(){
