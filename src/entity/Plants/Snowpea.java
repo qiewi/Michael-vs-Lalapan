@@ -6,10 +6,10 @@ import javax.swing.Timer;
 import managers.PeasManager;
 import managers.ZombiesManager;
 
-public class SnowPea extends Plant{
+public class Snowpea extends Plant{
     private Timer shootTimer;
 
-    public SnowPea(int x, int y) {
+    public Snowpea(int x, int y) {
         super("SnowPea", 175, 100, 25, 4, -1, 10, false, x, y);
         this.setImage(getPlantImage("SnowPea"));
         action();

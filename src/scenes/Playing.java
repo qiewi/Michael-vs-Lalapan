@@ -107,13 +107,13 @@ public class Playing extends GameScene implements SceneMethods {
 				System.out.println("Image is null. Check the file format and content.");
 			} else {
 				// Per Tiles 80 x 90
-				g.drawImage(img, xArrow, yArrow, null);
+				g.drawImage(img, xArrow, yArrow - 30, null);
 			}
 		}
 	}
 
 	private void initSunText() {
-        sunText = new MyButton(true, String.valueOf(sun.getSun()), startXSun, startYSun, SunWidth, SunHeight);
+        sunText = new MyButton(String.valueOf(sun.getSun()), startXSun, startYSun, SunWidth, SunHeight, true);
     }
 
 	private void drawSunText(Graphics g) {
@@ -122,7 +122,12 @@ public class Playing extends GameScene implements SceneMethods {
 
 	private void drawMap(Graphics g) {
 		BufferedImage img = null;
-		InputStream is = getClass().getResourceAsStream("resources/PoolDay.png");
+		InputStream is = null;
+		if (sun.getMorning())
+			is = getClass().getResourceAsStream("resources/PoolDay.png");
+		else 
+			is = getClass().getResourceAsStream("resources/PoolNight.png");
+		
 	
 		if (is == null) {
 			System.out.println("Stream is null. Check the file path.");
@@ -235,8 +240,13 @@ public class Playing extends GameScene implements SceneMethods {
     }
 
 	public void clearAll() {
+		sun.resetTick();
 		plantsManager.clearPlants();
 		zombiesManager.clearZombie();
+		sunDropManager.clearSun();
+		peasManager.clearPeas();
+		xArrow = 270;
+		yArrow = 200;
 	}
 
 	public String[] getPlantDeckNames () {

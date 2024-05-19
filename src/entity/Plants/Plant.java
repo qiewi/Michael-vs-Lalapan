@@ -38,6 +38,19 @@ public abstract class Plant extends Entity implements Action {
         return img;
     }
 
+    public BufferedImage getPlantGif(String name) {
+        BufferedImage img = null;
+        InputStream is = getClass().getResourceAsStream("PlantsGif/" + name + ".gif");
+
+        try {
+            img = ImageIO.read(is);
+        } catch (IOException e) {
+            e.printStackTrace();   
+        }       
+
+        return img;
+    }
+
     public void takeDamage(Zombie Zombies) {
         this.setHealth(this.getHealth() - Zombies.getAttackDamage());
     }

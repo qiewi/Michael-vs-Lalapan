@@ -9,7 +9,7 @@ import javax.imageio.ImageIO;
 
 public class Pea { // TO DO LIST: Pisah sama frozen pea
     public BufferedImage image;
-    private int x, y;
+    private float x, y;
 
     Timer timer = new Timer();
 
@@ -33,14 +33,14 @@ public class Pea { // TO DO LIST: Pisah sama frozen pea
     }
 
     public void move() {
-        x += 5;
+        x += 5f;
     }
 
-    public int getX() {
+    public float getX() {
         return x;
     }
 
-    public int getY() {
+    public float getY() {
         return y;
     }
 

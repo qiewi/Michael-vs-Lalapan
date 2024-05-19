@@ -54,8 +54,16 @@ public abstract class Entity {
         this.attack_speed = attack_speed;
     }
 
+    public void setX(float x) {
+        this.x = x;
+    }
+
     public float getX() {
         return x;
+    }
+
+    public void setY(float y) {
+        this.y = y;
     }
 
     public float getY() {

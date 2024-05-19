@@ -4,6 +4,9 @@ import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import javax.imageio.ImageIO;
 import javax.swing.Timer;
@@ -16,9 +19,11 @@ import managers.PlantsManager;
 public abstract class Zombie extends Entity implements Action {
     private boolean is_aquatic;
     private BufferedImage image;
-    private boolean moving = true;
     private boolean attacking = false;
+    private float speed = -0.15f;
+    private float beforeSpeed = -0.15f;
 
+    private int frozenTick = -1;
     private Timer attackTimer;
     private boolean isTimerRunning;
 
@@ -54,6 +59,10 @@ public abstract class Zombie extends Entity implements Action {
         }
     }
 
+    public void takeDamage(int damage) {
+        this.setHealth(this.getHealth() - damage);
+    }
+
     public BufferedImage getZombieImage(String name) {
         BufferedImage img = null;
         InputStream is = getClass().getResourceAsStream("ZombiesImage/" + name + ".png");
@@ -66,6 +75,7 @@ public abstract class Zombie extends Entity implements Action {
 
         return img;
     }
+    
 
     public boolean getAquatic() {
         return is_aquatic;
@@ -79,20 +89,36 @@ public abstract class Zombie extends Entity implements Action {
         this.image = image;
     }
 
-    public boolean getMoving() {
-        return moving;
-    }
-
-    public void setMoving(boolean moving) {
-        this.moving = moving;
-    }
-
     public boolean getAttacking() {
         return attacking;
     }
 
     public void setAttacking(boolean attacking) {
         this.attacking = attacking;
+    }
+
+    public void setSpeed(float speed) {
+        this.speed = speed;
+    }
+
+    public float getSpeed() {
+        return speed;
+    }
+
+    public void setBeforeSpeed(float beforeSpeed) {
+        this.beforeSpeed = beforeSpeed;
+    }
+
+    public float getBeforeSpeed() {
+        return beforeSpeed;
+    }
+
+    public void setFrozenTick(int frozenTick) {
+        this.frozenTick = frozenTick;
+    }
+
+    public int getFrozenTick() {
+        return frozenTick;
     }
 
     //public abstract void takeDamage(Plant Tanaman);

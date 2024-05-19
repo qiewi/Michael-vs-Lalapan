@@ -1,7 +1,6 @@
 package managers;
 
 import static main.GameStates.GAMEOVER;
-import static main.GameStates.MENU;
 import static main.GameStates.setGameState;
 
 import java.awt.Graphics;
@@ -13,8 +12,19 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import entity.Plants.Plant;
+import entity.Plants.Tallnut;
+import entity.Plants.Tanglekelp;
+import entity.Zombies.Buckethead;
+import entity.Zombies.Conehead;
+import entity.Zombies.Football;
+import entity.Zombies.HeadwearType;
+import entity.Zombies.Screendoor;
+import entity.Zombies.Polevault;
+import entity.Zombies.ShieldType;
+import entity.Zombies.VaultingType;
 import entity.Zombies.Zombie;
 import entity.Zombies.ZombieFactory;
+import objects.Sun;
 import scenes.Playing;
 
 public class ZombiesManager {
@@ -45,9 +55,22 @@ public class ZombiesManager {
 	
 				// Check if zombie and plant are at the same position
 				if (((int) z.getX() == (int) p.getX()) && ((int) z.getY() == (int) p.getY())) {
-					z.setAttacking(true);
-					attacked = true;
-					break;
+					if (z instanceof VaultingType && ((VaultingType) z).getVault()) {
+						if (!(p instanceof Tallnut))
+							z.action();
+						else
+							((VaultingType) z).setVault(false);
+							z.setSpeed(-0.15f);
+					} else {
+						if (p instanceof Tanglekelp) {
+							plantIterator.remove();
+							zombieIterator.remove();
+							break;
+						}
+						z.setAttacking(true);
+						attacked = true;
+						break;
+					}
 				} else {
 					z.setAttacking(false);
 				}
@@ -55,28 +78,39 @@ public class ZombiesManager {
 	
 			// Move the zombie if it hasn't attacked
 			if (!attacked) {
-				z.move(-0.3f, 0);
+				z.move(z.getSpeed(), 0);
 				z.setAttacking(false);  // Stop attacking when moving
 			} else {
 				z.startAttacking();
 			}
 
+			if (z.getFrozenTick() != -1 && z.getFrozenTick() + 3 <= Sun.getTick()) {
+				z.setSpeed(z.getBeforeSpeed());
+				z.setFrozenTick(-1);
+			}
+
+			if (z.getHealth() <= 0) {
+				zombieIterator.remove();
+			}
+
 			// Game Over
-			if (z.getX() <= 220) {
+			if (z.getX() <= 90) {
 				setGameState(GAMEOVER);
 			}
 		}
 	}
 
-	public void scheduleZombieGeneration() {
-		Runnable addZombieTask = () -> {
-			Random rand = new Random();
-			int[] positions = new int[] {200, 290, 380, 470, 560, 650};
-			int pos = rand.nextInt(positions.length);
-			addZombie(990, positions[pos]);
-
-			if (zombies.size() >= INITIAL_ZOMBIE_COUNT) {
-				scheduler.shutdown(); // Stop scheduling once the initial number of zombies are generated
+	public void scheduleZombieGeneration() { // ambil tick dari sun 
+		Runnable addZombieTask = () -> { // ubah
+			if (Sun.getTick() >= 20 && Sun.getTick() <= 160) {
+				if (zombies.size() >= INITIAL_ZOMBIE_COUNT) {
+					return;
+				} else {
+					Random rand = new Random();
+					int[] positions = new int[] {200, 290, 380, 470, 560, 650};
+					int pos = rand.nextInt(positions.length);
+					addZombie(990, positions[pos]);
+				}
 			}
 		};
 		scheduler.scheduleAtFixedRate(addZombieTask, 0, ZOMBIE_GENERATION_DELAY, TimeUnit.SECONDS);
@@ -91,10 +125,71 @@ public class ZombiesManager {
 		return false;
 	}
 
+	public static Zombie checkZombiesInPos(int x, int y) {
+		Zombie zombie = null;
+		for (Zombie z : zombies) {
+			if ((int) z.getX() == x && (int) z.getY() == y){
+				zombie = z;
+			}
+		}
+		return zombie;
+	}
+
+	public static void slowZombies(Zombie zombie) {
+		for (Zombie z : zombies) {
+			if (z.equals(zombie)) {
+				System.out.println("Zombie Slowed");
+				z.setFrozenTick(Sun.getTick());
+				z.setSpeed(-0.05f);
+
+				if (z instanceof VaultingType) {
+					z.setBeforeSpeed(-0.3f);
+				} else {
+					z.setBeforeSpeed(-0.15f);
+				}
+			}
+		}
+	}
+
+	public static void takeDamage(Zombie zombie, int damage) {
+		for (Zombie z : zombies) {
+			if (z.equals(zombie)) {
+				z.takeDamage(damage);
+				if (z instanceof HeadwearType && (z.getHealth() == ((HeadwearType) z).getDefHealth())) {
+					if (z instanceof Buckethead) {
+                        ((Buckethead) z).setHead(false);
+						z.setImage(z.getZombieImage("Normal"));
+                    } else if (z instanceof Conehead) {
+                        ((Conehead) z).setHead(false);
+						z.setImage(z.getZombieImage("Normal"));
+                    } else if (z instanceof Football) {
+                        ((Football) z).setHead(false);
+						// z.setImage(z.getZombieImage("Normal"));
+                    }
+				} else if (z instanceof ShieldType && (z.getHealth() == ((ShieldType) z).getDefHealth())) {
+					if (z instanceof Screendoor) {
+                        ((Screendoor) z).setShield(false);
+						z.setImage(z.getZombieImage("Normal"));
+                    }
+				}
+			}
+		}
+	}
+
+	public static void deleteZombieAt(int x, int y) {
+		Iterator<Zombie> zombieIterator = zombies.iterator();
+		while (zombieIterator.hasNext()) {
+			Zombie z = zombieIterator.next();
+			if ((int) z.getX() == x && (int) z.getY() == y) {
+				zombieIterator.remove();
+			}
+		}
+	}
+
 	public void addZombie(int x, int y) {
 		Random random = new Random();
-		int zombieType = random.nextInt(4);
-		String[] zombieTypes = {"Normal", "Conehead", "Buckethead", "Football", "Flag"};
+		String[] zombieTypes = {"Normal", ""}; //flag belom // Pole Vault nnt aja tunggu fixed
+		int zombieType = random.nextInt(zombieTypes.length);
 		zombies.add(ZombieFactory.CreateZombie(zombieTypes[zombieType], x, y));
 	}
 
@@ -108,6 +203,10 @@ public class ZombiesManager {
 	}
 
 	private void drawZombie(Zombie z, Graphics g) {
-		g.drawImage(z.getImage(), (int) z.getX(), (int) z.getY() - 75, null);
+		g.drawImage(z.getImage(), (int) z.getX(), (int) z.getY() - 90, null);
+	}
+
+	public static ArrayList<Zombie> getZombies(){
+		return zombies;
 	}
 }

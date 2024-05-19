@@ -56,6 +56,10 @@ public class SunDropManager {
 	private void drawSunDrop(SunDrop s, Graphics g) {
 		g.drawImage(s.getImage(), (int) s.getX(), (int) s.getY(), null);
 	}
+
+    public void clearSun() {
+        activeSuns.clear();
+    }
 }
 
 class SunDrop {

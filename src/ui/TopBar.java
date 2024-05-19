@@ -72,10 +72,6 @@ public class TopBar {
     }
 
     public void draw(Graphics g) {
-        
-        // Background Color
-        // g.setColor(new Color(92, 64, 51));
-        // g.fillRect(x, y, width, height);
 
         // Buttons
         drawButtons(g);
@@ -83,11 +79,12 @@ public class TopBar {
     }
 
 	public void mouseClicked(int x, int y) {
-		if (bMenu.getBounds().contains(x, y))
+		if (bMenu.getBounds().contains(x, y)) {
             playing.clearAll();
             playing.getGame().getPreparation().setSelectedClear(true);
             playing.getGame().getPreparation().refreshInventoryAndDeck();
             setGameState(MENU);
+        }
 	}
 
 	

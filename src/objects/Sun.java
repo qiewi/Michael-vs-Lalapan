@@ -12,34 +12,47 @@ import javax.imageio.ImageIO;
 import managers.SunDropManager;
 
 public class Sun {  
-    private static int sun = 25;
+    private static int sun = 50;
+    private static int tick;
     public BufferedImage image = setSunImage();
-    Timer timer = new Timer();
-    boolean morning = false;
-
+    public static Timer timer;
+    public static Timer tickTimer;
+    private static boolean morning = true;
+    
     // Nanti pindain method ke playing
-    public void startMorning() {
-        sun = 25;
+    public void startMorning() {   // bikin tick untuk si zombie
+        tick = 20;
+        sun = 200;
+        timer = new Timer();
+        tickTimer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
-                morning = !morning;
+                increaseTick();
                 addSunMorning();
             }
-        }, 0000, 100000);
+        }, 0000, 200000); // bikin timer baru
     }
 
     public void addSunMorning() {
         int period = generateRandomPeriod(5, 10) * 1000;
 
-        if (morning) {
-            timer.scheduleAtFixedRate(new TimerTask() {
-                public void run() {
+        timer.scheduleAtFixedRate(new TimerTask() {
+            public void run() {
+                if (morning)
                     SunDropManager.addSunDrop();
-                    // sun += 25;
+            }
+        }, 1000, period);        
+    }
+
+    public void increaseTick() {
+        tickTimer.scheduleAtFixedRate(new TimerTask() {
+            public void run() {
+                tick++;
+                if (tick >= 100) {
+                    morning = false;
                 }
-            }, 1000, period);
-        }
-        
+            }
+        }, 1000, 1000);
     }
 
     private int generateRandomPeriod(int minSeconds, int maxSeconds) {
@@ -78,6 +91,23 @@ public class Sun {
 
     public BufferedImage getImage() {
         return image;
+    }
+
+    public static int getTick() {
+        return tick;
+    }
+
+    public boolean getMorning() {
+        return morning;
+    }
+
+    public void resetTick() {
+        timer.cancel();
+        tickTimer.cancel();
+
+        timer.purge();
+        tickTimer.purge();
+        tick = 0;
     }
 }
 

@@ -1,7 +1,6 @@
 package entity.Plants;
 
 import java.awt.event.ActionEvent;
-
 import javax.swing.Timer;
 
 import managers.PeasManager;
@@ -19,7 +18,7 @@ public class Repeater extends Plant {
     public void action() {
         shootTimer = new Timer(2000, (ActionEvent e) -> {
             if (ZombiesManager.checkZombiesInLane((int) this.getY())) {
-                PeasManager.addPeaInLane((int) this.getX() + 50, (int) this.getY(), "Normal");
+                PeasManager.addPeaInLane((int) this.getX() + 50, (int) this.getY(), "Normal"); // jadiin dua timer
                 PeasManager.addPeaInLane((int) this.getX() + 80, (int) this.getY(), "Normal");
             }
         });
