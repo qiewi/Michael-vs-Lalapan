@@ -1,6 +1,7 @@
 package managers;
 
 import static main.GameStates.GAMEOVER;
+import static main.GameStates.VICTORY;
 import static main.GameStates.setGameState;
 
 import java.awt.Graphics;
@@ -34,6 +35,11 @@ public class ZombiesManager {
 	}
 
 	public void update() {
+		
+		if (zombieCount >= TOTAL_ZOMBIE_COUNT && zombies.isEmpty()) {
+			setGameState(VICTORY);
+		}
+
 		Iterator<Zombie> zombieIterator = zombies.iterator();
 		while (zombieIterator.hasNext()) {
 			Zombie z = zombieIterator.next();
