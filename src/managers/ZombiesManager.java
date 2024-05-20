@@ -63,9 +63,13 @@ public class ZombiesManager {
 							plantIterator.remove();
 							zombieIterator.remove();
 							break;
-						}
-						z.setAttacking(true);
-						attacked = true;
+						} 
+
+						if (!(p instanceof Squash)) {
+							z.setAttacking(true);
+							attacked = true;
+						} 
+						
 						break;
 					}
 				} else {
@@ -155,7 +159,7 @@ public class ZombiesManager {
 				}
 				// p.setHealth(0);
 			}
-		return zomPos + 30;
+		return zomPos + 15;
 	}
 
 	public static void slowZombies(Zombie zombie) {

@@ -206,47 +206,41 @@ public class Playing extends GameScene implements SceneMethods {
 		}
 
 		// Create Plants 
-		switch (e.getKeyCode()) {
+		switch (e.getKeyCode()) { // TopBarCoolDown pindah ke add plant ajah
 			
 			case KeyEvent.VK_1:
 				if (!topBar.getPlantCardsButton(0).isOnCooldown()) {
-					plantsManager.addPlant(topBar.getPlantCardsButton(0).getName(), xArrow, yArrow);
-					topBar.makePlantCardsCooldown(0);
+					plantsManager.addPlant(topBar.getPlantCardsButton(0).getName(), xArrow, yArrow, 0);
 				}
 				break;
 
 			case KeyEvent.VK_2:
 				if (!topBar.getPlantCardsButton(1).isOnCooldown()) {
-					plantsManager.addPlant(topBar.getPlantCardsButton(1).getName(), xArrow, yArrow);
-					topBar.makePlantCardsCooldown(1);
+					plantsManager.addPlant(topBar.getPlantCardsButton(1).getName(), xArrow, yArrow, 1);
 				}
 				break;
 			
 			case KeyEvent.VK_3:
 				if (!topBar.getPlantCardsButton(2).isOnCooldown()) {
-					plantsManager.addPlant(topBar.getPlantCardsButton(2).getName(), xArrow, yArrow);
-					topBar.makePlantCardsCooldown(2);
+					plantsManager.addPlant(topBar.getPlantCardsButton(2).getName(), xArrow, yArrow, 2);
 				}
 				break;
 
 			case KeyEvent.VK_4:
 				if (!topBar.getPlantCardsButton(3).isOnCooldown()) {
-					plantsManager.addPlant(topBar.getPlantCardsButton(3).getName(), xArrow, yArrow);
-					topBar.makePlantCardsCooldown(3);
+					plantsManager.addPlant(topBar.getPlantCardsButton(3).getName(), xArrow, yArrow, 3);
 				}
 				break;
 			
 			case KeyEvent.VK_5:
 				if (!topBar.getPlantCardsButton(4).isOnCooldown()) {
-					plantsManager.addPlant(topBar.getPlantCardsButton(4).getName(), xArrow, yArrow);
-					topBar.makePlantCardsCooldown(4);
+					plantsManager.addPlant(topBar.getPlantCardsButton(4).getName(), xArrow, yArrow, 4);
 				}
 				break;
 			
 			case KeyEvent.VK_6:
 				if (!topBar.getPlantCardsButton(5).isOnCooldown()) {
-					plantsManager.addPlant(topBar.getPlantCardsButton(5).getName(), xArrow, yArrow);
-					topBar.makePlantCardsCooldown(5);
+					plantsManager.addPlant(topBar.getPlantCardsButton(5).getName(), xArrow, yArrow, 5);
 				}
 				break;
 

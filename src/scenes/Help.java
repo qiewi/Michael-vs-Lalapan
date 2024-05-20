@@ -13,55 +13,80 @@ import static main.GameStates.*;
 
 public class Help extends GameScene implements SceneMethods{
     private Game game;
-    private MyButton bBack;
+    private int imageShown = 0;
+    private MyButton bBack, bNext;
+    private BufferedImage[] helpImages = new BufferedImage[4];
 
     public Help(Game game) {
         super(game);
         initButtons();
+        initImages();
     }
 
     private void initButtons() {
 
-		int w = 85;
-		int h = 50;
-		int x = 35;
-		int y = 40;
+		int w = 100;
+		int h = 90;
+		int x = 30;
+		int y = 660;
 
 		bBack = new MyButton("Back", x, y, w, h);
+        bNext= new MyButton("Next", x + 870, y, w, h);
 	}
+
+    private void initImages() {
+		helpImages[0] = getHelpImage("0");
+		helpImages[1] = getHelpImage("1");
+		helpImages[2] = getHelpImage("2");
+		helpImages[3] = getHelpImage("3");
+    }
+
+    public BufferedImage getHelpImage(String name) {
+        BufferedImage img = null;
+        InputStream is = getClass().getResourceAsStream("resources/Help/" + name + ".png");
+
+        try {
+            img = ImageIO.read(is);
+        } catch (IOException e) {
+            e.printStackTrace();   
+        }       
+
+        return img;
+    }
 
     @Override
     public void render(Graphics g) {
-        bBack.draw(g);
-        drawScene(g);
+        drawScene(g, imageShown);
+        // bBack.draw(g);
+        // bNext.draw(g);
     }
 
-    private void drawScene(Graphics g) {
-        BufferedImage img = null;
-		InputStream is = getClass().getResourceAsStream("resources/Instruction.png");
-	
-		if (is == null) {
-			System.out.println("Stream is null. Check the file path.");
-		} else {
-			try {
-				img = ImageIO.read(is);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-	
-			if (img == null) {
-				System.out.println("Image is null. Check the file format and content.");
-			} else {
-				g.drawImage(img, 0, 0, null);
-			}
-		}
+    private void drawScene(Graphics g, int imageShown) {
+		g.drawImage(helpImages[imageShown], 0, 0, null);
     }
 
     @Override
     public void mouseClicked(int x, int y) {
-        if (bBack.getBounds().contains(x, y)) {
-			setGameState(MENU);
+        if (imageShown == 0) {
+            if (bBack.getBounds().contains(x, y)) {
+                setGameState(MENU);
+            } else if (bNext.getBounds().contains(x, y)) {
+                imageShown = 1;
+            }
+        } else if (imageShown == 1) {
+            if (bNext.getBounds().contains(x, y)) {
+                imageShown = 2;
+            }
+        } else if (imageShown == 2) {
+            if (bNext.getBounds().contains(x, y)) {
+                imageShown = 3;
+            }
+        } else if (imageShown == 3) {
+            if (bNext.getBounds().contains(x, y)) {
+                imageShown = 0;
+            }
         }
+        
     }
 
     @Override

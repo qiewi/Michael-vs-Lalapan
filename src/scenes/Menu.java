@@ -21,7 +21,7 @@ public class Menu extends GameScene implements SceneMethods {
 	public Menu(Game game) {
 		super(game);
 		initButtons();
-		playSound("Menu");
+		// playSound("Menu");
 	}
 
 	private void initButtons() {
@@ -42,18 +42,26 @@ public class Menu extends GameScene implements SceneMethods {
 	}
 
 	public static void playSound(String soundName) {
-		try {
-			File soundFile = new File("src/scenes/resources/Music/" + soundName + ".wav");
-			AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);
-	
-			Clip clip = AudioSystem.getClip();
-			clip.open(audioIn);
-	
-			clip.start();
-		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
-			ex.printStackTrace();
-		}
-	}
+        try {
+            File soundFile = new File("src/scenes/resources/Music/" + soundName + ".wav");
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);
+
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioIn);
+            
+            // Add a listener to restart the clip when it ends
+            clip.addLineListener(event -> {
+                if (event.getType() == LineEvent.Type.STOP) {
+                    clip.setFramePosition(0);
+                    clip.start();
+                }
+            });
+
+            clip.start();
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
+            ex.printStackTrace();
+        }
+    }
 	
 
 	@Override

@@ -62,7 +62,7 @@ public class TopBar {
     }
 
     private void initButtons() {
-		bMenu = new MyButton("Menu", 874, 2, 130, 40);
+		bMenu = new MyButton("Menu", 824, 2, 130, 40);
 
         int w = 62;
         int h = 80;
