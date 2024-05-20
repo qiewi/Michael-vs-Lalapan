@@ -37,7 +37,12 @@ public class Render {
 
                 game.getGameOver().render(g);
                 break;
-            
+
+            case VICTORY:
+
+                game.getVictory().render(g);
+                break;
+
             case PLANTSLIST:
 
                 game.getPlantsList().render(g);
