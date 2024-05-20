@@ -2,13 +2,14 @@ package main;
 
 public enum GameStates {
     PLAYING,
-    GAMEOVER,
     PREPARATION,
     HELP,
     MENU,
     PLANTSLIST,
     ZOMBIESLIST,
-    SETTINGS;
+    SETTINGS,
+    GAMEOVER,
+    VICTORY;
 
     public static GameStates gameState = MENU;
 

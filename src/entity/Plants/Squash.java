@@ -1,12 +1,8 @@
 package entity.Plants;
 
 import java.awt.event.ActionEvent;
-
 import javax.swing.Timer;
 
-import entity.Action;
-import entity.Zombies.Zombie;
-import managers.PeasManager;
 import managers.ZombiesManager;
 
 public class Squash extends Plant{

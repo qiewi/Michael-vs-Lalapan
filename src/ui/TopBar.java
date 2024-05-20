@@ -2,9 +2,11 @@ package ui;
 
 import java.awt.Graphics;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import entity.Plants.Plant;
 import entity.Plants.PlantFactory;
+import objects.Sun;
 import scenes.Playing;
 // import entity.Sun;
 
@@ -17,7 +19,7 @@ public class TopBar {
     private Playing playing;
     private MyButton bMenu;
 
-    private ArrayList<MyButton> plantCards = new ArrayList<MyButton>();
+    private static ArrayList<MyButton> plantCards = new ArrayList<MyButton>();
 
     public TopBar(int x, int y, int width, int height, Playing playing) {
         this.x = x;
@@ -33,10 +35,21 @@ public class TopBar {
 		// bMenu.draw(g);
 
         checkCardsCost(g);
+        checkCardsCooldown();
         for (MyButton b: plantCards) {
             b.draw(g);
         }
 	}
+
+    private void checkCardsCooldown() {
+        for (MyButton b: plantCards) {
+            if (b.isOnCooldown()) {
+                if (Sun.getTick() - b.getCooldownTick() >= PlantFactory.getPlantCooldown(b.getName())) {
+                    b.setOnCooldown(false);
+                }
+            }
+        }
+    }
 
     private void checkCardsCost(Graphics g) {
         for (MyButton b: plantCards) {
@@ -119,6 +132,11 @@ public class TopBar {
 
     public MyButton getPlantCardsButton(int index) {
         return plantCards.get(index);
+    }
+
+    public void makePlantCardsCooldown(int index) {
+        plantCards.get(index).setOnCooldown(true);
+        plantCards.get(index).setCooldownTick(Sun.getTick());;
     }
 
     public int getX() {

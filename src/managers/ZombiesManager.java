@@ -1,6 +1,7 @@
 package managers;
 
 import static main.GameStates.GAMEOVER;
+import static main.GameStates.VICTORY;
 import static main.GameStates.setGameState;
 
 import java.awt.Graphics;
@@ -11,21 +12,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import entity.Plants.Plant;
-import entity.Plants.Squash;
-import entity.Plants.Tallnut;
-import entity.Plants.Tanglekelp;
-import entity.Zombies.Buckethead;
-import entity.Zombies.Conehead;
-import entity.Zombies.Football;
-import entity.Zombies.HeadwearType;
-import entity.Zombies.Newspaper;
-import entity.Zombies.Screendoor;
-import entity.Zombies.Polevault;
-import entity.Zombies.ShieldType;
-import entity.Zombies.VaultingType;
-import entity.Zombies.Zombie;
-import entity.Zombies.ZombieFactory;
+import entity.Plants.*;
+import entity.Zombies.*;
 import objects.Sun;
 import scenes.Playing;
 
@@ -36,6 +24,8 @@ public class ZombiesManager {
 	private ScheduledExecutorService scheduler;
 	private static final int INITIAL_ZOMBIE_COUNT = 10;
 	private static final int ZOMBIE_GENERATION_DELAY = 10;
+	private static final int TOTAL_ZOMBIE_COUNT = 50;
+	private static int zombieCount = 0;
 
 	public ZombiesManager(Playing playing) {
 		this.playing = playing;
@@ -45,6 +35,11 @@ public class ZombiesManager {
 	}
 
 	public void update() {
+		
+		if (zombieCount >= TOTAL_ZOMBIE_COUNT && zombies.isEmpty()) {
+			setGameState(VICTORY);
+		}
+
 		Iterator<Zombie> zombieIterator = zombies.iterator();
 		while (zombieIterator.hasNext()) {
 			Zombie z = zombieIterator.next();
@@ -109,8 +104,8 @@ public class ZombiesManager {
 		}
 	}
 
-	public void scheduleZombieGeneration() { // ambil tick dari sun 
-		Runnable addZombieTask = () -> { // ubah
+	public void scheduleZombieGeneration() { 
+		Runnable addZombieTask = () -> { 
 			if (Sun.getTick() >= 20 && Sun.getTick() <= 160) {
 				if (zombies.size() >= INITIAL_ZOMBIE_COUNT) {
 					return;
@@ -120,6 +115,9 @@ public class ZombiesManager {
 					int pos = rand.nextInt(positions.length);
 					addZombie(990, positions[pos]);
 				}
+			}
+			if (zombieCount >= TOTAL_ZOMBIE_COUNT) {
+				scheduler.shutdown();
 			}
 		};
 		scheduler.scheduleAtFixedRate(addZombieTask, 0, ZOMBIE_GENERATION_DELAY, TimeUnit.SECONDS);
@@ -219,6 +217,7 @@ public class ZombiesManager {
 		String[] zombieTypes = {"Newspaper"}; //flag belom // Pole Vault nnt aja tunggu fixed
 		int zombieType = random.nextInt(zombieTypes.length);
 		zombies.add(ZombieFactory.CreateZombie(zombieTypes[zombieType], x, y));
+		zombieCount++;
 	}
 
 	public void clearZombie() {

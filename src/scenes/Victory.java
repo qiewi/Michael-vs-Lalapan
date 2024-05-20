@@ -13,9 +13,11 @@ import static main.GameStates.*;
 
 public class Victory extends GameScene implements SceneMethods {
     private MyButton bBackmenu;
+    private Playing playing;
 
     public Victory(Game game) {
         super(game);
+        playing = game.getPlaying();
         initButtons();
     }
 
@@ -69,6 +71,7 @@ public class Victory extends GameScene implements SceneMethods {
         game.getPreparation().refreshInventoryAndDeck();
 
         if (bBackmenu.getBounds().contains(x, y)) {
+            playing.clearAll();
             setGameState(MENU); 
         }
     }

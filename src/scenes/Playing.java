@@ -76,7 +76,7 @@ public class Playing extends GameScene implements SceneMethods {
 	}
 
 	public void update() {
-		updateTick();
+		updateTick();;
 
 		plantsManager.update();
 		zombiesManager.update();
@@ -123,7 +123,7 @@ public class Playing extends GameScene implements SceneMethods {
 	private void drawMap(Graphics g) {
 		BufferedImage img = null;
 		InputStream is = null;
-		if (sun.getMorning())
+		if (Sun.getMorning())
 			is = getClass().getResourceAsStream("resources/PoolDay.png");
 		else 
 			is = getClass().getResourceAsStream("resources/PoolNight.png");
@@ -209,27 +209,45 @@ public class Playing extends GameScene implements SceneMethods {
 		switch (e.getKeyCode()) {
 			
 			case KeyEvent.VK_1:
-				plantsManager.addPlant(topBar.getPlantCardsButton(0).getName(), xArrow, yArrow);
+				if (!topBar.getPlantCardsButton(0).isOnCooldown()) {
+					plantsManager.addPlant(topBar.getPlantCardsButton(0).getName(), xArrow, yArrow);
+				}
+				topBar.makePlantCardsCooldown(0);
 				break;
 
 			case KeyEvent.VK_2:
-				plantsManager.addPlant(topBar.getPlantCardsButton(1).getName(), xArrow, yArrow);
+				if (!topBar.getPlantCardsButton(1).isOnCooldown()) {
+					plantsManager.addPlant(topBar.getPlantCardsButton(1).getName(), xArrow, yArrow);
+				}
+				topBar.makePlantCardsCooldown(1);
 				break;
 			
 			case KeyEvent.VK_3:
-				plantsManager.addPlant(topBar.getPlantCardsButton(2).getName(), xArrow, yArrow);
+				if (!topBar.getPlantCardsButton(2).isOnCooldown()) {
+					plantsManager.addPlant(topBar.getPlantCardsButton(2).getName(), xArrow, yArrow);
+				}
+				topBar.makePlantCardsCooldown(2);
 				break;
 
 			case KeyEvent.VK_4:
-				plantsManager.addPlant(topBar.getPlantCardsButton(3).getName(), xArrow, yArrow);
+				if (!topBar.getPlantCardsButton(3).isOnCooldown()) {
+					plantsManager.addPlant(topBar.getPlantCardsButton(3).getName(), xArrow, yArrow);
+				}
+				topBar.makePlantCardsCooldown(3);
 				break;
 			
 			case KeyEvent.VK_5:
-				plantsManager.addPlant(topBar.getPlantCardsButton(4).getName(), xArrow, yArrow);
+				if (!topBar.getPlantCardsButton(4).isOnCooldown()) {
+					plantsManager.addPlant(topBar.getPlantCardsButton(4).getName(), xArrow, yArrow);
+				}
+				topBar.makePlantCardsCooldown(4);
 				break;
 			
 			case KeyEvent.VK_6:
-				plantsManager.addPlant(topBar.getPlantCardsButton(5).getName(), xArrow, yArrow);
+				if (!topBar.getPlantCardsButton(5).isOnCooldown()) {
+					plantsManager.addPlant(topBar.getPlantCardsButton(5).getName(), xArrow, yArrow);
+				}
+				topBar.makePlantCardsCooldown(5);
 				break;
 
 			case KeyEvent.VK_D:
