@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.awt.Image;
 
 import main.Game;
+import managers.ZombiesManager;
 import objects.Sun;
 import ui.MyButton;
 
@@ -306,7 +307,10 @@ public class Preparation extends GameScene implements SceneMethods {
                     game.getPlaying().createPlantDeck(this.inventory.getPlantDeckNames());
                     game.getPlaying().getTopBar().updateButtons();
                     game.getPlaying().getZombiesManager().clearZombie();
+
+                    ZombiesManager.initScheduler();
                     game.getPlaying().getZombiesManager().scheduleZombieGeneration();
+                    
                     setGameState(PLAYING);
                     //nanti pindain ke playing
                     sun.startMorning();
