@@ -76,7 +76,7 @@ public class Playing extends GameScene implements SceneMethods {
 	}
 
 	public void update() {
-		updateTick();
+		updateTick();;
 
 		plantsManager.update();
 		zombiesManager.update();
@@ -123,7 +123,7 @@ public class Playing extends GameScene implements SceneMethods {
 	private void drawMap(Graphics g) {
 		BufferedImage img = null;
 		InputStream is = null;
-		if (sun.getMorning())
+		if (Sun.getMorning())
 			is = getClass().getResourceAsStream("resources/PoolDay.png");
 		else 
 			is = getClass().getResourceAsStream("resources/PoolNight.png");
@@ -209,7 +209,10 @@ public class Playing extends GameScene implements SceneMethods {
 		switch (e.getKeyCode()) {
 			
 			case KeyEvent.VK_1:
-				plantsManager.addPlant(topBar.getPlantCardsButton(0).getName(), xArrow, yArrow);
+				if (!topBar.getPlantCardsButton(0).isOnCooldown()) {
+					plantsManager.addPlant(topBar.getPlantCardsButton(0).getName(), xArrow, yArrow);
+				}
+				topBar.makePlantCardsCooldown(0);
 				break;
 
 			case KeyEvent.VK_2:

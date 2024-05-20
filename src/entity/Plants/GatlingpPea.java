@@ -12,7 +12,7 @@ public class GatlingpPea extends Plant {
     private Timer shootTimer, secondTimer, thirdTimer, fourthTimer;
     
     public GatlingpPea(int x, int y) {
-        super("GatlingPea", 250, 100, 25, 8, -1, 10, false, x, y);
+        super("GatlingPea", 250, 100, 25, 8, -1, 15, false, x, y);
         this.setImage(getPlantImage("GatlingPea"));
         action();
     }

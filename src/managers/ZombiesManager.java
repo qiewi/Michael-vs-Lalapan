@@ -11,21 +11,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import entity.Plants.Plant;
-import entity.Plants.Squash;
-import entity.Plants.Tallnut;
-import entity.Plants.Tanglekelp;
-import entity.Zombies.Buckethead;
-import entity.Zombies.Conehead;
-import entity.Zombies.Football;
-import entity.Zombies.HeadwearType;
-import entity.Zombies.Newspaper;
-import entity.Zombies.Screendoor;
-import entity.Zombies.Polevault;
-import entity.Zombies.ShieldType;
-import entity.Zombies.VaultingType;
-import entity.Zombies.Zombie;
-import entity.Zombies.ZombieFactory;
+import entity.Plants.*;
+import entity.Zombies.*;
 import objects.Sun;
 import scenes.Playing;
 

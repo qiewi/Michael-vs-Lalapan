@@ -60,4 +60,30 @@ public class PlantFactory {
             
         return plant.getCost();
     }
+
+    public static int getPlantCooldown(String name) {
+        int cooldown = 10;
+        if (name.equals("Sunflower")) {
+            cooldown = 5;
+        } else if (name.equals("Peashooter")) {
+            cooldown = 10;
+        } else if (name.equals("Repeater")) {
+            cooldown = 15;
+        } else if (name.equals("GatlingPea")) {
+            cooldown = 15;
+        } else if (name.equals("WallNut")) {
+            cooldown = 10;
+        } else if (name.equals("TallNut")) {
+            cooldown = 20;
+        } else if (name.equals("Squash")) {
+            cooldown = 20;
+        } else if (name.equals("SnowPea")) {
+            cooldown = 10;
+        } else if (name.equals("LilyPad")) {
+            cooldown = 10;
+        } else if (name.equals("TangleKelp")) {
+            cooldown = 20;
+        }
+        return cooldown;
+    }
 }
