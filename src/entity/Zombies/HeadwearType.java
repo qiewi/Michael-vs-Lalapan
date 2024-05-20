@@ -18,7 +18,7 @@ public class HeadwearType extends Zombie {
         this.head_on = head;
     }
 
-    public int getDefHealth() {
+    public int getDefHealthHead() {
         return DEFAULT_HEALTH;
     }
 

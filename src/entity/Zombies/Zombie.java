@@ -4,9 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 import javax.imageio.ImageIO;
 import javax.swing.Timer;
@@ -35,7 +32,8 @@ public abstract class Zombie extends Entity implements Action {
     }
 
     private void createAttackTimer() {
-        attackTimer = new Timer(1000, (ActionEvent e) -> {
+        int delay = getAttackSpeed() * 1000;
+        attackTimer = new Timer(delay, (ActionEvent e) -> {
             if (this.getAttacking()) {
                 Plant plantAttacked = PlantsManager.checkPlantsInPos((int) this.getX(), (int) this.getY());
                 PlantsManager.takeDamage(plantAttacked, this);
