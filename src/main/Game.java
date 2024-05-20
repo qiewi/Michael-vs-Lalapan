@@ -8,6 +8,7 @@ import scenes.Menu;
 import scenes.PlantsList;
 import scenes.Playing;
 import scenes.Preparation;
+import scenes.Victory;
 import scenes.ZombiesList;
 
 public class Game extends JFrame implements Runnable{
@@ -22,6 +23,7 @@ public class Game extends JFrame implements Runnable{
     private Menu menu;
     private Playing playing;
     private GameOver gameOver;
+    private Victory victory;
     private Preparation preparation;
     private Help help;
     private PlantsList plantsList;
@@ -49,6 +51,7 @@ public class Game extends JFrame implements Runnable{
         preparation = new Preparation(this);
         playing = new Playing(this);
         gameOver = new GameOver(this);
+        victory = new Victory(this);
         help = new Help(this);
         plantsList = new PlantsList(this);
         zombiesList = new ZombiesList(this);
@@ -145,6 +148,10 @@ public class Game extends JFrame implements Runnable{
 
     public GameOver getGameOver() {
         return gameOver;
+    }
+
+    public Victory getVictory() {
+        return victory;
     }
 
     public Preparation getPreparation() {

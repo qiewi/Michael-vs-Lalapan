@@ -34,7 +34,7 @@ public class MyMouseListener implements MouseListener, MouseMotionListener {
 			game.getGameOver().mouseMoved(e.getX(), e.getY());
 			break;
 		case VICTORY:
-			game.getGameOver().mouseMoved(e.getX(), e.getY());
+			game.getVictory().mouseMoved(e.getX(), e.getY());
 			break;
 		case PLAYING:
 			game.getPlaying().mouseMoved(e.getX(), e.getY());
@@ -67,7 +67,7 @@ public class MyMouseListener implements MouseListener, MouseMotionListener {
 				game.getGameOver().mouseClicked(e.getX(), e.getY());
 				break;
 			case VICTORY:
-				game.getGameOver().mouseClicked(e.getX(), e.getY());
+				game.getVictory().mouseClicked(e.getX(), e.getY());
 				break;
 			case PLANTSLIST:
 				game.getPlantsList().mouseClicked(e.getX(), e.getY());
@@ -96,7 +96,7 @@ public class MyMouseListener implements MouseListener, MouseMotionListener {
 			game.getGameOver().mousePressed(e.getX(), e.getY());
 			break;
 		case VICTORY:
-			game.getGameOver().mousePressed(e.getX(), e.getY());
+			game.getVictory().mousePressed(e.getX(), e.getY());
 			break;
 		case PLAYING:
 			game.getPlaying().mousePressed(e.getX(), e.getY());
@@ -121,7 +121,7 @@ public class MyMouseListener implements MouseListener, MouseMotionListener {
 			game.getGameOver().mouseReleased(e.getX(), e.getY());
 			break;
 		case VICTORY:
-			game.getGameOver().mouseReleased(e.getX(), e.getY());
+			game.getVictory().mouseReleased(e.getX(), e.getY());
 			break;
 		case PLAYING:
 			game.getPlaying().mouseReleased(e.getX(), e.getY());

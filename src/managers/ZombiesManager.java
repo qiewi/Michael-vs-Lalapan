@@ -24,7 +24,7 @@ public class ZombiesManager {
 	private ScheduledExecutorService scheduler;
 	private static final int INITIAL_ZOMBIE_COUNT = 10;
 	private static final int ZOMBIE_GENERATION_DELAY = 10;
-	private static final int TOTAL_ZOMBIE_COUNT = 50;
+	private static final int TOTAL_ZOMBIE_COUNT = 3;
 	private static int zombieCount = 0;
 
 	public ZombiesManager(Playing playing) {
@@ -35,7 +35,7 @@ public class ZombiesManager {
 	}
 
 	public void update() {
-		
+
 		if (zombieCount >= TOTAL_ZOMBIE_COUNT && zombies.isEmpty()) {
 			setGameState(VICTORY);
 		}
@@ -214,7 +214,7 @@ public class ZombiesManager {
 
 	public void addZombie(int x, int y) {
 		Random random = new Random();
-		String[] zombieTypes = {"Newspaper"}; //flag belom // Pole Vault nnt aja tunggu fixed
+		String[] zombieTypes = {"Normal", "Football", "Conehead", "Buckethead", "Flag", "Screendoor", "Polevault", "Newspaper"}; //flag belom // Pole Vault nnt aja tunggu fixed
 		int zombieType = random.nextInt(zombieTypes.length);
 		zombies.add(ZombieFactory.CreateZombie(zombieTypes[zombieType], x, y));
 		zombieCount++;

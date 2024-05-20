@@ -5,6 +5,10 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 
+import javax.sound.sampled.*;
+import java.io.File;
+import java.io.IOException;
+
 import javax.imageio.ImageIO;
 import main.Game;
 import ui.MyButton;
@@ -17,6 +21,7 @@ public class Menu extends GameScene implements SceneMethods {
 	public Menu(Game game) {
 		super(game);
 		initButtons();
+		playSound("Menu");
 	}
 
 	private void initButtons() {
@@ -35,6 +40,21 @@ public class Menu extends GameScene implements SceneMethods {
 		bHelp = new MyButton("Help", 930, 685, 70, 50);
 
 	}
+
+	public static void playSound(String soundName) {
+		try {
+			File soundFile = new File("src/scenes/resources/Music/" + soundName + ".wav");
+			AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);
+	
+			Clip clip = AudioSystem.getClip();
+			clip.open(audioIn);
+	
+			clip.start();
+		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
+			ex.printStackTrace();
+		}
+	}
+	
 
 	@Override
 	public void render(Graphics g) {
