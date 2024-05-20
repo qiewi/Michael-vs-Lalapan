@@ -23,6 +23,8 @@ public class ZombiesManager {
 	private ScheduledExecutorService scheduler;
 	private static final int INITIAL_ZOMBIE_COUNT = 10;
 	private static final int ZOMBIE_GENERATION_DELAY = 10;
+	private static final int TOTAL_ZOMBIE_COUNT = 50;
+	private static int zombieCount = 0;
 
 	public ZombiesManager(Playing playing) {
 		this.playing = playing;
@@ -96,8 +98,8 @@ public class ZombiesManager {
 		}
 	}
 
-	public void scheduleZombieGeneration() { // ambil tick dari sun 
-		Runnable addZombieTask = () -> { // ubah
+	public void scheduleZombieGeneration() { 
+		Runnable addZombieTask = () -> { 
 			if (Sun.getTick() >= 20 && Sun.getTick() <= 160) {
 				if (zombies.size() >= INITIAL_ZOMBIE_COUNT) {
 					return;
@@ -107,6 +109,9 @@ public class ZombiesManager {
 					int pos = rand.nextInt(positions.length);
 					addZombie(990, positions[pos]);
 				}
+			}
+			if (zombieCount >= TOTAL_ZOMBIE_COUNT) {
+				scheduler.shutdown();
 			}
 		};
 		scheduler.scheduleAtFixedRate(addZombieTask, 0, ZOMBIE_GENERATION_DELAY, TimeUnit.SECONDS);
@@ -206,6 +211,7 @@ public class ZombiesManager {
 		String[] zombieTypes = {"Newspaper"}; //flag belom // Pole Vault nnt aja tunggu fixed
 		int zombieType = random.nextInt(zombieTypes.length);
 		zombies.add(ZombieFactory.CreateZombie(zombieTypes[zombieType], x, y));
+		zombieCount++;
 	}
 
 	public void clearZombie() {
