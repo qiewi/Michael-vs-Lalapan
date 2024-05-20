@@ -1,11 +1,5 @@
 package entity.Zombies;
 
-import java.awt.event.ActionEvent;
-import javax.swing.Timer;
-
-import entity.Plants.Plant;
-import managers.PlantsManager;
-
 public class NormalZomB extends Zombie {
     
 
@@ -16,8 +10,6 @@ public class NormalZomB extends Zombie {
 
     public  void attack() {
     }
-
-    
 
     @Override
     public void action() {

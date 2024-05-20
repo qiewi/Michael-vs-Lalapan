@@ -6,6 +6,4 @@ public class Polevault extends VaultingType {
         super("Polevault", 125, true, x, y);
         this.setImage(getZombieImage("Polevault"));
     }
-
-    
 }

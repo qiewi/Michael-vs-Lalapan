@@ -233,7 +233,7 @@ public class Playing extends GameScene implements SceneMethods {
 				break;
 
 			case KeyEvent.VK_D:
-				plantsManager.deletePlantsAt(xArrow, yArrow);;
+				PlantsManager.deletePlantsAt(xArrow, yArrow);;
 				break;
 		}
 		
