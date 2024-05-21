@@ -15,13 +15,13 @@ import ui.MyButton;
 import static main.GameStates.*;
 
 public class Menu extends GameScene implements SceneMethods {
-
+	private static Clip soundClip;
 	private MyButton bPlaying, bPlantsList, bZombiesList, bHelp, bQuit;
 
 	public Menu(Game game) {
 		super(game);
 		initButtons();
-		// playSound("Menu");
+		playSound("Menu");
 	}
 
 	private void initButtons() {
@@ -46,20 +46,31 @@ public class Menu extends GameScene implements SceneMethods {
             File soundFile = new File("src/scenes/resources/Music/" + soundName + ".wav");
             AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);
 
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioIn);
+            // Stop the currently playing sound clip before playing a new one
+            stopSound();
+
+            soundClip = AudioSystem.getClip();
+            soundClip.open(audioIn);
             
             // Add a listener to restart the clip when it ends
-            clip.addLineListener(event -> {
+            soundClip.addLineListener(event -> {
                 if (event.getType() == LineEvent.Type.STOP) {
-                    clip.setFramePosition(0);
-                    clip.start();
+                    soundClip.setFramePosition(0);
+                    soundClip.start();
                 }
             });
 
-            clip.start();
+            soundClip.start();
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
             ex.printStackTrace();
+        }
+    }
+
+    // Method to stop the currently playing sound clip
+    public static void stopSound() {
+        if (soundClip != null && soundClip.isRunning()) {
+            soundClip.stop();
+            soundClip.close();
         }
     }
 	
@@ -104,6 +115,7 @@ public class Menu extends GameScene implements SceneMethods {
 	public void mouseClicked(int x, int y) {
 
 		if (bPlaying.getBounds().contains(x, y)) {
+			stopSound();
 			setGameState(PREPARATION);
 		} else if (bPlantsList.getBounds().contains(x, y)) {
 			setGameState(PLANTSLIST);

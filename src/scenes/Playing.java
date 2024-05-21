@@ -14,6 +14,7 @@ import managers.PlantsManager;
 import managers.SunDropManager;
 import managers.ZombiesManager;
 import objects.Sun;
+import ui.FlagBar;
 import ui.MyButton;
 import ui.TopBar;
 
@@ -28,6 +29,7 @@ public class Playing extends GameScene implements SceneMethods {
 	private String[] plantDeck;
 
 	private TopBar topBar;
+	private FlagBar flagBar;
 
 	private Sun sun;
 	private MyButton sunText;
@@ -52,6 +54,7 @@ public class Playing extends GameScene implements SceneMethods {
 		peasManager = new PeasManager(this);
 
 		topBar = new TopBar(0, 0, 768, 100, this);
+		flagBar = new FlagBar(795, 75, 215, 15, this);
 
 		sun = new Sun();
         initSunText();
@@ -63,6 +66,7 @@ public class Playing extends GameScene implements SceneMethods {
 		// Draw Map and Bar
 		drawMap(g);
 		topBar.draw(g);
+		flagBar.draw(g);
 		drawSunText(g);
 
 		// Draw Managers

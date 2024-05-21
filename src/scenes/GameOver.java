@@ -80,6 +80,7 @@ public class GameOver extends GameScene implements SceneMethods {
             playing.getGame().getPreparation().setSelectedClear(true);
             playing.getGame().getPreparation().refreshInventoryAndDeck();
             ZombiesManager.shutScheduler();
+            Menu.playSound("Menu");
             setGameState(MENU); 
         }
     }

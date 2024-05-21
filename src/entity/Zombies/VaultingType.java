@@ -21,7 +21,7 @@ public class VaultingType extends Zombie {
 
     public void action() {
         setVault(false);
-        setX(getX()-130);
+        setX(getX()-100);
         setSpeed(-0.15f);
     }
     

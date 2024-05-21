@@ -17,9 +17,10 @@ public class Squash extends Plant{
     
     public void action() {
         actionTimer = new Timer(0, (ActionEvent e) -> {
-            if (ZombiesManager.squashDamage((int) this.getX(), (int) this.getY()) != -1) {
+            int squashPos = ZombiesManager.squashDamage((int) this.getX(), (int) this.getY());
+            if (squashPos != -1) {
                 if (!smashed) {
-                    this.setX(ZombiesManager.squashDamage((int) this.getX(), (int) this.getY()));
+                    this.setX(squashPos);
                 } 
                 this.alreadySmashed();
                 actionTimer2 = new Timer(200, (ActionEvent e2) -> {

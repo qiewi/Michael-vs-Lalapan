@@ -8,6 +8,7 @@ import entity.Plants.Plant;
 import entity.Plants.PlantFactory;
 import managers.ZombiesManager;
 import objects.Sun;
+import scenes.Menu;
 import scenes.Playing;
 // import entity.Sun;
 
@@ -98,6 +99,7 @@ public class TopBar {
             playing.getGame().getPreparation().setSelectedClear(true);
             playing.getGame().getPreparation().refreshInventoryAndDeck();
             ZombiesManager.shutScheduler();
+            Menu.playSound("Menu");
             setGameState(MENU);
         }
 	}

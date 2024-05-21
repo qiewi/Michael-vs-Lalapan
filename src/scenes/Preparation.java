@@ -283,6 +283,7 @@ public class Preparation extends GameScene implements SceneMethods {
         if (menuButton.getBounds().contains(x, y)) {
             selectedClear = true;
             refreshInventoryAndDeck();
+            Menu.playSound("Menu");
             setGameState(MENU);
         }
         if (panelButtons[0].getBounds().contains(x, y)) {
