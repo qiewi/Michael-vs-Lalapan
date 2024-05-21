@@ -54,7 +54,7 @@ public class Playing extends GameScene implements SceneMethods {
 		peasManager = new PeasManager(this);
 
 		topBar = new TopBar(0, 0, 768, 100, this);
-		flagBar = new FlagBar(795, 75, 215, 15, this);
+		flagBar = new FlagBar(795, 65, this);
 
 		sun = new Sun();
         initSunText();

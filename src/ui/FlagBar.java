@@ -3,52 +3,80 @@ package ui;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.io.IOException;
+import java.io.InputStream;
+import java.awt.image.BufferedImage;
 
-import entity.Plants.Plant;
-import entity.Plants.PlantFactory;
-import managers.ZombiesManager;
+import javax.imageio.ImageIO;
+
 import objects.Sun;
 import scenes.Playing;
 // import entity.Sun;
 
 public class FlagBar {
     
-    private int x, y, width, height;
-    private Rectangle progressBar;
+    private int x, y;
+    private BufferedImage[] barImages = new BufferedImage[17];
+    private BufferedImage flagImage, waveNotice;
     private Playing playing;
 
-    public FlagBar(int x, int y, int width, int height, Playing playing) {
+    public FlagBar(int x, int y, Playing playing) {
         this.x = x;
         this.y = y;
-        this.width = width;
-        this.height = height;
         this.playing = playing;
+    
 
-        progressBar = new Rectangle(x, y, width, height);
+        initBarImages();
+        flagImage = barImages[0];
     }
 
+    private void initBarImages() {
+        for (int i = 0; i < 17; i++) {
+            barImages[i] = getBarImage(String.valueOf(i));
+        }
+        waveNotice = getBarImage("WaveNotice");
+    }
+
+    private BufferedImage getBarImage(String name) {
+        BufferedImage img = null;
+        InputStream is = getClass().getResourceAsStream("resources/FlagBar/" + name + ".png");
+
+        try {
+            img = ImageIO.read(is);
+        } catch (IOException e) {
+            e.printStackTrace();   
+        }       
+
+        return img;
+    }
+
+    private void updateProgressBar() {
+        int tick = Sun.getTick();
+        if (tick >= 20 && tick <= 180) {
+            int tickIndex = ((int) Sun.getTick() / 10) - 2;
+            flagImage = barImages[tickIndex];
+        } else if (tick > 180) {
+            flagImage = barImages[16];
+        }
+    }
 
     private void drawProgressBar(Graphics g) {
-        progressBar.x = x;
-        progressBar.y = y;
-        progressBar.width = width;
-        progressBar.height = height;
-
-        g.setColor(Color.GREEN);
-        g.fillRect(x, y, width, height);
+        g.drawImage(flagImage, x, y, null);
+        if (Sun.getTick() >= 170 && Sun.getTick() <= 175){
+            g.drawImage(waveNotice, 112, 360, null);
+        }
     }
 
 
     public void draw(Graphics g) {
 
         // Buttons
+        updateProgressBar();
         drawProgressBar(g);
-        
+
     }
 
-	public void mouseClicked(int x, int y) {
+    public void mouseClicked(int x, int y) {
 
 	}
 
@@ -74,14 +102,6 @@ public class FlagBar {
 
     public int getY() {
         return y;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
     }
 
 }

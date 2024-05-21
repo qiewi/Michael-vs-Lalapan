@@ -52,7 +52,7 @@ public class PlantsManager {
 	public static Plant checkPlantsInPos(int x, int y) {
 		Plant plant = null;
 		for (Plant p : plants) {
-			if ((int) p.getX() == x && (int) p.getY() == y){
+			if (((int) p.getX() - 30 <= x && (int) p.getX() >= x)&& (int) p.getY() == y){
 				plant = p;
 			}
 		}

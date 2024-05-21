@@ -23,10 +23,15 @@ public class ZombiesManager {
 	private static ArrayList<Zombie> zombies;
 	private static ArrayList<Plant> plants;
 	private static ScheduledExecutorService scheduler;
-	private static final int INITIAL_ZOMBIE_COUNT = 10;
-	private static final int ZOMBIE_GENERATION_DELAY = 10;
-	private static final int TOTAL_ZOMBIE_COUNT = 3;
+	private static final int TOTAL_ZOMBIE_COUNT = 70;
+
+	private static final int[] positions = new int[] {200, 290, 380, 470, 560, 650};
+	private static final int[] flagPositions = new int[] {200, 290, 560, 650};
+
+	private static int zombieAtOneTime = 10;
+	private static int zombieDelay = 4;
 	private static int zombieCount = 0;
+	private static boolean flag = false;
 
 	public ZombiesManager(Playing playing) {
 		this.playing = playing;
@@ -66,7 +71,10 @@ public class ZombiesManager {
                         z.setSpeed(-0.15f);
                         if (z instanceof Polevault) {
                             z.setImage(z.getZombieImage("Polevault2"));
-                        }
+                        } 
+						z.setAttacking(true);
+						attacked = true;
+						break;
                     } else if (p instanceof Lilypad) {
                         boolean withLily = false;
                         for (Plant p2 : plants) {
@@ -156,32 +164,40 @@ public class ZombiesManager {
         }
 
         // Game Over
-        if (z.getX() <= 90) {
+        if (z.getX() <= 100) {
             setGameState(GAMEOVER);
         }
     }
 }
 
 	public void scheduleZombieGeneration() { 
+		if (Sun.getTick() == 175) {
+			zombieDelay = 1;
+			zombieAtOneTime = 25;
+		}
 		Runnable addZombieTask = () -> { 
-			if (Sun.getTick() >= 20 && Sun.getTick() <= 160) {
-				if (zombies.size() >= INITIAL_ZOMBIE_COUNT) {
+			int tick = Sun.getTick();
+			if (tick >= 20 && tick <= 210) {
+				if (zombies.size() >= zombieAtOneTime) {
 					return;
 				} else {
 					Random rand = new Random();
-					// int[] positions = new int[] {200, 290, 560, 650};
-					// int[] positions = new int[] {200, 290, 560, 650};
-					// int[] positions = new int[] {380, 470};
-					int[] positions = new int[] {200, 380, 470};
-					int pos = rand.nextInt(positions.length);
-					addZombie(990, positions[pos]);
+					int pos;
+					if (tick >= 165 && tick <= 170 && !flag) {
+						pos = rand.nextInt(flagPositions.length);
+						addZombie(990, flagPositions[pos]);
+					} else {
+						pos = rand.nextInt(positions.length);
+						addZombie(990, positions[pos]);
+					}
+					
 				}
 			}
-			if (zombieCount >= TOTAL_ZOMBIE_COUNT) {
+			if (zombieCount >= TOTAL_ZOMBIE_COUNT || Sun.getTick() > 210) {
 				scheduler.shutdown();
 			}
 		};
-		scheduler.scheduleAtFixedRate(addZombieTask, 0, ZOMBIE_GENERATION_DELAY, TimeUnit.SECONDS);
+		scheduler.scheduleAtFixedRate(addZombieTask, 0, zombieDelay, TimeUnit.SECONDS);
 	}
 
 	public static boolean checkZombiesInLane(int y) {
@@ -276,20 +292,30 @@ public class ZombiesManager {
 
 	public void addZombie(int x, int y) {
 		Random random = new Random();
-		// String[] zombieTypes = {"Normal", "Football", "Conehead", "Buckethead", "Flag", "Screendoor", "Polevault", "Newspaper", "Duckytube", "Dolphin"};
-		String[] zombieTypes = {"Polevault", "Dolphin"};
+		// String[] zombieTypes = {"Normal", "Football", "Conehead", "Buckethead", "Screendoor", "Polevault", "Newspaper", "Duckytube", "Dolphin"};
+		String[] zombieTypes = {"Polevault", "Duckytube"};
+
 		int zombieType = random.nextInt(zombieTypes.length);
 		Zombie zom = ZombieFactory.CreateZombie(zombieTypes[zombieType], x, y);
-		while ((y == 380 || y == 470) && !zom.getAquatic()) {
-			zombieType = random.nextInt(zombieTypes.length);
-			zom = ZombieFactory.CreateZombie(zombieTypes[zombieType], x, y);
+		
+		if (Sun.getTick() >= 165 && Sun.getTick() <= 170 && !flag) {
+			zom = ZombieFactory.CreateZombie("Flag", x, y);
+			flag = true;
+		} else {
+			while ((y == 380 || y == 470) && !zom.getAquatic()) {
+				zombieType = random.nextInt(zombieTypes.length);
+				zom = ZombieFactory.CreateZombie(zombieTypes[zombieType], x, y);
+			}
+	
+			while ((y == 200 || y == 290 || y == 560 || y == 650) && zom.getAquatic()) {
+				zombieType = random.nextInt(zombieTypes.length);
+				zom = ZombieFactory.CreateZombie(zombieTypes[zombieType], x, y);
+			}
 		}
-		while ((y == 200 || y == 290 || y == 560 || y == 650) && zom.getAquatic()) {
-			zombieType = random.nextInt(zombieTypes.length);
-			zom = ZombieFactory.CreateZombie(zombieTypes[zombieType], x, y);
-		}
+
 		zombies.add(zom);
 		zombieCount++;
+
 		System.out.println("Zombie generated at " + y);
 	}
 
