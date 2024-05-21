@@ -293,7 +293,7 @@ public class ZombiesManager {
 	public void addZombie(int x, int y) {
 		Random random = new Random();
 		// String[] zombieTypes = {"Normal", "Football", "Conehead", "Buckethead", "Screendoor", "Polevault", "Newspaper", "Duckytube", "Dolphin"};
-		String[] zombieTypes = {"Polevault", "Duckytube"};
+		String[] zombieTypes = {"Normal", "Dolphin"};
 
 		int zombieType = random.nextInt(zombieTypes.length);
 		Zombie zom = ZombieFactory.CreateZombie(zombieTypes[zombieType], x, y);
@@ -330,14 +330,19 @@ public class ZombiesManager {
 
 	private void drawZombie(Zombie z, Graphics g) {
 		if (z.getAquatic()) {
-			g.drawImage(z.getImage(), (int) z.getX(), (int) z.getY(), null);
 			if (z instanceof Dolphin) {
-				if (z.getX() <= 910 && ((Dolphin) z).getVault()) {
+				if (z.getX() <= 870 && ((Dolphin) z).getVault()) {
 					z.setImage(z.getZombieImage("Dolphin"));
+					g.drawImage(z.getImage(), (int) z.getX() + 50, (int) z.getY(), null);
+				} else if (z.getX() <= 870 && !((Dolphin) z).getVault()) {
+					g.drawImage(z.getImage(), (int) z.getX(), (int) z.getY(), null);
+				} else {
+					g.drawImage(z.getImage(), (int) z.getX() + 50, (int) z.getY() - 30, null);
 				}
 			} else if (z instanceof Duckytube) {
 				if (z.getX() <= 910) {
 					z.setImage(z.getZombieImage("Duckytube2"));
+					g.drawImage(z.getImage(), (int) z.getX(), (int) z.getY(), null);
 				}
 			}
 		} else {
