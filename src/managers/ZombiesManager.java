@@ -292,8 +292,7 @@ public class ZombiesManager {
 
 	public void addZombie(int x, int y) {
 		Random random = new Random();
-		// String[] zombieTypes = {"Normal", "Football", "Conehead", "Buckethead", "Screendoor", "Polevault", "Newspaper", "Duckytube", "Dolphin"};
-		String[] zombieTypes = {"Normal", "Dolphin"};
+		String[] zombieTypes = {"Normal", "Football", "Conehead", "Buckethead", "Screendoor", "Polevault", "Newspaper", "Duckytube", "Dolphin"};
 
 		int zombieType = random.nextInt(zombieTypes.length);
 		Zombie zom = ZombieFactory.CreateZombie(zombieTypes[zombieType], x, y);

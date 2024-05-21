@@ -73,6 +73,8 @@ public class GameOver extends GameScene implements SceneMethods {
 
         if (bTryAgain.getBounds().contains(x, y)) {
             playing.clearAll();
+            playing.getGame().getPreparation().setSelectedClear(true);
+            playing.getGame().getPreparation().refreshInventoryAndDeck();
             ZombiesManager.shutScheduler();
             setGameState(PREPARATION); 
         } else if (bExit.getBounds().contains(x, y)) {
@@ -80,7 +82,7 @@ public class GameOver extends GameScene implements SceneMethods {
             playing.getGame().getPreparation().setSelectedClear(true);
             playing.getGame().getPreparation().refreshInventoryAndDeck();
             ZombiesManager.shutScheduler();
-            Menu.playSound("Menu");
+            Music.playSound("Menu");
             setGameState(MENU); 
         }
     }

@@ -21,7 +21,7 @@ public class Menu extends GameScene implements SceneMethods {
 	public Menu(Game game) {
 		super(game);
 		initButtons();
-		playSound("Menu");
+		Music.playSound("Menu");
 	}
 
 	private void initButtons() {
@@ -40,39 +40,6 @@ public class Menu extends GameScene implements SceneMethods {
 		bHelp = new MyButton("Help", 930, 685, 70, 50);
 
 	}
-
-	public static void playSound(String soundName) {
-        try {
-            File soundFile = new File("src/scenes/resources/Music/" + soundName + ".wav");
-            AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);
-
-            // Stop the currently playing sound clip before playing a new one
-            stopSound();
-
-            soundClip = AudioSystem.getClip();
-            soundClip.open(audioIn);
-            
-            // Add a listener to restart the clip when it ends
-            soundClip.addLineListener(event -> {
-                if (event.getType() == LineEvent.Type.STOP) {
-                    soundClip.setFramePosition(0);
-                    soundClip.start();
-                }
-            });
-
-            soundClip.start();
-        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    // Method to stop the currently playing sound clip
-    public static void stopSound() {
-        if (soundClip != null && soundClip.isRunning()) {
-            soundClip.stop();
-            soundClip.close();
-        }
-    }
 	
 
 	@Override
@@ -115,7 +82,7 @@ public class Menu extends GameScene implements SceneMethods {
 	public void mouseClicked(int x, int y) {
 
 		if (bPlaying.getBounds().contains(x, y)) {
-			stopSound();
+			Music.stopSound();
 			setGameState(PREPARATION);
 		} else if (bPlantsList.getBounds().contains(x, y)) {
 			setGameState(PLANTSLIST);

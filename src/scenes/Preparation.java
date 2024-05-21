@@ -18,6 +18,7 @@ import main.Game;
 import managers.ZombiesManager;
 import objects.Sun;
 import ui.MyButton;
+import ui.TopBar;
 
 public class Preparation extends GameScene implements SceneMethods {
     private Inventory inventory;
@@ -283,7 +284,7 @@ public class Preparation extends GameScene implements SceneMethods {
         if (menuButton.getBounds().contains(x, y)) {
             selectedClear = true;
             refreshInventoryAndDeck();
-            Menu.playSound("Menu");
+            Music.playSound("Menu");
             setGameState(MENU);
         }
         if (panelButtons[0].getBounds().contains(x, y)) {
@@ -311,6 +312,8 @@ public class Preparation extends GameScene implements SceneMethods {
 
                     ZombiesManager.initScheduler();
                     game.getPlaying().getZombiesManager().scheduleZombieGeneration();
+
+                    // TopBar.initButtons();
                     
                     setGameState(PLAYING);
                     //nanti pindain ke playing

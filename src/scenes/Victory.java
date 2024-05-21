@@ -73,7 +73,7 @@ public class Victory extends GameScene implements SceneMethods {
             game.getPreparation().refreshInventoryAndDeck();
             playing.clearAll();
             ZombiesManager.shutScheduler();
-            Menu.playSound("Menu");
+            Music.playSound("Menu");
             setGameState(MENU); 
         }
     }
