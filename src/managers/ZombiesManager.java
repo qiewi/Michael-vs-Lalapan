@@ -24,7 +24,7 @@ public class ZombiesManager {
 	private ScheduledExecutorService scheduler;
 	private static final int INITIAL_ZOMBIE_COUNT = 10;
 	private static final int ZOMBIE_GENERATION_DELAY = 10;
-	private static final int TOTAL_ZOMBIE_COUNT = 3;
+	private static final int TOTAL_ZOMBIE_COUNT = 0;
 	private static int zombieCount = 0;
 
 	public ZombiesManager(Playing playing) {
