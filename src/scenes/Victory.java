@@ -8,6 +8,7 @@ import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 import main.Game;
+import managers.ZombiesManager;
 import ui.MyButton;
 import static main.GameStates.*;
 
@@ -67,11 +68,12 @@ public class Victory extends GameScene implements SceneMethods {
     @Override
     public void mouseClicked(int x, int y) {
 
-        game.getPreparation().setSelectedClear(true);
-        game.getPreparation().refreshInventoryAndDeck();
-
         if (bBackmenu.getBounds().contains(x, y)) {
+            game.getPreparation().setSelectedClear(true);
+            game.getPreparation().refreshInventoryAndDeck();
             playing.clearAll();
+            ZombiesManager.shutScheduler();
+            Music.playSound("Menu");
             setGameState(MENU); 
         }
     }

@@ -36,11 +36,12 @@ public class PlantsManager {
         }
 	}
 
-	public void addPlant(String name, int x, int y) {
+	public void addPlant(String name, int x, int y, int deckIndex) {
         Plant plantCreated = PlantFactory.CreatePlant(name, x, y);
         if (checkNonAquatic(plantCreated, x, y) && !checkPlants(x, y) && checkCost(plantCreated, sun)) {
                 plants.add(plantCreated);
 				sun.reduceSun(plantCreated.getCost());
+				playing.getTopBar().makePlantCardsCooldown(deckIndex);
         } else {
 			plantCreated.actionStop();
 			plantCreated = null;
@@ -51,7 +52,7 @@ public class PlantsManager {
 	public static Plant checkPlantsInPos(int x, int y) {
 		Plant plant = null;
 		for (Plant p : plants) {
-			if ((int) p.getX() == x && (int) p.getY() == y){
+			if (((int) p.getX() - 30 <= x && (int) p.getX() >= x)&& (int) p.getY() == y){
 				plant = p;
 			}
 		}

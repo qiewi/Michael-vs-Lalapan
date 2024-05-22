@@ -4,7 +4,6 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import entity.Plants.Plant;
 import entity.Zombies.Zombie;
 import objects.FrozenPea;
 import objects.NormalPea;
@@ -72,7 +71,7 @@ public class PeasManager {
 	}
 
 	private void drawPea(Pea pea, Graphics g) {
-		g.drawImage(pea.getImage(), (int) pea.getX(), (int) pea.getY(), null);
+		g.drawImage(pea.getImage(), (int) pea.getX() - 20, (int) pea.getY(), null);
 	}
 
     public int getPeasSize() {

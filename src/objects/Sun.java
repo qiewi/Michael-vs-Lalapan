@@ -30,7 +30,7 @@ public class Sun {
                 increaseTick();
                 addSunMorning();
             }
-        }, 0000, 200000); // bikin timer baru
+        }, 0000, 250000); // bikin timer baru
     }
 
     public void addSunMorning() {
@@ -104,7 +104,7 @@ public class Sun {
     public void resetTick() {
         timer.cancel();
         tickTimer.cancel();
-
+        morning = true;
         timer.purge();
         tickTimer.purge();
         tick = 0;

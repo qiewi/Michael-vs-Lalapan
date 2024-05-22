@@ -8,6 +8,7 @@ import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 import main.Game;
+import managers.ZombiesManager;
 import ui.MyButton;
 import static main.GameStates.*;
 
@@ -72,9 +73,16 @@ public class GameOver extends GameScene implements SceneMethods {
 
         if (bTryAgain.getBounds().contains(x, y)) {
             playing.clearAll();
+            playing.getGame().getPreparation().setSelectedClear(true);
+            playing.getGame().getPreparation().refreshInventoryAndDeck();
+            ZombiesManager.shutScheduler();
             setGameState(PREPARATION); 
         } else if (bExit.getBounds().contains(x, y)) {
             playing.clearAll();
+            playing.getGame().getPreparation().setSelectedClear(true);
+            playing.getGame().getPreparation().refreshInventoryAndDeck();
+            ZombiesManager.shutScheduler();
+            Music.playSound("Menu");
             setGameState(MENU); 
         }
     }

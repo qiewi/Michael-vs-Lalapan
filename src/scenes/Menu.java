@@ -15,13 +15,13 @@ import ui.MyButton;
 import static main.GameStates.*;
 
 public class Menu extends GameScene implements SceneMethods {
-
+	private static Clip soundClip;
 	private MyButton bPlaying, bPlantsList, bZombiesList, bHelp, bQuit;
 
 	public Menu(Game game) {
 		super(game);
 		initButtons();
-		playSound("Menu");
+		Music.playSound("Menu");
 	}
 
 	private void initButtons() {
@@ -39,20 +39,6 @@ public class Menu extends GameScene implements SceneMethods {
 
 		bHelp = new MyButton("Help", 930, 685, 70, 50);
 
-	}
-
-	public static void playSound(String soundName) {
-		try {
-			File soundFile = new File("src/scenes/resources/Music/" + soundName + ".wav");
-			AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);
-	
-			Clip clip = AudioSystem.getClip();
-			clip.open(audioIn);
-	
-			clip.start();
-		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
-			ex.printStackTrace();
-		}
 	}
 	
 
@@ -96,6 +82,7 @@ public class Menu extends GameScene implements SceneMethods {
 	public void mouseClicked(int x, int y) {
 
 		if (bPlaying.getBounds().contains(x, y)) {
+			Music.stopSound();
 			setGameState(PREPARATION);
 		} else if (bPlantsList.getBounds().contains(x, y)) {
 			setGameState(PLANTSLIST);

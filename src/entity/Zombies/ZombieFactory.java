@@ -20,6 +20,10 @@ public class ZombieFactory {
             zombie = new Screendoor(x, y);
         } else if (name.equals("Polevault")) {
             zombie = new Polevault(x, y);
+        } else if (name.equals("Duckytube")) {
+            zombie = new Duckytube(x, y);
+        } else if (name.equals("Dolphin")) {
+            zombie = new Dolphin(x, y);
         } 
             
         return zombie;

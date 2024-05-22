@@ -207,6 +207,7 @@ public class MyButton {
         public void resetBooleans() {
         this.mouseHover = false;
         this.mousePressed = false;
+        this.onCooldown = false;
         }
 
         public void setMousePressed(boolean mousePressed) {

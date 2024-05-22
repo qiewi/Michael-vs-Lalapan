@@ -6,7 +6,10 @@ import java.util.Iterator;
 
 import entity.Plants.Plant;
 import entity.Plants.PlantFactory;
+import managers.ZombiesManager;
 import objects.Sun;
+import scenes.Menu;
+import scenes.Music;
 import scenes.Playing;
 // import entity.Sun;
 
@@ -62,7 +65,7 @@ public class TopBar {
     }
 
     private void initButtons() {
-		bMenu = new MyButton("Menu", 874, 2, 130, 40);
+		bMenu = new MyButton("Menu", 824, 2, 130, 40);
 
         int w = 62;
         int h = 80;
@@ -94,8 +97,17 @@ public class TopBar {
 	public void mouseClicked(int x, int y) {
 		if (bMenu.getBounds().contains(x, y)) {
             playing.clearAll();
+
+            for (MyButton b: plantCards) {
+                if (b.getBounds().contains(x, y)) {
+                    b.resetBooleans();
+                }
+            }
+            
             playing.getGame().getPreparation().setSelectedClear(true);
             playing.getGame().getPreparation().refreshInventoryAndDeck();
+            ZombiesManager.shutScheduler();
+            Music.playSound("Menu");
             setGameState(MENU);
         }
 	}
