@@ -8,8 +8,11 @@ import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 import main.Game;
+import managers.VictoryNoteManager;
 import managers.ZombiesManager;
 import ui.MyButton;
+import ui.TopBar;
+
 import static main.GameStates.*;
 
 public class Victory extends GameScene implements SceneMethods {
@@ -65,16 +68,25 @@ public class Victory extends GameScene implements SceneMethods {
         bBackmenu.draw(g);
     }
 
+    private void resetAll() {
+        game.getPreparation().setSelectedClear(true);
+        game.getPreparation().refreshInventoryAndDeck();
+        playing.clearAll();
+        TopBar.resetAll();
+        ZombiesManager.shutScheduler();
+        ZombiesManager.resetVictory();
+        VictoryNoteManager.clearNote();
+    }
+
     @Override
     public void mouseClicked(int x, int y) {
 
         if (bBackmenu.getBounds().contains(x, y)) {
-            game.getPreparation().setSelectedClear(true);
-            game.getPreparation().refreshInventoryAndDeck();
-            playing.clearAll();
-            ZombiesManager.shutScheduler();
-            Music.playSound("Menu");
+
+            resetAll();
+            Music.playSound("Menu", true);
             setGameState(MENU); 
+
         }
     }
 

@@ -1,5 +1,7 @@
 package scenes;
 
+import java.awt.AlphaComposite;
+import java.awt.Graphics2D;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -9,152 +11,211 @@ import java.io.InputStream;
 import javax.imageio.ImageIO;
 
 import main.Game;
+import managers.LandMowersManager;
 import managers.PeasManager;
 import managers.PlantsManager;
 import managers.SunDropManager;
+import managers.VictoryNoteManager;
 import managers.ZombiesManager;
 import objects.Sun;
 import ui.FlagBar;
 import ui.MyButton;
 import ui.TopBar;
 
-
 public class Playing extends GameScene implements SceneMethods {
 
-	private int xArrow, yArrow;
-	private PlantsManager plantsManager;
-	private ZombiesManager zombiesManager;
-	private SunDropManager sunDropManager;
-	private PeasManager peasManager;
-	private String[] plantDeck;
+    private int xArrow, yArrow;
 
-	private TopBar topBar;
-	private FlagBar flagBar;
+    private PlantsManager plantsManager;
+    private ZombiesManager zombiesManager;
+    private SunDropManager sunDropManager;
+    private PeasManager peasManager;
+    private VictoryNoteManager victoryNoteManager;
+    private LandMowersManager landMowersManager;
 
-	private Sun sun;
-	private MyButton sunText;
+    private String[] plantDeck;
 
-	// Initialize sun text
+    private TopBar topBar;
+    private FlagBar flagBar;
+
+    private Sun sun;
+    private MyButton sunText;
+
+    private BufferedImage dayImage, nightImage;
+    private static float alpha = 1.0f; 
+    private static boolean isTransitioning = false; 
+    private static boolean hasTransitionedToNight = false; 
+    private static boolean landMowerAdded = false;
+
+    private StringBuilder cheatCodeBuffer = new StringBuilder();
+
+    // Initialize sun text
     private int startXSun = 38;
     private int startYSun = 75;
     private int SunWidth = 25;
     private int SunHeight = 25;
 
-	public Playing(Game game) {
-		super(game);
+    public Playing(Game game) {
+        super(game);
 
-		// Default Cursor Position
-		xArrow = 270;
-		yArrow = 200;
+        // Default Cursor Position
+        xArrow = 270;
+        yArrow = 200;
 
-		// Initialize Managers
-		plantsManager = new PlantsManager(this);
-		zombiesManager = new ZombiesManager(this);
-		sunDropManager = new SunDropManager(this);
-		peasManager = new PeasManager(this);
+        // Initialize Managers
+        plantsManager = new PlantsManager(this);
+        zombiesManager = new ZombiesManager(this);
+        sunDropManager = new SunDropManager(this);
+        peasManager = new PeasManager(this);
+        victoryNoteManager = new VictoryNoteManager(this);
+        landMowersManager = new LandMowersManager(this);
 
-		topBar = new TopBar(0, 0, 768, 100, this);
-		flagBar = new FlagBar(795, 65, this);
+        // Initialize Bar
+        topBar = new TopBar(0, 0, 768, 100, this);
+        flagBar = new FlagBar(795, 65, this);
 
-		sun = new Sun();
+        // Initialize etc
+        sun = new Sun();
         initSunText();
-	}
+        loadImages();
+    }
 
-	@Override
-	public void render(Graphics g) {
+    private void loadImages() {
+        try {
+            InputStream isDay = getClass().getResourceAsStream("resources/PoolDay.png");
+            InputStream isNight = getClass().getResourceAsStream("resources/PoolNight.png");
+            dayImage = ImageIO.read(isDay);
+            nightImage = ImageIO.read(isNight);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-		// Draw Map and Bar
-		drawMap(g);
-		topBar.draw(g);
-		flagBar.draw(g);
-		drawSunText(g);
+    @Override
+    public void render(Graphics g) {
+        // Draw Map
+        drawMap(g);
+        drawSunText(g);
 
-		// Draw Managers
-		plantsManager.draw(g);
-		zombiesManager.draw(g);
-		sunDropManager.draw(g);
-		peasManager.draw(g);
+        // Draw Managers
+        plantsManager.draw(g);
+        zombiesManager.draw(g);
+        sunDropManager.draw(g);
+        peasManager.draw(g);
+        victoryNoteManager.draw(g);
+        
+        if (landMowerAdded)
+            landMowersManager.draw(g);
+        
 
-		// Draw Arrow and the Selected Tile
-		drawSelectedTile(g);
-	}
+        // Draw Bar
+        topBar.draw(g);
+        flagBar.draw(g);
 
-	public void update() {
-		updateTick();;
+        // Draw Arrow and the Selected Tile
+        drawSelectedTile(g);
+    }
 
-		plantsManager.update();
-		zombiesManager.update();
-		sunDropManager.update();
-		peasManager.update();
-		
-		sunText.setText(String.valueOf(sun.getSun()));
-	}
+    public void update() {
+        transitionUpdate();
 
-	public void createPlantDeck(String[] plantDeck) {
-		this.plantDeck = plantDeck;
-	}
+        plantsManager.update();
+        zombiesManager.update();
+        sunDropManager.update();
+        peasManager.update();
+        victoryNoteManager.update();
 
-	private void drawSelectedTile(Graphics g) {
-		BufferedImage img = null;
-		InputStream is = getClass().getResourceAsStream("resources/Arrow.png");
+        if (landMowerAdded)
+            landMowersManager.update();
 
-		if (is == null) {
-			System.out.println("Stream is null. Check the file path.");
-		} else {
-			try {
-				img = ImageIO.read(is);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-	
-			if (img == null) {
-				System.out.println("Image is null. Check the file format and content.");
-			} else {
-				// Per Tiles 80 x 90
-				g.drawImage(img, xArrow, yArrow - 30, null);
-			}
-		}
-	}
+        sunText.setText(String.valueOf(sun.getSun()));
+    }
 
-	private void initSunText() {
+    private void transitionUpdate() {
+        if (isTransitioning) {
+            alpha -= 0.01f; 
+            if (alpha <= 0) {
+                alpha = 0;
+                isTransitioning = false; 
+                hasTransitionedToNight = !Sun.getMorning();
+            }
+        } else if (!Sun.getMorning() && !hasTransitionedToNight) {
+            
+            isTransitioning = true;
+            alpha = 1.0f;
+        }
+    }
+
+    public void createPlantDeck(String[] plantDeck) {
+        this.plantDeck = plantDeck;
+    }
+
+    private void drawSelectedTile(Graphics g) {
+        BufferedImage img = null;
+        InputStream is = getClass().getResourceAsStream("resources/Arrow.png");
+
+        if (is == null) {
+            System.out.println("Stream is null. Check the file path.");
+        } else {
+            try {
+                img = ImageIO.read(is);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            if (img == null) {
+                System.out.println("Image is null. Check the file format and content.");
+            } else {
+                
+                g.drawImage(img, xArrow, yArrow - 30, null);
+            }
+        }
+    }
+
+    private void initSunText() {
         sunText = new MyButton(String.valueOf(sun.getSun()), startXSun, startYSun, SunWidth, SunHeight, true);
     }
 
-	private void drawSunText(Graphics g) {
+    private void drawSunText(Graphics g) {
         sunText.draw(g);
     }
 
-	private void drawMap(Graphics g) {
-		BufferedImage img = null;
-		InputStream is = null;
-		if (Sun.getMorning())
-			is = getClass().getResourceAsStream("resources/PoolDay.png");
-		else 
-			is = getClass().getResourceAsStream("resources/PoolNight.png");
-		
-	
-		if (is == null) {
-			System.out.println("Stream is null. Check the file path.");
-		} else {
-			try {
-				img = ImageIO.read(is);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-	
-			if (img == null) {
-				System.out.println("Image is null. Check the file format and content.");
-			} else {
-				g.drawImage(img, 0, 0, null);
-			}
-		}
-	}
+    private void drawMap(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g;
+
+        if (Sun.getMorning()) {
+            g2d.drawImage(dayImage, 0, 0, null);
+        } else {
+            if (!isTransitioning) {
+                g2d.drawImage(nightImage, 0, 0, null);
+            } else {
+                
+                g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
+                g2d.drawImage(dayImage, 0, 0, null);
+
+                
+                g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1 - alpha));
+                g2d.drawImage(nightImage, 0, 0, null);
+
+                
+                g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
+            }
+        }
+    }
+
+    public static void resetTransition() {
+        alpha = 1.0f;
+        isTransitioning = false;
+        hasTransitionedToNight = !Sun.getMorning();
+    }
 
 	@Override
 	public void mouseClicked(int x, int y) {
 		if ( y >= 2 && y <= 42 && x >= 874 && x <= 1004) {
 			topBar.mouseClicked(x, y);
-		} 
+		} else {
+			victoryNoteManager.mouseClicked(x, y);
+		}
 	}
 
 	@Override
@@ -178,6 +239,18 @@ public class Playing extends GameScene implements SceneMethods {
 
 
 	public void keyPressed(KeyEvent e) {
+        // Capture key press for cheat code detection
+        char keyChar = e.getKeyChar();
+        cheatCodeBuffer.append(keyChar);
+        if (cheatCodeBuffer.length() > 7) {
+            cheatCodeBuffer.deleteCharAt(0);
+        }
+        if (cheatCodeBuffer.toString().equals("lalapan")) {
+            landMowerAdded = true;
+            LandMowersManager.initiateMower();
+            cheatCodeBuffer.setLength(0); // Reset buffer after cheat code is activated
+        }
+
 		// Posisi Cursor
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 			if (xArrow + 80 > 910) {
@@ -256,6 +329,8 @@ public class Playing extends GameScene implements SceneMethods {
     }
 
 	public void clearAll() {
+        landMowerAdded = false;
+        LandMowersManager.clearMower();
 		sun.resetTick();
 		plantsManager.clearPlants();
 		zombiesManager.clearZombie();

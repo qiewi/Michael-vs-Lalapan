@@ -4,18 +4,18 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-
 import javax.imageio.ImageIO;
 
 import main.Game;
 import ui.MyButton;
+
 import static main.GameStates.*;
 
 public class Help extends GameScene implements SceneMethods{
     private Game game;
     private int imageShown = 0;
     private MyButton bBack, bNext;
-    private BufferedImage[] helpImages = new BufferedImage[4];
+    private BufferedImage[] helpImages = new BufferedImage[5];
 
     public Help(Game game) {
         super(game);
@@ -39,6 +39,7 @@ public class Help extends GameScene implements SceneMethods{
 		helpImages[1] = getHelpImage("1");
 		helpImages[2] = getHelpImage("2");
 		helpImages[3] = getHelpImage("3");
+        helpImages[4] = getHelpImage("4");
     }
 
     public BufferedImage getHelpImage(String name) {
@@ -57,8 +58,6 @@ public class Help extends GameScene implements SceneMethods{
     @Override
     public void render(Graphics g) {
         drawScene(g, imageShown);
-        // bBack.draw(g);
-        // bNext.draw(g);
     }
 
     private void drawScene(Graphics g, int imageShown) {
@@ -71,18 +70,27 @@ public class Help extends GameScene implements SceneMethods{
             if (bBack.getBounds().contains(x, y)) {
                 setGameState(MENU);
             } else if (bNext.getBounds().contains(x, y)) {
+                Music.playSound("Help", false);
                 imageShown = 1;
             }
         } else if (imageShown == 1) {
             if (bNext.getBounds().contains(x, y)) {
+                Music.playSound("Help", false);
                 imageShown = 2;
             }
         } else if (imageShown == 2) {
             if (bNext.getBounds().contains(x, y)) {
+                Music.playSound("Help", false);
                 imageShown = 3;
             }
         } else if (imageShown == 3) {
             if (bNext.getBounds().contains(x, y)) {
+                Music.playSound("Help", false);
+                imageShown = 4;
+            }
+        } else if (imageShown == 4) {
+            if (bNext.getBounds().contains(x, y)) {
+                Music.playSound("Menu", true);
                 imageShown = 0;
             }
         }

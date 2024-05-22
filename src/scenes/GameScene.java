@@ -1,4 +1,5 @@
 package scenes;
+
 import main.Game;
 
 public class GameScene {
@@ -15,13 +16,4 @@ public class GameScene {
         return game;
     }
 
-    protected void updateTick() {
-		tick++;
-		if (tick >= ANIMATION_SPEED) {
-			tick = 0;
-			animationIndex++;
-			if (animationIndex >= 4)
-				animationIndex = 0;
-		}
-	}
 }

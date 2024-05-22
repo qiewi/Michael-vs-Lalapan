@@ -5,11 +5,13 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-
 import javax.imageio.ImageIO;
+
 import main.Game;
 import managers.ZombiesManager;
 import ui.MyButton;
+import ui.TopBar;
+
 import static main.GameStates.*;
 
 public class GameOver extends GameScene implements SceneMethods {
@@ -72,19 +74,25 @@ public class GameOver extends GameScene implements SceneMethods {
     public void mouseClicked(int x, int y) {
 
         if (bTryAgain.getBounds().contains(x, y)) {
-            playing.clearAll();
-            playing.getGame().getPreparation().setSelectedClear(true);
-            playing.getGame().getPreparation().refreshInventoryAndDeck();
-            ZombiesManager.shutScheduler();
+
+            resetAll();
+            Music.playSound("Preparation", true);
             setGameState(PREPARATION); 
+
         } else if (bExit.getBounds().contains(x, y)) {
-            playing.clearAll();
-            playing.getGame().getPreparation().setSelectedClear(true);
-            playing.getGame().getPreparation().refreshInventoryAndDeck();
-            ZombiesManager.shutScheduler();
-            Music.playSound("Menu");
+
+            resetAll();
+            Music.playSound("Menu", true);
             setGameState(MENU); 
         }
+    }
+
+    private void resetAll() {
+        playing.clearAll();
+        playing.getGame().getPreparation().setSelectedClear(true);
+        playing.getGame().getPreparation().refreshInventoryAndDeck();
+        TopBar.resetAll();
+        ZombiesManager.shutScheduler();
     }
 
     @Override

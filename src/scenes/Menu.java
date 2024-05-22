@@ -4,12 +4,9 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-
 import javax.sound.sampled.*;
-import java.io.File;
-import java.io.IOException;
-
 import javax.imageio.ImageIO;
+
 import main.Game;
 import ui.MyButton;
 import static main.GameStates.*;
@@ -21,7 +18,7 @@ public class Menu extends GameScene implements SceneMethods {
 	public Menu(Game game) {
 		super(game);
 		initButtons();
-		Music.playSound("Menu");
+		Music.playSound("Menu", true);
 	}
 
 	private void initButtons() {
@@ -82,7 +79,8 @@ public class Menu extends GameScene implements SceneMethods {
 	public void mouseClicked(int x, int y) {
 
 		if (bPlaying.getBounds().contains(x, y)) {
-			Music.stopSound();
+
+			Music.playSound("Preparation", true);
 			setGameState(PREPARATION);
 		} else if (bPlantsList.getBounds().contains(x, y)) {
 			setGameState(PLANTSLIST);

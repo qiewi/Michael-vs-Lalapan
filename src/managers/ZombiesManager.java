@@ -16,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 import entity.Plants.*;
 import entity.Zombies.*;
 import objects.Sun;
+import scenes.Music;
 import scenes.Playing;
 
 public class ZombiesManager {
@@ -23,15 +24,18 @@ public class ZombiesManager {
 	private static ArrayList<Zombie> zombies;
 	private static ArrayList<Plant> plants;
 	private static ScheduledExecutorService scheduler;
-	private static final int TOTAL_ZOMBIE_COUNT = 70;
+	private static final int TOTAL_ZOMBIE_COUNT = 1;
 
 	private static final int[] positions = new int[] {200, 290, 380, 470, 560, 650};
 	private static final int[] flagPositions = new int[] {200, 290, 560, 650};
 
 	private static int zombieAtOneTime = 10;
-	private static int zombieDelay = 4;
+	private static int zombieDelay = 5;
 	private static int zombieCount = 0;
 	private static boolean flag = false;
+	private static boolean victory = false;
+
+	private static Zombie lastZombie;
 
 	public ZombiesManager(Playing playing) {
 		this.playing = playing;
@@ -40,6 +44,9 @@ public class ZombiesManager {
 	}
 
 	public static void initScheduler() {
+		flag = false;
+		victory = false;
+		zombieCount = 0;
 		scheduler = Executors.newScheduledThreadPool(1);
 	}
 
@@ -48,8 +55,10 @@ public class ZombiesManager {
 	}
 
 	public void update() {
-    if (zombieCount >= TOTAL_ZOMBIE_COUNT && zombies.isEmpty()) {
-        setGameState(VICTORY);
+    if (zombieCount >= TOTAL_ZOMBIE_COUNT && zombies.size() == 1 && !victory) {
+		// System.out.println("Victory");
+		lastZombie = zombies.get(0);
+		setVictory();
     }
 
     Iterator<Zombie> zombieIterator = zombies.iterator();
@@ -160,11 +169,14 @@ public class ZombiesManager {
         }
 
         if (z.getHealth() <= 0) {
+			if (z.equals(lastZombie))
+				VictoryNoteManager.addNoteDrop((int) z.getX(), (int) z.getY());
             zombieIterator.remove();
         }
 
         // Game Over
         if (z.getX() <= 100) {
+			Music.playSound("GameOver", false);
             setGameState(GAMEOVER);
         }
     }
@@ -184,6 +196,9 @@ public class ZombiesManager {
 					Random rand = new Random();
 					int pos;
 					if (tick >= 165 && tick <= 170 && !flag) {
+						pos = rand.nextInt(flagPositions.length);
+						addZombie(990, flagPositions[pos]);
+					} else if (zombieCount == TOTAL_ZOMBIE_COUNT - 1) {
 						pos = rand.nextInt(flagPositions.length);
 						addZombie(990, flagPositions[pos]);
 					} else {
@@ -222,7 +237,7 @@ public class ZombiesManager {
 	public static int squashDamage(int x, int y) {
 		int zomPos = -1;
 		for (Zombie z : zombies)
-			if (((int) z.getX() >= (int) x - 50 && (int) z.getX() <= (int) x + 100) && ((int) z.getY() == (int) y)) {
+			if (((int) z.getX() >= (int) x - 60 && (int) z.getX() <= (int) x + 100) && ((int) z.getY() == (int) y)) {
 				// p.setX(p.getX() + 80);
 				zomPos = (int) z.getX();
 				for (Zombie z2 : zombies) {
@@ -339,7 +354,7 @@ public class ZombiesManager {
 					g.drawImage(z.getImage(), (int) z.getX() + 50, (int) z.getY() - 30, null);
 				}
 			} else if (z instanceof Duckytube) {
-				if (z.getX() <= 910) {
+				if (z.getX() <= 870) {
 					z.setImage(z.getZombieImage("Duckytube2"));
 					g.drawImage(z.getImage(), (int) z.getX(), (int) z.getY(), null);
 				}
@@ -352,5 +367,17 @@ public class ZombiesManager {
 
 	public static ArrayList<Zombie> getZombies(){
 		return zombies;
+	}
+
+	public static void setVictory() {
+		victory = true;
+	}
+
+	public static void resetVictory() {
+		victory = false;
+	}
+
+	public static boolean isVictory() {
+		return victory;
 	}
 }
