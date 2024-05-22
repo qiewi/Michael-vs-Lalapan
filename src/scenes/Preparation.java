@@ -284,7 +284,8 @@ public class Preparation extends GameScene implements SceneMethods {
         if (menuButton.getBounds().contains(x, y)) {
             selectedClear = true;
             refreshInventoryAndDeck();
-            Music.playSound("Menu");
+            Music.stopSound();
+            Music.playSound("Menu", true);
             setGameState(MENU);
         }
         if (panelButtons[0].getBounds().contains(x, y)) {
@@ -314,6 +315,7 @@ public class Preparation extends GameScene implements SceneMethods {
                     game.getPlaying().getZombiesManager().scheduleZombieGeneration();
 
                     // TopBar.initButtons();
+                    Music.playSound("Playing", true);
                     
                     setGameState(PLAYING);
                     //nanti pindain ke playing

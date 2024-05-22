@@ -2,6 +2,7 @@ package main;
 
 import javax.swing.JFrame;
 
+import objects.Sun;
 import scenes.GameOver;
 import scenes.Help;
 import scenes.Menu;
@@ -123,7 +124,7 @@ public class Game extends JFrame implements Runnable{
                 updates++;
             } 
             if (System.currentTimeMillis() - lastTimeCheck >= 1000) {
-                System.out.println(playing.getPlayingSun().getTick());
+                System.out.println("FPS: " + frames + " | Detik: " + Sun.getTick());
                 // System.out.println("FPS: " + frames + " | UPS: " + updates);
                 frames = 0;
                 updates = 0;

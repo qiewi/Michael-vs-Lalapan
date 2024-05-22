@@ -71,18 +71,22 @@ public class Help extends GameScene implements SceneMethods{
             if (bBack.getBounds().contains(x, y)) {
                 setGameState(MENU);
             } else if (bNext.getBounds().contains(x, y)) {
+                Music.playSound("Help", false);
                 imageShown = 1;
             }
         } else if (imageShown == 1) {
             if (bNext.getBounds().contains(x, y)) {
+                Music.playSound("Help", false);
                 imageShown = 2;
             }
         } else if (imageShown == 2) {
             if (bNext.getBounds().contains(x, y)) {
+                Music.playSound("Help", false);
                 imageShown = 3;
             }
         } else if (imageShown == 3) {
             if (bNext.getBounds().contains(x, y)) {
+                Music.playSound("Menu", true);
                 imageShown = 0;
             }
         }

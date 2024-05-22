@@ -6,6 +6,7 @@ import java.awt.event.MouseMotionListener;
 
 import main.Game;
 import main.GameStates;
+import scenes.Music;
 
 public class MyMouseListener implements MouseListener, MouseMotionListener {
 
@@ -49,7 +50,7 @@ public class MyMouseListener implements MouseListener, MouseMotionListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getButton() == MouseEvent.BUTTON1) {
-
+			Music.playClickSound();
 			switch (GameStates.gameState) {
 			case MENU:
 				game.getMenu().mouseClicked(e.getX(), e.getY());

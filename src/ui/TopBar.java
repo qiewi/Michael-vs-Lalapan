@@ -107,7 +107,8 @@ public class TopBar {
             playing.getGame().getPreparation().setSelectedClear(true);
             playing.getGame().getPreparation().refreshInventoryAndDeck();
             ZombiesManager.shutScheduler();
-            Music.playSound("Menu");
+
+            Music.playSound("Menu", true);
             setGameState(MENU);
         }
 	}

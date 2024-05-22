@@ -12,6 +12,7 @@ import main.Game;
 import managers.PeasManager;
 import managers.PlantsManager;
 import managers.SunDropManager;
+import managers.VictoryNoteManager;
 import managers.ZombiesManager;
 import objects.Sun;
 import ui.FlagBar;
@@ -26,6 +27,7 @@ public class Playing extends GameScene implements SceneMethods {
 	private ZombiesManager zombiesManager;
 	private SunDropManager sunDropManager;
 	private PeasManager peasManager;
+	private VictoryNoteManager victoryNoteManager;
 	private String[] plantDeck;
 
 	private TopBar topBar;
@@ -52,6 +54,7 @@ public class Playing extends GameScene implements SceneMethods {
 		zombiesManager = new ZombiesManager(this);
 		sunDropManager = new SunDropManager(this);
 		peasManager = new PeasManager(this);
+		victoryNoteManager = new VictoryNoteManager(this);
 
 		topBar = new TopBar(0, 0, 768, 100, this);
 		flagBar = new FlagBar(795, 65, this);
@@ -63,10 +66,8 @@ public class Playing extends GameScene implements SceneMethods {
 	@Override
 	public void render(Graphics g) {
 
-		// Draw Map and Bar
+		// Draw Map
 		drawMap(g);
-		topBar.draw(g);
-		flagBar.draw(g);
 		drawSunText(g);
 
 		// Draw Managers
@@ -74,6 +75,11 @@ public class Playing extends GameScene implements SceneMethods {
 		zombiesManager.draw(g);
 		sunDropManager.draw(g);
 		peasManager.draw(g);
+		victoryNoteManager.draw(g);
+
+		// Draw Bar
+		topBar.draw(g);
+		flagBar.draw(g);
 
 		// Draw Arrow and the Selected Tile
 		drawSelectedTile(g);
@@ -86,6 +92,7 @@ public class Playing extends GameScene implements SceneMethods {
 		zombiesManager.update();
 		sunDropManager.update();
 		peasManager.update();
+		victoryNoteManager.update();
 		
 		sunText.setText(String.valueOf(sun.getSun()));
 	}
@@ -154,7 +161,9 @@ public class Playing extends GameScene implements SceneMethods {
 	public void mouseClicked(int x, int y) {
 		if ( y >= 2 && y <= 42 && x >= 874 && x <= 1004) {
 			topBar.mouseClicked(x, y);
-		} 
+		} else {
+			victoryNoteManager.mouseClicked(x, y);
+		}
 	}
 
 	@Override
