@@ -21,7 +21,7 @@ public class Menu extends GameScene implements SceneMethods {
 	public Menu(Game game) {
 		super(game);
 		initButtons();
-		Music.playSound("Menu");
+		Music.playSound("Menu", true);
 	}
 
 	private void initButtons() {
@@ -82,7 +82,8 @@ public class Menu extends GameScene implements SceneMethods {
 	public void mouseClicked(int x, int y) {
 
 		if (bPlaying.getBounds().contains(x, y)) {
-			Music.stopSound();
+
+			Music.playSound("Preparation", true);
 			setGameState(PREPARATION);
 		} else if (bPlantsList.getBounds().contains(x, y)) {
 			setGameState(PLANTSLIST);

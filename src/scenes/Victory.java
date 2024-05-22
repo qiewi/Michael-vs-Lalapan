@@ -8,6 +8,7 @@ import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 import main.Game;
+import managers.VictoryNoteManager;
 import managers.ZombiesManager;
 import ui.MyButton;
 import static main.GameStates.*;
@@ -73,7 +74,9 @@ public class Victory extends GameScene implements SceneMethods {
             game.getPreparation().refreshInventoryAndDeck();
             playing.clearAll();
             ZombiesManager.shutScheduler();
-            Music.playSound("Menu");
+            ZombiesManager.resetVictory();
+            VictoryNoteManager.clearNote();
+            Music.playSound("Menu", true);
             setGameState(MENU); 
         }
     }

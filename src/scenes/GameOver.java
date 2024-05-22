@@ -76,13 +76,16 @@ public class GameOver extends GameScene implements SceneMethods {
             playing.getGame().getPreparation().setSelectedClear(true);
             playing.getGame().getPreparation().refreshInventoryAndDeck();
             ZombiesManager.shutScheduler();
+
+            Music.playSound("Preparation", true);
             setGameState(PREPARATION); 
         } else if (bExit.getBounds().contains(x, y)) {
             playing.clearAll();
             playing.getGame().getPreparation().setSelectedClear(true);
             playing.getGame().getPreparation().refreshInventoryAndDeck();
             ZombiesManager.shutScheduler();
-            Music.playSound("Menu");
+
+            Music.playSound("Menu", true);
             setGameState(MENU); 
         }
     }
