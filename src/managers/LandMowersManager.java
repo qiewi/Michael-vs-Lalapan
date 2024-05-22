@@ -2,13 +2,12 @@ package managers;
 
 import java.awt.Graphics;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import objects.LandMower;
 import scenes.Playing;
 import java.util.Iterator;
 
-public class LandMowersManager {
+public class LandMowersManager implements ManagersUI {
     private Playing playing;
     private static ArrayList<LandMower> landMowers = new ArrayList<>();
 

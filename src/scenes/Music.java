@@ -56,7 +56,7 @@ public class Music {
     }
 
     // Method to stop the currently playing sound clip
-    public static void stopSound() {
+    private static void stopSound() {
         if (soundClip != null) {
             soundClip.stop();
             soundClip.close();
