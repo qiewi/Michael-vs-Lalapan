@@ -4,7 +4,6 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-
 import javax.imageio.ImageIO;
 
 import main.Game;
@@ -14,6 +13,7 @@ import static main.GameStates.*;
 public class PlantsList extends GameScene implements SceneMethods {
 
 	private MyButton bQuit;
+
 	private MyButton Sunflower, Peashooter, Repeater, GatlingPea;
 	private MyButton WallNut, TallNut, Squash, SnowPea;
 	private MyButton TangleKelp, LilyPad;
@@ -74,7 +74,6 @@ public class PlantsList extends GameScene implements SceneMethods {
 		LilyPad = new MyButton("10", x + xOffset, y + yOffset * 2, w, h);
 
 		bQuit = new MyButton("Quit", 870, 730, 110, 20);
-
 	}
 
 	@Override

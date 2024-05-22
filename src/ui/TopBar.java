@@ -19,7 +19,7 @@ public class TopBar {
     
     private int x, y, width, height;
 
-    private Playing playing;
+    private static Playing playing;
     private MyButton bMenu;
 
     private static ArrayList<MyButton> plantCards = new ArrayList<MyButton>();
@@ -94,20 +94,22 @@ public class TopBar {
         
     }
 
+    public static void resetAll(){
+        playing.clearAll();
+
+        for (MyButton b: plantCards) {
+            b.resetBooleans();
+        }
+        
+        playing.getGame().getPreparation().setSelectedClear(true);
+        playing.getGame().getPreparation().refreshInventoryAndDeck();
+        ZombiesManager.shutScheduler();
+        Playing.resetTransition();
+    }
+
 	public void mouseClicked(int x, int y) {
 		if (bMenu.getBounds().contains(x, y)) {
-            playing.clearAll();
-
-            for (MyButton b: plantCards) {
-                if (b.getBounds().contains(x, y)) {
-                    b.resetBooleans();
-                }
-            }
-            
-            playing.getGame().getPreparation().setSelectedClear(true);
-            playing.getGame().getPreparation().refreshInventoryAndDeck();
-            ZombiesManager.shutScheduler();
-
+            resetAll();
             Music.playSound("Menu", true);
             setGameState(MENU);
         }

@@ -307,19 +307,15 @@ public class Preparation extends GameScene implements SceneMethods {
             }
             try {
                 if (deckFull) {
-                    game.getPlaying().createPlantDeck(this.inventory.getPlantDeckNames());
-                    game.getPlaying().getTopBar().updateButtons();
-                    game.getPlaying().getZombiesManager().clearZombie();
 
-                    ZombiesManager.initScheduler();
-                    game.getPlaying().getZombiesManager().scheduleZombieGeneration();
+                    // Initialize playing scene
+                    startPlay();
 
-                    // TopBar.initButtons();
+                    // Start Music
                     Music.playSound("Playing", true);
-                    
-                    setGameState(PLAYING);
-                    //nanti pindain ke playing
                     sun.startMorning();
+                    setGameState(PLAYING);
+
                 } else {
                     throw new Exception("Deck belum full!");
                 }
@@ -381,6 +377,15 @@ public class Preparation extends GameScene implements SceneMethods {
                 }
             }
         }
+    }
+
+    private void startPlay() {
+        game.getPlaying().createPlantDeck(this.inventory.getPlantDeckNames());
+        game.getPlaying().getTopBar().updateButtons();
+        game.getPlaying().getZombiesManager().clearZombie();
+
+        ZombiesManager.initScheduler();
+        game.getPlaying().getZombiesManager().scheduleZombieGeneration();
     }
 
     public MyButton[] getPlantDeckButtons() {

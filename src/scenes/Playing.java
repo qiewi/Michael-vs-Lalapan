@@ -1,5 +1,7 @@
 package scenes;
 
+import java.awt.AlphaComposite;
+import java.awt.Graphics2D;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -19,143 +21,178 @@ import ui.FlagBar;
 import ui.MyButton;
 import ui.TopBar;
 
-
 public class Playing extends GameScene implements SceneMethods {
 
-	private int xArrow, yArrow;
-	private PlantsManager plantsManager;
-	private ZombiesManager zombiesManager;
-	private SunDropManager sunDropManager;
-	private PeasManager peasManager;
-	private VictoryNoteManager victoryNoteManager;
-	private String[] plantDeck;
+    private int xArrow, yArrow;
+    private PlantsManager plantsManager;
+    private ZombiesManager zombiesManager;
+    private SunDropManager sunDropManager;
+    private PeasManager peasManager;
+    private VictoryNoteManager victoryNoteManager;
+    private String[] plantDeck;
 
-	private TopBar topBar;
-	private FlagBar flagBar;
+    private TopBar topBar;
+    private FlagBar flagBar;
 
-	private Sun sun;
-	private MyButton sunText;
+    private Sun sun;
+    private MyButton sunText;
 
-	// Initialize sun text
+    private BufferedImage dayImage, nightImage;
+    private static float alpha = 1.0f; 
+    private static boolean isTransitioning = false; 
+    private static boolean hasTransitionedToNight = false; 
+
+    // Initialize sun text
     private int startXSun = 38;
     private int startYSun = 75;
     private int SunWidth = 25;
     private int SunHeight = 25;
 
-	public Playing(Game game) {
-		super(game);
+    public Playing(Game game) {
+        super(game);
 
-		// Default Cursor Position
-		xArrow = 270;
-		yArrow = 200;
+        // Default Cursor Position
+        xArrow = 270;
+        yArrow = 200;
 
-		// Initialize Managers
-		plantsManager = new PlantsManager(this);
-		zombiesManager = new ZombiesManager(this);
-		sunDropManager = new SunDropManager(this);
-		peasManager = new PeasManager(this);
-		victoryNoteManager = new VictoryNoteManager(this);
+        // Initialize Managers
+        plantsManager = new PlantsManager(this);
+        zombiesManager = new ZombiesManager(this);
+        sunDropManager = new SunDropManager(this);
+        peasManager = new PeasManager(this);
+        victoryNoteManager = new VictoryNoteManager(this);
 
-		topBar = new TopBar(0, 0, 768, 100, this);
-		flagBar = new FlagBar(795, 65, this);
+        // Initialize Bar
+        topBar = new TopBar(0, 0, 768, 100, this);
+        flagBar = new FlagBar(795, 65, this);
 
-		sun = new Sun();
+        // Initialize etc
+        sun = new Sun();
         initSunText();
-	}
+        loadImages();
+    }
 
-	@Override
-	public void render(Graphics g) {
+    private void loadImages() {
+        try {
+            InputStream isDay = getClass().getResourceAsStream("resources/PoolDay.png");
+            InputStream isNight = getClass().getResourceAsStream("resources/PoolNight.png");
+            dayImage = ImageIO.read(isDay);
+            nightImage = ImageIO.read(isNight);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-		// Draw Map
-		drawMap(g);
-		drawSunText(g);
+    @Override
+    public void render(Graphics g) {
+        // Draw Map
+        drawMap(g);
+        drawSunText(g);
 
-		// Draw Managers
-		plantsManager.draw(g);
-		zombiesManager.draw(g);
-		sunDropManager.draw(g);
-		peasManager.draw(g);
-		victoryNoteManager.draw(g);
+        // Draw Managers
+        plantsManager.draw(g);
+        zombiesManager.draw(g);
+        sunDropManager.draw(g);
+        peasManager.draw(g);
+        victoryNoteManager.draw(g);
 
-		// Draw Bar
-		topBar.draw(g);
-		flagBar.draw(g);
+        // Draw Bar
+        topBar.draw(g);
+        flagBar.draw(g);
 
-		// Draw Arrow and the Selected Tile
-		drawSelectedTile(g);
-	}
+        // Draw Arrow and the Selected Tile
+        drawSelectedTile(g);
+    }
 
-	public void update() {
-		updateTick();;
+    public void update() {
+        transitionUpdate();
 
-		plantsManager.update();
-		zombiesManager.update();
-		sunDropManager.update();
-		peasManager.update();
-		victoryNoteManager.update();
-		
-		sunText.setText(String.valueOf(sun.getSun()));
-	}
+        plantsManager.update();
+        zombiesManager.update();
+        sunDropManager.update();
+        peasManager.update();
+        victoryNoteManager.update();
 
-	public void createPlantDeck(String[] plantDeck) {
-		this.plantDeck = plantDeck;
-	}
+        sunText.setText(String.valueOf(sun.getSun()));
+    }
 
-	private void drawSelectedTile(Graphics g) {
-		BufferedImage img = null;
-		InputStream is = getClass().getResourceAsStream("resources/Arrow.png");
+    private void transitionUpdate() {
+        if (isTransitioning) {
+            alpha -= 0.01f; 
+            if (alpha <= 0) {
+                alpha = 0;
+                isTransitioning = false; 
+                hasTransitionedToNight = !Sun.getMorning();
+            }
+        } else if (!Sun.getMorning() && !hasTransitionedToNight) {
+            
+            isTransitioning = true;
+            alpha = 1.0f;
+        }
+    }
 
-		if (is == null) {
-			System.out.println("Stream is null. Check the file path.");
-		} else {
-			try {
-				img = ImageIO.read(is);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-	
-			if (img == null) {
-				System.out.println("Image is null. Check the file format and content.");
-			} else {
-				// Per Tiles 80 x 90
-				g.drawImage(img, xArrow, yArrow - 30, null);
-			}
-		}
-	}
+    public void createPlantDeck(String[] plantDeck) {
+        this.plantDeck = plantDeck;
+    }
 
-	private void initSunText() {
+    private void drawSelectedTile(Graphics g) {
+        BufferedImage img = null;
+        InputStream is = getClass().getResourceAsStream("resources/Arrow.png");
+
+        if (is == null) {
+            System.out.println("Stream is null. Check the file path.");
+        } else {
+            try {
+                img = ImageIO.read(is);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            if (img == null) {
+                System.out.println("Image is null. Check the file format and content.");
+            } else {
+                
+                g.drawImage(img, xArrow, yArrow - 30, null);
+            }
+        }
+    }
+
+    private void initSunText() {
         sunText = new MyButton(String.valueOf(sun.getSun()), startXSun, startYSun, SunWidth, SunHeight, true);
     }
 
-	private void drawSunText(Graphics g) {
+    private void drawSunText(Graphics g) {
         sunText.draw(g);
     }
 
-	private void drawMap(Graphics g) {
-		BufferedImage img = null;
-		InputStream is = null;
-		if (Sun.getMorning())
-			is = getClass().getResourceAsStream("resources/PoolDay.png");
-		else 
-			is = getClass().getResourceAsStream("resources/PoolNight.png");
-		
-	
-		if (is == null) {
-			System.out.println("Stream is null. Check the file path.");
-		} else {
-			try {
-				img = ImageIO.read(is);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-	
-			if (img == null) {
-				System.out.println("Image is null. Check the file format and content.");
-			} else {
-				g.drawImage(img, 0, 0, null);
-			}
-		}
-	}
+    private void drawMap(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g;
+
+        if (Sun.getMorning()) {
+            g2d.drawImage(dayImage, 0, 0, null);
+        } else {
+            if (!isTransitioning) {
+                g2d.drawImage(nightImage, 0, 0, null);
+            } else {
+                
+                g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
+                g2d.drawImage(dayImage, 0, 0, null);
+
+                
+                g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1 - alpha));
+                g2d.drawImage(nightImage, 0, 0, null);
+
+                
+                g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
+            }
+        }
+    }
+
+    public static void resetTransition() {
+        alpha = 1.0f;
+        isTransitioning = false;
+        hasTransitionedToNight = !Sun.getMorning();
+    }
 
 	@Override
 	public void mouseClicked(int x, int y) {

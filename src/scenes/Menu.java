@@ -4,12 +4,9 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-
 import javax.sound.sampled.*;
-import java.io.File;
-import java.io.IOException;
-
 import javax.imageio.ImageIO;
+
 import main.Game;
 import ui.MyButton;
 import static main.GameStates.*;

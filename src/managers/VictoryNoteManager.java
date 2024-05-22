@@ -4,7 +4,6 @@ import static main.GameStates.VICTORY;
 import static main.GameStates.setGameState;
 
 import java.awt.Graphics;
-import java.util.Random;
 
 import objects.Note;
 import scenes.Music;
@@ -19,10 +18,6 @@ public class VictoryNoteManager {
 	}
 
 	public void update() {
-        if (ZombiesManager.isVictory() && note == null){
-            addNoteDrop();
-        }
-
         if (note != null) {
             if (!(note.getY() >= note.getDestructPos())) {
                 note.move();
@@ -31,17 +26,9 @@ public class VictoryNoteManager {
 	}
 
     // For Game 
-	public static void addNoteDrop() {
-		Random ranX = new Random();
-        Random ranDestructY = new Random();
-
-        int[] xPositions = { 660, 750, 840 };
-        int[] destructYPositions = { 200, 290, 380, 470, 560, 650 };
-
-        int x = xPositions[ranX.nextInt(xPositions.length)];
-        int destructY = destructYPositions[ranDestructY.nextInt(destructYPositions.length)];
-
-        note = new Note(x, 100, destructY);
+	public static void addNoteDrop(int x, int y) {
+        System.out.println("Note added at " + x + ", " + y);
+        note = new Note(x, y, y + 40);
 	}
 
 	public void draw(Graphics g) {
