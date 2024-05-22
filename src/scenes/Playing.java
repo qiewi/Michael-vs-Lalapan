@@ -11,6 +11,7 @@ import java.io.InputStream;
 import javax.imageio.ImageIO;
 
 import main.Game;
+import managers.LandMowersManager;
 import managers.PeasManager;
 import managers.PlantsManager;
 import managers.SunDropManager;
@@ -24,11 +25,14 @@ import ui.TopBar;
 public class Playing extends GameScene implements SceneMethods {
 
     private int xArrow, yArrow;
+
     private PlantsManager plantsManager;
     private ZombiesManager zombiesManager;
     private SunDropManager sunDropManager;
     private PeasManager peasManager;
     private VictoryNoteManager victoryNoteManager;
+    private LandMowersManager landMowersManager;
+
     private String[] plantDeck;
 
     private TopBar topBar;
@@ -41,6 +45,9 @@ public class Playing extends GameScene implements SceneMethods {
     private static float alpha = 1.0f; 
     private static boolean isTransitioning = false; 
     private static boolean hasTransitionedToNight = false; 
+    private static boolean landMowerAdded = false;
+
+    private StringBuilder cheatCodeBuffer = new StringBuilder();
 
     // Initialize sun text
     private int startXSun = 38;
@@ -61,6 +68,7 @@ public class Playing extends GameScene implements SceneMethods {
         sunDropManager = new SunDropManager(this);
         peasManager = new PeasManager(this);
         victoryNoteManager = new VictoryNoteManager(this);
+        landMowersManager = new LandMowersManager(this);
 
         // Initialize Bar
         topBar = new TopBar(0, 0, 768, 100, this);
@@ -95,6 +103,10 @@ public class Playing extends GameScene implements SceneMethods {
         sunDropManager.draw(g);
         peasManager.draw(g);
         victoryNoteManager.draw(g);
+        
+        if (landMowerAdded)
+            landMowersManager.draw(g);
+        
 
         // Draw Bar
         topBar.draw(g);
@@ -112,6 +124,9 @@ public class Playing extends GameScene implements SceneMethods {
         sunDropManager.update();
         peasManager.update();
         victoryNoteManager.update();
+
+        if (landMowerAdded)
+            landMowersManager.update();
 
         sunText.setText(String.valueOf(sun.getSun()));
     }
@@ -224,6 +239,18 @@ public class Playing extends GameScene implements SceneMethods {
 
 
 	public void keyPressed(KeyEvent e) {
+        // Capture key press for cheat code detection
+        char keyChar = e.getKeyChar();
+        cheatCodeBuffer.append(keyChar);
+        if (cheatCodeBuffer.length() > 7) {
+            cheatCodeBuffer.deleteCharAt(0);
+        }
+        if (cheatCodeBuffer.toString().equals("lalapan")) {
+            landMowerAdded = true;
+            LandMowersManager.initiateMower();
+            cheatCodeBuffer.setLength(0); // Reset buffer after cheat code is activated
+        }
+
 		// Posisi Cursor
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 			if (xArrow + 80 > 910) {
@@ -302,6 +329,8 @@ public class Playing extends GameScene implements SceneMethods {
     }
 
 	public void clearAll() {
+        landMowerAdded = false;
+        LandMowersManager.clearMower();
 		sun.resetTick();
 		plantsManager.clearPlants();
 		zombiesManager.clearZombie();
