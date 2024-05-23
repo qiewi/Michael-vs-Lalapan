@@ -1,8 +1,6 @@
 package ui;
 
-import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Rectangle;
 import java.io.IOException;
 import java.io.InputStream;
 import java.awt.image.BufferedImage;
@@ -75,25 +73,6 @@ public class FlagBar {
         drawProgressBar(g);
 
     }
-
-    public void mouseClicked(int x, int y) {
-
-	}
-
-	
-	public void mouseMoved(int x, int y) {
-
-	}
-
-	
-	public void mousePressed(int x, int y) {
-
-	}
-
-	
-	public void mouseReleased(int x, int y) {
-
-	}
 
 
     public int getX() {

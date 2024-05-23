@@ -1,6 +1,6 @@
 package entity;
 
-public abstract class Entity {
+public abstract class Entity implements Action {
     protected String name;
     protected int health;
     protected int attack_damage;

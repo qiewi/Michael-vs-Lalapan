@@ -4,9 +4,7 @@ import javax.imageio.ImageIO;
 import java.awt.Graphics2D;
 import javax.swing.*;
 
-import static main.GameStates.MENU;
-import static main.GameStates.PLAYING;
-import static main.GameStates.setGameState;
+import static main.GameStates.*;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -18,7 +16,6 @@ import main.Game;
 import managers.ZombiesManager;
 import objects.Sun;
 import ui.MyButton;
-import ui.TopBar;
 
 public class Preparation extends GameScene implements SceneMethods {
     private Inventory inventory;

@@ -3,14 +3,12 @@ package entity.Plants;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-
 import javax.imageio.ImageIO;
 
-import entity.Action;
 import entity.Entity;
 import entity.Zombies.Zombie;
 
-public abstract class Plant extends Entity implements Action {
+public abstract class Plant extends Entity {
     private int cost;
     private int range;
     private int cooldown;
@@ -51,8 +49,8 @@ public abstract class Plant extends Entity implements Action {
         return img;
     }
 
-    public void takeDamage(Zombie Zombies) {
-        this.setHealth(this.getHealth() - Zombies.getAttackDamage());
+    public void takeDamage(Zombie zombie) {
+        this.setHealth(this.getHealth() - zombie.getAttackDamage());
     }
 
     public int getCost() {

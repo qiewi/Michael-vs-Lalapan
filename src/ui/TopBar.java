@@ -2,16 +2,12 @@ package ui;
 
 import java.awt.Graphics;
 import java.util.ArrayList;
-import java.util.Iterator;
 
-import entity.Plants.Plant;
 import entity.Plants.PlantFactory;
 import managers.ZombiesManager;
 import objects.Sun;
-import scenes.Menu;
 import scenes.Music;
 import scenes.Playing;
-// import entity.Sun;
 
 import static main.GameStates.*;
 
