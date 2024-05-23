@@ -12,17 +12,15 @@ import entity.Zombies.Zombie;
 import objects.Sun;
 import scenes.Playing;
 
-public class PlantsManager {
+public class PlantsManager implements ManagersUI {
     private Playing playing;
-	private static ArrayList<Plant> plants = new ArrayList<>();
 	private Sun sun;
 
+	private static ArrayList<Plant> plants = new ArrayList<>();
+	
 	public PlantsManager(Playing playing) {
 		this.playing = playing;
 		sun = new Sun();
-	}
-
-	public PlantsManager() {
 	}
 
 	public void update() {

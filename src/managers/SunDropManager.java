@@ -9,7 +9,7 @@ import java.util.Random;
 import objects.Sun;
 import scenes.Playing;
 
-public class SunDropManager {
+public class SunDropManager implements ManagersUI {
     private Playing playing;
 	private static ArrayList<SunDrop> activeSuns = new ArrayList<>();
 

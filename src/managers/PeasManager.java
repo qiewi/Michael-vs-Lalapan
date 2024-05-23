@@ -10,7 +10,7 @@ import objects.NormalPea;
 import objects.Pea;
 import scenes.Playing;
 
-public class PeasManager {
+public class PeasManager implements ManagersUI {
     private Playing playing;
 	private static ArrayList<Pea> peas = new ArrayList<>();
     private static ArrayList<Zombie> zombies = new ArrayList<>();

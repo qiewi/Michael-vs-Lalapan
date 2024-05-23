@@ -1,11 +1,11 @@
 package entity;
 
 public abstract class Entity {
-    private String name;
-    private int health;
-    private int attack_damage;
-    private int attack_speed;
-    private float x, y;
+    protected String name;
+    protected int health;
+    protected int attack_damage;
+    protected int attack_speed;
+    protected float x, y;
 
 
     public Entity(String name, int health, int attack_damage, int attack_speed, float x, float y) {

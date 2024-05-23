@@ -1,7 +1,6 @@
 package managers;
 
 import static main.GameStates.GAMEOVER;
-import static main.GameStates.VICTORY;
 import static main.GameStates.setGameState;
 
 import java.awt.Graphics;
@@ -19,19 +18,19 @@ import objects.Sun;
 import scenes.Music;
 import scenes.Playing;
 
-public class ZombiesManager {
+public class ZombiesManager implements ManagersUI {
     private Playing playing;
 	private static ArrayList<Zombie> zombies;
 	private static ArrayList<Plant> plants;
 	private static ScheduledExecutorService scheduler;
-	private static final int TOTAL_ZOMBIE_COUNT = 1;
+	private static final int TOTAL_ZOMBIE_COUNT = 70;
 
 	private static final int[] positions = new int[] {200, 290, 380, 470, 560, 650};
 	private static final int[] flagPositions = new int[] {200, 290, 560, 650};
 
-	private static int zombieAtOneTime = 10;
-	private static int zombieDelay = 5;
-	private static int zombieCount = 0;
+	private static int zombieAtOneTime;
+	private static int zombieDelay;
+	private static int zombieCount;
 	private static boolean flag = false;
 	private static boolean victory = false;
 
@@ -41,6 +40,10 @@ public class ZombiesManager {
 		this.playing = playing;
 		zombies = new ArrayList<>();
 		plants = PlantsManager.getPlants();
+
+		zombieCount = 0;
+		zombieDelay = 5;
+		zombieAtOneTime = 10;
 	}
 
 	public static void initScheduler() {
@@ -55,130 +58,130 @@ public class ZombiesManager {
 	}
 
 	public void update() {
-    if (zombieCount >= TOTAL_ZOMBIE_COUNT && zombies.size() == 1 && !victory) {
-		// System.out.println("Victory");
-		lastZombie = zombies.get(0);
-		setVictory();
-    }
+		if (zombieCount >= TOTAL_ZOMBIE_COUNT && zombies.size() == 1 && !victory) {
+			// System.out.println("Victory");
+			lastZombie = zombies.get(0);
+			setVictory();
+		}
 
-    Iterator<Zombie> zombieIterator = zombies.iterator();
-    while (zombieIterator.hasNext()) {
-        Zombie z = zombieIterator.next();
-        boolean attacked = false;
-        List<Plant> plantsToRemove = new ArrayList<>();
+		Iterator<Zombie> zombieIterator = zombies.iterator();
+		while (zombieIterator.hasNext()) {
+			Zombie z = zombieIterator.next();
+			boolean attacked = false;
+			List<Plant> plantsToRemove = new ArrayList<>();
 
-        // Iterate over the unharmed plants
-        Iterator<Plant> plantIterator = plants.iterator();
-        while (plantIterator.hasNext()) {
-            Plant p = plantIterator.next();
+			// Iterate over the unharmed plants
+			Iterator<Plant> plantIterator = plants.iterator();
+			while (plantIterator.hasNext()) {
+				Plant p = plantIterator.next();
 
-            // Check if zombie and plant are at the same position
-            if (((int) z.getX() <= (int) p.getX() && (int) z.getX() >= (int) p.getX() - 30) && ((int) z.getY() == (int) p.getY())) {
-                if (z instanceof VaultingType && ((VaultingType) z).getVault() && !(p instanceof Tanglekelp) && !(p instanceof Squash)) {
-                    if (p instanceof Tallnut) {
-                        ((VaultingType) z).setVault(false);
-                        z.setSpeed(-0.15f);
-                        if (z instanceof Polevault) {
-                            z.setImage(z.getZombieImage("Polevault2"));
-                        } 
-						z.setAttacking(true);
-						attacked = true;
+				// Check if zombie and plant are at the same position
+				if (((int) z.getX() <= (int) p.getX() && (int) z.getX() >= (int) p.getX() - 30) && ((int) z.getY() == (int) p.getY())) {
+					if (z instanceof VaultingType && ((VaultingType) z).getVault() && !(p instanceof Tanglekelp) && !(p instanceof Squash)) {
+						if (p instanceof Tallnut) {
+							((VaultingType) z).setVault(false);
+							z.setSpeed(-0.15f);
+							if (z instanceof Polevault) {
+								z.setImage(z.getZombieImage("Polevault2"));
+							} 
+							z.setAttacking(true);
+							attacked = true;
+							break;
+						} else if (p instanceof Lilypad) {
+							boolean withLily = false;
+							for (Plant p2 : plants) {
+								if (p2.getX() == p.getX() && p2.getY() == p.getY() && !(p2 instanceof Lilypad)) {
+									withLily = true;
+									if (p2 instanceof Tallnut) {
+										((VaultingType) z).setVault(false);
+										z.setSpeed(-0.15f);
+									} else if (p2 instanceof Squash) {
+										p2.actionStop();
+										plantsToRemove.add(p2);
+										zombieIterator.remove();
+										break;
+									} else {
+										z.action();
+										p2.actionStop();
+										plantsToRemove.add(p2);
+									}
+								}
+							}
+							if (!withLily) {
+								z.action();
+								p.actionStop();
+								plantsToRemove.add(p);
+							}
+							if (z instanceof Dolphin) {
+								z.setImage(z.getZombieImage("Dolphin2"));
+							}
+						} else if (p instanceof Tanglekelp) {
+							p.actionStop();
+							plantsToRemove.add(p);
+							zombieIterator.remove();
+							break;
+						} else {
+							z.action();
+							p.actionStop();
+							plantsToRemove.add(p);
+							if (z instanceof Polevault) {
+								z.setImage(z.getZombieImage("Polevault2"));
+							}
+						}
+					} else {
+						if (p instanceof Tanglekelp) {
+							p.actionStop();
+							plantsToRemove.add(p);
+							zombieIterator.remove();
+							break;
+						} 
+
+						if (!(p instanceof Squash)) {
+							z.setAttacking(true);
+							attacked = true;
+						} 
+						
 						break;
-                    } else if (p instanceof Lilypad) {
-                        boolean withLily = false;
-                        for (Plant p2 : plants) {
-                            if (p2.getX() == p.getX() && p2.getY() == p.getY() && !(p2 instanceof Lilypad)) {
-                                withLily = true;
-                                if (p2 instanceof Tallnut) {
-                                    ((VaultingType) z).setVault(false);
-                                    z.setSpeed(-0.15f);
-                                } else if (p2 instanceof Squash) {
-                                    p2.actionStop();
-                                    plantsToRemove.add(p2);
-                                    zombieIterator.remove();
-                                    break;
-                                } else {
-                                    z.action();
-                                    p2.actionStop();
-                                    plantsToRemove.add(p2);
-                                }
-                            }
-                        }
-                        if (!withLily) {
-                            z.action();
-                            p.actionStop();
-                            plantsToRemove.add(p);
-                        }
-                        if (z instanceof Dolphin) {
-                            z.setImage(z.getZombieImage("Dolphin2"));
-                        }
-                    } else if (p instanceof Tanglekelp) {
-                        p.actionStop();
-                        plantsToRemove.add(p);
-                        zombieIterator.remove();
-                        break;
-                    } else {
-                        z.action();
-                        p.actionStop();
-                        plantsToRemove.add(p);
-                        if (z instanceof Polevault) {
-                            z.setImage(z.getZombieImage("Polevault2"));
-                        }
-                    }
-                } else {
-                    if (p instanceof Tanglekelp) {
-                        p.actionStop();
-                        plantsToRemove.add(p);
-                        zombieIterator.remove();
-                        break;
-                    } 
+					}
+				} else {
+					z.setAttacking(false);
+				}
+			}
 
-                    if (!(p instanceof Squash)) {
-                        z.setAttacking(true);
-                        attacked = true;
-                    } 
-                    
-                    break;
-                }
-            } else {
-                z.setAttacking(false);
-            }
-        }
+			// Remove plants after iteration
+			plants.removeAll(plantsToRemove);
 
-        // Remove plants after iteration
-        plants.removeAll(plantsToRemove);
+			// Move the zombie if it hasn't attacked
+			if (!attacked) {
+				z.move(z.getSpeed(), 0);
+				z.setAttacking(false);  // Stop attacking when moving
+			} else {
+				z.startAttacking();
+			}
 
-        // Move the zombie if it hasn't attacked
-        if (!attacked) {
-            z.move(z.getSpeed(), 0);
-            z.setAttacking(false);  // Stop attacking when moving
-        } else {
-            z.startAttacking();
-        }
+			if (z.getFrozenTick() != -1 && z.getFrozenTick() + 3 <= Sun.getTick()) {
+				z.setSpeed(z.getBeforeSpeed());
+				z.setFrozenTick(-1);
+			}
 
-        if (z.getFrozenTick() != -1 && z.getFrozenTick() + 3 <= Sun.getTick()) {
-            z.setSpeed(z.getBeforeSpeed());
-            z.setFrozenTick(-1);
-        }
+			if (z instanceof Newspaper) {
+				if (((Newspaper)z).getAngerTick() != -1 && ((Newspaper)z).getAngerTick() + 3 <= Sun.getTick()) {
+					z.setSpeed(-0.4f);
+					((Newspaper)z).setAngerTick(-1);
+				}
+			}
 
-        if (z instanceof Newspaper) {
-            if (((Newspaper)z).getAngerTick() != -1 && ((Newspaper)z).getAngerTick() + 3 <= Sun.getTick()) {
-                z.setSpeed(-0.4f);
-                ((Newspaper)z).setAngerTick(-1);
-            }
-        }
+			if (z.getHealth() <= 0) {
+				if (z.equals(lastZombie))
+					VictoryNoteManager.addNoteDrop((int) z.getX(), (int) z.getY());
+				zombieIterator.remove();
+			}
 
-        if (z.getHealth() <= 0) {
-			if (z.equals(lastZombie))
-				VictoryNoteManager.addNoteDrop((int) z.getX(), (int) z.getY());
-            zombieIterator.remove();
-        }
-
-        // Game Over
-        if (z.getX() <= 100) {
-			Music.playSound("GameOver", false);
-            setGameState(GAMEOVER);
-        }
+			// Game Over
+			if (z.getX() <= 100) {
+				Music.playSound("GameOver", false);
+				setGameState(GAMEOVER);
+			}
     }
 }
 

@@ -12,7 +12,6 @@ import ui.MyButton;
 import static main.GameStates.*;
 
 public class Menu extends GameScene implements SceneMethods {
-	private static Clip soundClip;
 	private MyButton bPlaying, bPlantsList, bZombiesList, bHelp, bQuit;
 
 	public Menu(Game game) {

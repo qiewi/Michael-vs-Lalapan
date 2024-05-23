@@ -20,15 +20,15 @@ public class Game extends JFrame implements Runnable{
     private final double UPS_SET = 60.0;
 
     // Classes
-    private Render render;
-    private Menu menu;
-    private Playing playing;
-    private GameOver gameOver;
-    private Victory victory;
-    private Preparation preparation;
-    private Help help;
-    private PlantsList plantsList;
-    private ZombiesList zombiesList;
+        private Render render;
+        private Menu menu;
+        private Playing playing;
+        private GameOver gameOver;
+        private Victory victory;
+        private Preparation preparation;
+        private Help help;
+        private PlantsList plantsList;
+        private ZombiesList zombiesList;
 
     public Game() {
 

@@ -9,7 +9,7 @@ import objects.Note;
 import scenes.Music;
 import scenes.Playing;
 
-public class VictoryNoteManager {
+public class VictoryNoteManager implements ManagersUI {
     private Playing playing;
     private static Note note = null;
 
