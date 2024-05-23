@@ -6,7 +6,6 @@ public class Wallnut extends Plant{
         this.setImage(getPlantImage("WallNut"));
     }
 
-    @Override
     public void action() {
     }
 

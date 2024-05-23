@@ -7,7 +7,7 @@ import managers.PeasManager;
 import managers.ZombiesManager;
 
 public class Repeater extends Plant {
-    private Timer shootTimer, shootTimer2;
+    private Timer shootTimer, secondTimer;
     
     public Repeater(int x, int y) {
         super("Repeater", 200, 150, 25, 6, -1, 15, false, x, y);
@@ -19,12 +19,12 @@ public class Repeater extends Plant {
         shootTimer = new Timer(2000, (ActionEvent e) -> {
             if (ZombiesManager.checkZombiesInLane((int) this.getY())) {
                 PeasManager.addPeaInLane((int) this.getX() + 50, (int) this.getY(), "Normal"); // jadiin dua timer
-                shootTimer2 = new Timer(50, (ActionEvent e2) -> {
+                secondTimer = new Timer(50, (ActionEvent e2) -> {
                     PeasManager.addPeaInLane((int) this.getX() + 50, (int) this.getY(), "Normal");
-                    shootTimer2.stop(); // Stop the timer after shooting the second pea
+                    secondTimer.stop(); // Stop the timer after shooting the second pea
                 });
-                shootTimer2.setRepeats(false); // Set to execute only once
-                shootTimer2.start();
+                secondTimer.setRepeats(false); // Set to execute only once
+                secondTimer.start();
             }
         });
         shootTimer.start();
@@ -34,8 +34,8 @@ public class Repeater extends Plant {
         if (shootTimer != null && shootTimer.isRunning()) {
             shootTimer.stop();
         } 
-        if (shootTimer2 != null && shootTimer2.isRunning()) {
-            shootTimer2.stop();
+        if (secondTimer != null && secondTimer.isRunning()) {
+            secondTimer.stop();
         } 
     }
 }

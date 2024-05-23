@@ -8,12 +8,11 @@ import java.io.InputStream;
 import javax.imageio.ImageIO;
 import javax.swing.Timer;
 
-import entity.Action;
 import entity.Entity;
 import entity.Plants.Plant;
 import managers.PlantsManager; 
 
-public abstract class Zombie extends Entity implements Action {
+public abstract class Zombie extends Entity {
     private boolean is_aquatic;
     private BufferedImage image;
     private boolean attacking = false;

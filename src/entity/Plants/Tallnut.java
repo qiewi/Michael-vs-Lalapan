@@ -8,8 +8,6 @@ public class Tallnut extends Plant {
 
     @Override
     public void action() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'action'");
     }
 
     public void actionStop() {

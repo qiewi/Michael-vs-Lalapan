@@ -12,7 +12,7 @@ public class PlantFactory {
         } else if (name.equals("Repeater")) {
             plant = new Repeater(x, y);
         } else if (name.equals("GatlingPea")) {
-            plant = new GatlingpPea(x, y);
+            plant = new GatlingPea(x, y);
         } else if (name.equals("WallNut")) {
             plant = new Wallnut(x, y);
         } else if (name.equals("TallNut")) {
@@ -43,7 +43,7 @@ public class PlantFactory {
         } else if (name.equals("Repeater")) {
             plant = new Repeater(x, y);
         } else if (name.equals("GatlingPea")) {
-            plant = new GatlingpPea(x, y);
+            plant = new GatlingPea(x, y);
         } else if (name.equals("WallNut")) {
             plant = new Wallnut(x, y);
         } else if (name.equals("TallNut")) {

@@ -30,11 +30,4 @@ public class HeadwearType extends Zombie {
         
     }
 
-    // public boolean getAquatic() {
-    //     return is_aquatic;
-    // }
-
-    /*    public void takeDamage(Plant Tanaman) {
-
-        } */
 }
