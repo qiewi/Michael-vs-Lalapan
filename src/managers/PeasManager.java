@@ -31,7 +31,7 @@ public class PeasManager implements ManagersUI {
 			while (zombieIterator.hasNext()) {
 				Zombie z = zombieIterator.next();
 	
-				if (((int) z.getX() >= (int) p.getX() && (int) z.getX() <= (int) p.getX() + 10) && ((int) z.getY() == (int) p.getY())) {
+				if (((int) z.getX() >= (int) p.getX() && (int) z.getX() <= (int) p.getX() + 10) && ((int) z.getY() == (int) p.getY()) && z.getX() <= 870) {
                     System.out.println("Pea hit zombie at " + (int) p.getX() + ", " + (int) p.getY());
                     ZombiesManager.takeDamage(z, 25);
                     if (p instanceof FrozenPea) {

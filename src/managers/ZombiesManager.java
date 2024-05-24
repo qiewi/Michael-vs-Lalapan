@@ -271,7 +271,7 @@ public class ZombiesManager implements ManagersUI {
 
 	public static boolean checkZombiesInLane(int y) {
 		for (Zombie z : zombies) {
-			if (z.getY() == y) {
+			if (z.getY() == y && z.getX() <= 870) {
 				return true;
 			}
 		}
@@ -414,8 +414,8 @@ public class ZombiesManager implements ManagersUI {
 
 	public void addZombie(int x, int y) {
 		Random random = new Random();
-		String[] zombieTypes = {"Normal", "Football", "Conehead", "Buckethead", "Screendoor", "Polevault", "Newspaper", "Duckytube", "Dolphin"};
-		// String[] zombieTypes = {"Dolphin"};
+		// String[] zombieTypes = {"Normal", "Football", "Conehead", "Buckethead", "Screendoor", "Polevault", "Newspaper", "Duckytube", "Dolphin"};
+		String[] zombieTypes = {"Polevault", "Duckytube", "Dolphin"};
 		int zombieType = random.nextInt(zombieTypes.length);
 		Zombie zom = ZombieFactory.CreateZombie(zombieTypes[zombieType], x, y);
 		
@@ -453,24 +453,36 @@ public class ZombiesManager implements ManagersUI {
 		if (z.getAquatic()) {
 			if (z instanceof Dolphin) {
 				if (z.getX() <= 870 && z.getX() >= 150 && ((Dolphin) z).getVault()) {
-					z.setImage(z.getZombieImage("Dolphin"));
+					if (z.getFrozenTick() == -1) {
+						z.setImage(z.getZombieImage("Dolphin"));
+					}
 					g.drawImage(z.getImage(), (int) z.getX() + 50, (int) z.getY(), null);
 				} else if (z.getX() <= 870 && z.getX() >= 150 && !((Dolphin) z).getVault()) {
-					z.setImage(z.getZombieImage("Dolphin2"));
+					if (z.getFrozenTick() == -1) {
+						z.setImage(z.getZombieImage("Dolphi2"));
+					}
 					g.drawImage(z.getImage(), (int) z.getX(), (int) z.getY(), null);
 				} else if (z.getX() < 150) {
-					z.setImage(z.getZombieImage("Dolphin3"));
+					if (z.getFrozenTick() == -1) {
+						z.setImage(z.getZombieImage("Dolphin3"));
+					}
 					g.drawImage(z.getImage(), (int) z.getX() + 30, (int) z.getY() - 90, null);
 				} else {
-					z.setImage(z.getZombieImage("Dolphin0"));
+					if (z.getFrozenTick() == -1) {
+						z.setImage(z.getZombieImage("Dolphin0"));
+					}
 					g.drawImage(z.getImage(), (int) z.getX() + 50, (int) z.getY() - 30, null);
 				}
 			} else if (z instanceof Duckytube) {
 				if (z.getX() <= 910 && z.getX() >= 220) {
-					z.setImage(z.getZombieImage("Duckytube2"));
+					if (z.getFrozenTick() == -1) {
+						z.setImage(z.getZombieImage("Duckytube2"));
+					}
 					g.drawImage(z.getImage(), (int) z.getX(), (int) z.getY(), null);
 				} else {
-					z.setImage(z.getZombieImage("Duckytube"));
+					if (z.getFrozenTick() == -1) {
+						z.setImage(z.getZombieImage("Duckytube"));
+					}
 					g.drawImage(z.getImage(), (int) z.getX()-30, (int) z.getY()-30, null);
 				}
 			}
