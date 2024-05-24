@@ -23,7 +23,7 @@ public class ZombiesManager implements ManagersUI {
 	private static ArrayList<Zombie> zombies;
 	private static ArrayList<Plant> plants;
 	private static ScheduledExecutorService scheduler;
-	private static final int TOTAL_ZOMBIE_COUNT = 1;
+	private static final int TOTAL_ZOMBIE_COUNT = 10;
 
 	private static final int[] positions = new int[] {200, 290, 380, 470, 560, 650};
 	private static final int[] flagPositions = new int[] {200, 290, 560, 650};
@@ -415,7 +415,7 @@ public class ZombiesManager implements ManagersUI {
 	public void addZombie(int x, int y) {
 		Random random = new Random();
 		String[] zombieTypes = {"Normal", "Football", "Conehead", "Buckethead", "Screendoor", "Polevault", "Newspaper", "Duckytube", "Dolphin"};
-
+		// String[] zombieTypes = {"Dolphin"};
 		int zombieType = random.nextInt(zombieTypes.length);
 		Zombie zom = ZombieFactory.CreateZombie(zombieTypes[zombieType], x, y);
 		
@@ -452,26 +452,33 @@ public class ZombiesManager implements ManagersUI {
 	private void drawZombie(Zombie z, Graphics g) {
 		if (z.getAquatic()) {
 			if (z instanceof Dolphin) {
-				if (z.getX() <= 870 && ((Dolphin) z).getVault()) {
+				if (z.getX() <= 870 && z.getX() >= 150 && ((Dolphin) z).getVault()) {
 					z.setImage(z.getZombieImage("Dolphin"));
 					g.drawImage(z.getImage(), (int) z.getX() + 50, (int) z.getY(), null);
-				} else if (z.getX() <= 870 && !((Dolphin) z).getVault()) {
+				} else if (z.getX() <= 870 && z.getX() >= 150 && !((Dolphin) z).getVault()) {
+					z.setImage(z.getZombieImage("Dolphin2"));
 					g.drawImage(z.getImage(), (int) z.getX(), (int) z.getY(), null);
+				} else if (z.getX() < 150) {
+					z.setImage(z.getZombieImage("Dolphin3"));
+					g.drawImage(z.getImage(), (int) z.getX() + 30, (int) z.getY() - 90, null);
 				} else {
+					z.setImage(z.getZombieImage("Dolphin0"));
 					g.drawImage(z.getImage(), (int) z.getX() + 50, (int) z.getY() - 30, null);
 				}
 			} else if (z instanceof Duckytube) {
-				if (z.getX() <= 870) {
+				if (z.getX() <= 900 && z.getX() >= 190) {
 					z.setImage(z.getZombieImage("Duckytube2"));
-					g.drawImage(z.getImage(), (int) z.getX(), (int) z.getY(), null);
+				} else {
+					z.setImage(z.getZombieImage("Duckytube"));
 				}
+				g.drawImage(z.getImage(), (int) z.getX(), (int) z.getY(), null);
 			}
 		} else {
 			g.drawImage(z.getImage(), (int) z.getX(), (int) z.getY() - 90, null);
 		}
 		
 	}
-
+	
 	public static ArrayList<Zombie> getZombies(){
 		return zombies;
 	}
