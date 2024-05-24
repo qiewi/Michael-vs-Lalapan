@@ -1,3 +1,10 @@
+![Static Badge](https://img.shields.io/badge/build-passing-brightgreen)
+[![GitHub release](https://img.shields.io/github/release/qiewi/Michael-vs-Lalapan.svg)](https://GitHub.com/qiewi/Michael-vs-Lalapan/releases/)
+![GitHub Repo stars](https://img.shields.io/github/stars/qiewi/Michael-vs-Lalapan)
+![GitHub all releases](https://img.shields.io/github/downloads/qiewi/Michael-vs-Lalapan/total)
+
+![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+
 # **Tugas Besar Object Oriented Programming IF2212 K3 Kelompok 3**  
 _______
 
@@ -53,23 +60,35 @@ Game Features:
 
 ## How to Run
 
-Clone the project
+Clone the Project
 
 ```bash
   git clone https://github.com/qiewi/Michael-vs-Lalapan.git
 ```
 
-Go to the project directory
+Go to the Project Directory
 
 ```bash
-  cd my-project
+  cd Michael-vs-Lalapan
 ```
 
-Run the program
+Open the Program
 
 ```bash
-  Run game.java
+  Open it using an IDE such as Visual Studio Code
 ```
+
+Run the Program
+
+```bash
+  Click 'Run Java' on the Right Corner of the IDE
+```
+
+## Gameplay
+
+Gameplay is available on the Booklet Folder!
+
+
 
 
 
