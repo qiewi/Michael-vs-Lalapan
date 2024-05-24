@@ -459,7 +459,7 @@ public class ZombiesManager implements ManagersUI {
 					g.drawImage(z.getImage(), (int) z.getX() + 50, (int) z.getY(), null);
 				} else if (z.getX() <= 870 && z.getX() >= 150 && !((Dolphin) z).getVault()) {
 					if (z.getFrozenTick() == -1) {
-						z.setImage(z.getZombieImage("Dolphi2"));
+						z.setImage(z.getZombieImage("Dolphin2"));
 					}
 					g.drawImage(z.getImage(), (int) z.getX(), (int) z.getY(), null);
 				} else if (z.getX() < 150) {

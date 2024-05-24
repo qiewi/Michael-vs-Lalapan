@@ -7,7 +7,9 @@ import java.util.Iterator;
 import entity.Plants.Lilypad;
 import entity.Plants.Plant;
 import entity.Plants.PlantFactory;
+import entity.Plants.Squash;
 import entity.Plants.Tallnut;
+import entity.Zombies.VaultingType;
 import entity.Zombies.Zombie;
 import objects.Sun;
 import scenes.Playing;
@@ -116,8 +118,27 @@ public class PlantsManager implements ManagersUI {
 	public static void deletePlantsAt(int x, int y) {
 		for (int i = 0; i < plants.size(); i++) {
 			if (plants.get(i).getX() == x && plants.get(i).getY() == y) {
-				plants.get(i).actionStop();
-				plants.remove(i);
+				Plant lily = plants.get(i);
+				if (lily instanceof Lilypad) {
+					boolean withLily = false;
+					int j = 0;
+					for (Plant p2 : plants) {
+						if (p2.getX() == lily.getX() && p2.getY() == lily.getY() && !(p2 instanceof Lilypad)) {
+							withLily = true;
+							p2.actionStop();
+							plants.remove(j);
+						}
+						j++;
+					}
+					if (!withLily) {
+						lily.actionStop();
+						plants.remove(i);
+					}
+				} else {
+					plants.get(i).actionStop();
+					plants.remove(i);
+				}
+				
 			}
 		}
 	}
