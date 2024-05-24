@@ -1,9 +1,9 @@
 ![Static Badge](https://img.shields.io/badge/build-passing-brightgreen)
-[![GitHub release](https://img.shields.io/github/release/qiewi/Michael-vs-Lalapan.svg)](https://GitHub.com/qiewi/Michael-vs-Lalapan/releases/)
-![GitHub Repo stars](https://img.shields.io/github/stars/qiewi/Michael-vs-Lalapan)
-![GitHub all releases](https://img.shields.io/github/downloads/qiewi/Michael-vs-Lalapan/total)
+![Static Badge](https://img.shields.io/badge/Release-1.0-blue)
+![Static Badge](https://img.shields.io/badge/Copyright-PopCap-blue)
+![Static Badge](https://img.shields.io/badge/Michael%20vs%20Lalapan-52AA1F)
 
-![Header](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+![Header](https://github.com/qiewi/Michael-vs-Lalapan/blob/main/readme%20assets/Header.png)
 
 # **Tugas Besar Object Oriented Programming IF2212 K3 Kelompok 3**  
 _______
@@ -46,6 +46,7 @@ Technical Features:
 - Mouse and Keyboard Utilization
 
 Game Features:
+- Plants vs Zombies Mechanics
 - Flag Wave
 - Pool Map
 - Night Time
@@ -54,7 +55,29 @@ Game Features:
 
 ## Screenshots
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+Main Menu
+
+![App Screenshot](https://github.com/qiewi/Michael-vs-Lalapan/blob/main/readme%20assets/MainMenu.png)
+
+Preparation
+
+![App Screenshot](https://github.com/qiewi/Michael-vs-Lalapan/blob/main/readme%20assets/Preparation.png)
+
+Plants List
+
+![App Screenshot](https://github.com/qiewi/Michael-vs-Lalapan/blob/main/readme%20assets/PlantsList.png)
+
+Zombies List
+
+![App Screenshot](https://github.com/qiewi/Michael-vs-Lalapan/blob/main/readme%20assets/ZombiesList.png)
+
+Gameplay
+
+![App Screenshot](https://github.com/qiewi/Michael-vs-Lalapan/blob/main/readme%20assets/Game.png)
+
+Booklet Preview
+
+![App Screenshot](https://github.com/qiewi/Michael-vs-Lalapan/blob/main/readme%20assets/Booklet.png)
 
 
 ## Tech Needs
