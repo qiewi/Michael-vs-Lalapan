@@ -3,7 +3,6 @@ package managers;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
-import objects.FrozenPea;
 import objects.LandMower;
 import scenes.Playing;
 import java.util.Iterator;

@@ -14,10 +14,14 @@ import managers.SunDropManager;
 public class Sun {  
     private static int sun = 50;
     private static int tick;
-    public BufferedImage image = setSunImage();
+    private static int bonusTick = -1;
+    
     public static Timer timer;
     public static Timer tickTimer;
     private static boolean morning = true;
+    private static boolean sunCheat = false;
+
+    public BufferedImage image = setSunImage();
     
     // Nanti pindain method ke playing
     public void startMorning() {   // bikin tick untuk si zombie
@@ -38,10 +42,24 @@ public class Sun {
 
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
-                if (morning)
+                if (morning) {
                     SunDropManager.addSunDrop();
+                }
+
+                if (bonusTick != -1) {
+                    for (int i = 0; i < 5; i++) {
+                        for (int j = 0; j < 5; j++) {
+                            SunDropManager.addSunDrop();
+                        }
+                        try {
+                            Thread.sleep(1000); // 1 second delay between each set of 5 sun drops
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
             }
-        }, 1000, period);        
+        }, 1000, period);   
     }
 
     public void increaseTick() {
@@ -71,6 +89,27 @@ public class Sun {
         }       
 
         return img;
+    }
+
+    public static void setBonusTick(int bonusTick) {
+        Sun.bonusTick = bonusTick;
+    }
+
+    public static boolean getSunCheat() {
+        return sunCheat;
+    }
+
+    public static void setSunCheat(boolean sunCheat) {
+        Sun.sunCheat = sunCheat;
+
+        if (sunCheat = true)
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    Sun.bonusTick = -1;
+                }
+            }, 5000);
+
     }
 
     public int getSun() {

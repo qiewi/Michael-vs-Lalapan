@@ -249,6 +249,11 @@ public class Playing extends GameScene implements SceneMethods {
             LandMowersManager.setLandMowerAdded(true);
             LandMowersManager.initiateMower();
             cheatCodeBuffer.setLength(0); // Reset buffer after cheat code is activated
+        } else if (cheatCodeBuffer.toString().equals("michael") && !Sun.getSunCheat()) {
+            System.out.println("Sun cheat activated");
+            Sun.setSunCheat(true);
+            Sun.setBonusTick(Sun.getTick());
+            cheatCodeBuffer.setLength(0); // Reset buffer after cheat code is activated
         }
 
 		// Posisi Cursor
@@ -331,6 +336,7 @@ public class Playing extends GameScene implements SceneMethods {
 	public void clearAll() {
         LandMowersManager.setLandMowerAdded(false);
         LandMowersManager.clearMower();
+        Sun.setSunCheat(false);
 		sun.resetTick();
 		plantsManager.clearPlants();
 		zombiesManager.clearZombie();
