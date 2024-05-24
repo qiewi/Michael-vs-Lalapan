@@ -14,7 +14,7 @@ import managers.SunDropManager;
 public class Sun {  
     private static int sun = 50;
     private static int tick;
-    private static int bonusTick = -1;
+    private static int cheatTick = -1;
     
     public static Timer timer;
     public static Timer tickTimer;
@@ -46,7 +46,7 @@ public class Sun {
                     SunDropManager.addSunDrop();
                 }
 
-                if (bonusTick != -1) {
+                if (cheatTick != -1) {
                     for (int i = 0; i < 5; i++) {
                         for (int j = 0; j < 5; j++) {
                             SunDropManager.addSunDrop();
@@ -91,8 +91,8 @@ public class Sun {
         return img;
     }
 
-    public static void setBonusTick(int bonusTick) {
-        Sun.bonusTick = bonusTick;
+    public static void setCheatTick(int cheatTick) {
+        Sun.cheatTick = cheatTick;
     }
 
     public static boolean getSunCheat() {
@@ -106,7 +106,7 @@ public class Sun {
             new Timer().schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    Sun.bonusTick = -1;
+                    Sun.cheatTick = -1;
                 }
             }, 5000);
 

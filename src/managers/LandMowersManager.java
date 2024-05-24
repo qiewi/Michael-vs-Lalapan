@@ -26,25 +26,40 @@ public class LandMowersManager implements ManagersUI {
         while (iterator.hasNext()) {
             LandMower l = iterator.next();
 
-            if (l != null)
+            if (l != null) {
                 l.move();
 
                 Iterator<Zombie> zombieIterator = zombies.iterator();
-
                 while (zombieIterator.hasNext()) {
                     Zombie z = zombieIterator.next();
 
-                    if (((int) z.getX() - 10 >= (int) l.getX() && (int) z.getX() <= (int) l.getX() + 10) && ((int) z.getY() == (int) l.getY())) {
-                        ZombiesManager.takeDamage(z, z.getHealth());
-
-				}
-
+                    if (checkCollision(l, z)) {
+                        ZombiesManager.takeDamage(z, z.getHealth()); // Deal lethal damage
+                    }
                 }
-                
+
                 if (l.getX() >= l.getDestructPos()) {
                     iterator.remove();
                 }
+            }
         }
+    }
+
+    private boolean checkCollision(LandMower l, Zombie z) {
+        int mowerX = (int) l.getX();
+        int mowerY = (int) l.getY();
+        int mowerWidth = 50;
+        int mowerHeight = 50;
+
+        int zombieX = (int) z.getX();
+        int zombieY = (int) z.getY();
+        int zombieWidth = 50;
+        int zombieHeight = 50;
+
+        return (mowerX < zombieX + zombieWidth &&
+                mowerX + mowerWidth > zombieX &&
+                mowerY < zombieY + zombieHeight &&
+                mowerY + mowerHeight > zombieY);
     }
 	
 

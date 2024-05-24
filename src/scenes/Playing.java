@@ -240,7 +240,7 @@ public class Playing extends GameScene implements SceneMethods {
 
 	public void keyPressed(KeyEvent e) {
         // Capture key press for cheat code detection
-        char keyChar = e.getKeyChar();
+        char keyChar = Character.toLowerCase(e.getKeyChar());
         cheatCodeBuffer.append(keyChar);
         if (cheatCodeBuffer.length() > 7) {
             cheatCodeBuffer.deleteCharAt(0);
@@ -252,7 +252,7 @@ public class Playing extends GameScene implements SceneMethods {
         } else if (cheatCodeBuffer.toString().equals("michael") && !Sun.getSunCheat()) {
             System.out.println("Sun cheat activated");
             Sun.setSunCheat(true);
-            Sun.setBonusTick(Sun.getTick());
+            Sun.setCheatTick(Sun.getTick());
             cheatCodeBuffer.setLength(0); // Reset buffer after cheat code is activated
         }
 
