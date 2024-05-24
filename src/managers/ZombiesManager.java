@@ -151,7 +151,7 @@ public class ZombiesManager implements ManagersUI {
 			// Remove plants after iteration
 			plants.removeAll(plantsToRemove);
 
-			// Move the zombie if it hasn't attacked
+			// Move the zombie
 			if (!attacked) {
 				z.move(z.getSpeed(), 0);
 				z.setAttacking(false);  // Stop attacking when moving
@@ -161,6 +161,7 @@ public class ZombiesManager implements ManagersUI {
 
 			if (z.getFrozenTick() != -1 && z.getFrozenTick() + 3 <= Sun.getTick()) {
 				z.setSpeed(z.getBeforeSpeed());
+				zombieReturnToNormalImage(z);
 				z.setFrozenTick(-1);
 			}
 
@@ -182,8 +183,58 @@ public class ZombiesManager implements ManagersUI {
 				Music.playSound("GameOver", false);
 				setGameState(GAMEOVER);
 			}
-    }
-}
+    	}
+	}
+
+	private static void zombieReturnToNormalImage(Zombie z) { // habis frozen set image lg
+		if (z instanceof HeadwearType) {
+			if (((HeadwearType) z).getHead()) {
+				if (z instanceof Buckethead) {
+					z.setImage(z.getZombieImage("Buckethead"));
+				} else if (z instanceof Conehead) {
+					z.setImage(z.getZombieImage("Conehead"));
+				} else if (z instanceof Football) {
+					z.setImage(z.getZombieImage("Football"));
+				}
+			} else {
+				if (z instanceof Football) {
+					z.setImage(z.getZombieImage("Football2"));
+				} else {
+					z.setImage(z.getZombieImage("Normal"));
+				}
+			}
+		} else if (z instanceof ShieldType) {
+			if (((ShieldType) z).getShield()) {
+				if (z instanceof Screendoor) {
+					z.setImage(z.getZombieImage("Screendoor"));
+				} else if (z instanceof Newspaper) {
+					z.setImage(z.getZombieImage("Newspaper"));
+				}
+			} else {
+				if (z instanceof Newspaper) {
+					z.setImage(z.getZombieImage("Newspaper2"));
+				} else {
+					z.setImage(z.getZombieImage("Normal"));
+				}
+			}
+		} else if (z instanceof VaultingType) {
+			if (((VaultingType) z).getVault()) {
+				if (z instanceof Polevault)
+					z.setImage(z.getZombieImage("Polevault"));
+				else if (z instanceof Dolphin)
+					z.setImage(z.getZombieImage("Dolphin"));
+			} else {
+				if (z instanceof Polevault)
+					z.setImage(z.getZombieImage("Polevault2"));
+				else if (z instanceof Dolphin)
+					z.setImage(z.getZombieImage("Dolphin2"));
+			}
+		} else if (z instanceof Duckytube) {
+			z.setImage(z.getZombieImage("Duckytube2"));
+		} else {
+			z.setImage(z.getZombieImage("Normal"));
+		}
+	}
 
 	public void scheduleZombieGeneration() { 
 		if (Sun.getTick() == 175) {
@@ -257,15 +308,68 @@ public class ZombiesManager implements ManagersUI {
 		for (Zombie z : zombies) {
 			if (z.equals(zombie)) {
 				System.out.println("Zombie Slowed");
+
 				z.setFrozenTick(Sun.getTick());
 				z.setSpeed(-0.05f);
+				zombieSetToFrozenImage(z);
 
-				if (z instanceof VaultingType) {
+				if (z instanceof VaultingType || z instanceof Football) {
 					z.setBeforeSpeed(-0.3f);
 				} else {
 					z.setBeforeSpeed(-0.15f);
 				}
+	
 			}
+		}
+	}
+
+	private static void zombieSetToFrozenImage(Zombie z) { // set zombies ke Frozen
+		if (z instanceof HeadwearType) {
+			if (((HeadwearType) z).getHead()) {
+				if (z instanceof Buckethead) {
+					z.setImage(z.getFrozenZombieImage("Buckethead"));
+				} else if (z instanceof Conehead) {
+					z.setImage(z.getFrozenZombieImage("Conehead"));
+				} else if (z instanceof Football) {
+					z.setImage(z.getFrozenZombieImage("Football"));
+				}
+			} else {
+				if (z instanceof Football) {
+					z.setImage(z.getFrozenZombieImage("Football2"));
+				} else {
+					z.setImage(z.getFrozenZombieImage("Normal"));
+				}
+			}
+		} else if (z instanceof ShieldType) {
+			if (((ShieldType) z).getShield()) {
+				if (z instanceof Screendoor) {
+					z.setImage(z.getFrozenZombieImage("Screendoor"));
+				} else if (z instanceof Newspaper) {
+					z.setImage(z.getFrozenZombieImage("Newspaper"));
+				}
+			} else {
+				if (z instanceof Newspaper) {
+					z.setImage(z.getFrozenZombieImage("Newspaper2"));
+				} else {
+					z.setImage(z.getFrozenZombieImage("Normal"));
+				}
+			}
+		} else if (z instanceof VaultingType) {
+			if (((VaultingType) z).getVault()) {
+				if (z instanceof Polevault)
+					z.setImage(z.getFrozenZombieImage("Polevault"));
+				else if (z instanceof Dolphin)
+					z.setImage(z.getFrozenZombieImage("Dolphin"));
+			} else {
+				if (z instanceof Polevault)
+					z.setImage(z.getFrozenZombieImage("Polevault2"));
+				else if (z instanceof Dolphin)
+					z.setImage(z.getFrozenZombieImage("Dolphin2"));
+			}
+		} else if (z instanceof Duckytube) {
+			z.setImage(z.getFrozenZombieImage("Duckytube2"));
+		} else {
+			z.setImage(z.getFrozenZombieImage("Normal"));
 		}
 	}
 

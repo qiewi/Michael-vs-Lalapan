@@ -72,6 +72,19 @@ public abstract class Zombie extends Entity {
 
         return img;
     }
+
+    public BufferedImage getFrozenZombieImage(String name) {
+        BufferedImage img = null;
+        InputStream is = getClass().getResourceAsStream("ZombiesImage/Frozen/Frozen" + name + ".png");
+
+        try {
+            img = ImageIO.read(is);
+        } catch (IOException e) {
+            e.printStackTrace();   
+        }       
+
+        return img;
+    }
     
 
     public boolean getAquatic() {
