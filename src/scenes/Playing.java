@@ -45,7 +45,7 @@ public class Playing extends GameScene implements SceneMethods {
     private static float alpha = 1.0f; 
     private static boolean isTransitioning = false; 
     private static boolean hasTransitionedToNight = false; 
-    private static boolean landMowerAdded = false;
+    
 
     private StringBuilder cheatCodeBuffer = new StringBuilder();
 
@@ -104,7 +104,7 @@ public class Playing extends GameScene implements SceneMethods {
         peasManager.draw(g);
         victoryNoteManager.draw(g);
         
-        if (landMowerAdded)
+        if (LandMowersManager.isLandMowerAdded())
             landMowersManager.draw(g);
         
 
@@ -125,7 +125,7 @@ public class Playing extends GameScene implements SceneMethods {
         peasManager.update();
         victoryNoteManager.update();
 
-        if (landMowerAdded)
+        if (LandMowersManager.isLandMowerAdded())
             landMowersManager.update();
 
         sunText.setText(String.valueOf(sun.getSun()));
@@ -245,8 +245,8 @@ public class Playing extends GameScene implements SceneMethods {
         if (cheatCodeBuffer.length() > 7) {
             cheatCodeBuffer.deleteCharAt(0);
         }
-        if (cheatCodeBuffer.toString().equals("lalapan")) {
-            landMowerAdded = true;
+        if (cheatCodeBuffer.toString().equals("lalapan") && !LandMowersManager.isLandMowerAdded()) {
+            LandMowersManager.setLandMowerAdded(true);
             LandMowersManager.initiateMower();
             cheatCodeBuffer.setLength(0); // Reset buffer after cheat code is activated
         }
@@ -329,7 +329,7 @@ public class Playing extends GameScene implements SceneMethods {
     }
 
 	public void clearAll() {
-        landMowerAdded = false;
+        LandMowersManager.setLandMowerAdded(false);
         LandMowersManager.clearMower();
 		sun.resetTick();
 		plantsManager.clearPlants();

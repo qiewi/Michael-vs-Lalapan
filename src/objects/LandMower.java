@@ -10,22 +10,31 @@ import javax.imageio.ImageIO;
 public class LandMower {
     private BufferedImage image;
     private Rectangle bounds;
+    private String lane;
 
     private int x, y;
     private int destructPos;
 
-    public LandMower(int x, int y) {
+    public LandMower(int x, int y, String lane) {
         this.x = x;
         this.y = y;
+        this.lane = lane;
 
         this.bounds = new Rectangle(x,y, 80, 81);
         this.destructPos = 990;
-        this.image = setMowerImage();
+        setMowerImage(lane);
     }
 
-    public BufferedImage setMowerImage() {
+    public void setMowerImage(String lane) {
         BufferedImage img = null;
-        InputStream is = getClass().getResourceAsStream("ObjectImages/LandMower.png");
+        InputStream is;
+
+        if (lane.equals("Land"))
+            is = getClass().getResourceAsStream("ObjectImages/LandMower.png");
+        else if (lane.equals("PoolOnLand"))
+            is = getClass().getResourceAsStream("ObjectImages/PoolCleanerOnLand.png");
+        else 
+            is = getClass().getResourceAsStream("ObjectImages/PoolCleaner.png");
 
         try {
             img = ImageIO.read(is);
@@ -33,7 +42,7 @@ public class LandMower {
             e.printStackTrace();   
         }       
 
-        return img;
+        this.image = img;
     }
 
     public void move() {
@@ -53,6 +62,10 @@ public class LandMower {
 
     public int getY() {
         return y;
+    }
+
+    public String getLane() {
+        return lane;
     }
 
     public Rectangle getBounds() {
