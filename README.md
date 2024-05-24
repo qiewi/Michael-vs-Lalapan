@@ -56,21 +56,27 @@ Game Features:
 ## Screenshots
 
 Main Menu
+
 ![App Screenshot](https://github.com/qiewi/Michael-vs-Lalapan/blob/main/readme%20assets/MainMenu.png)
 
 Preparation
+
 ![App Screenshot](https://github.com/qiewi/Michael-vs-Lalapan/blob/main/readme%20assets/Preparation.png)
 
 Plants List
+
 ![App Screenshot](https://github.com/qiewi/Michael-vs-Lalapan/blob/main/readme%20assets/PlantsList.png)
 
 Zombies List
+
 ![App Screenshot](https://github.com/qiewi/Michael-vs-Lalapan/blob/main/readme%20assets/ZombiesList.png)
 
 Gameplay
+
 ![App Screenshot](https://github.com/qiewi/Michael-vs-Lalapan/blob/main/readme%20assets/Game.png)
 
 Booklet Preview
+
 ![App Screenshot](https://github.com/qiewi/Michael-vs-Lalapan/blob/main/readme%20assets/Booklet.png)
 
 
