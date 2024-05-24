@@ -466,19 +466,20 @@ public class ZombiesManager implements ManagersUI {
 					g.drawImage(z.getImage(), (int) z.getX() + 50, (int) z.getY() - 30, null);
 				}
 			} else if (z instanceof Duckytube) {
-				if (z.getX() <= 900 && z.getX() >= 190) {
+				if (z.getX() <= 910 && z.getX() >= 220) {
 					z.setImage(z.getZombieImage("Duckytube2"));
+					g.drawImage(z.getImage(), (int) z.getX(), (int) z.getY(), null);
 				} else {
 					z.setImage(z.getZombieImage("Duckytube"));
+					g.drawImage(z.getImage(), (int) z.getX()-30, (int) z.getY()-30, null);
 				}
-				g.drawImage(z.getImage(), (int) z.getX(), (int) z.getY(), null);
 			}
 		} else {
 			g.drawImage(z.getImage(), (int) z.getX(), (int) z.getY() - 90, null);
 		}
 		
 	}
-	
+
 	public static ArrayList<Zombie> getZombies(){
 		return zombies;
 	}
