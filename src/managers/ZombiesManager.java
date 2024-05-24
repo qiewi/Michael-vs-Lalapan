@@ -23,7 +23,7 @@ public class ZombiesManager implements ManagersUI {
 	private static ArrayList<Zombie> zombies;
 	private static ArrayList<Plant> plants;
 	private static ScheduledExecutorService scheduler;
-	private static final int TOTAL_ZOMBIE_COUNT = 10;
+	private static final int TOTAL_ZOMBIE_COUNT = 70;
 
 	private static final int[] positions = new int[] {200, 290, 380, 470, 560, 650};
 	private static final int[] flagPositions = new int[] {200, 290, 560, 650};
@@ -414,8 +414,8 @@ public class ZombiesManager implements ManagersUI {
 
 	public void addZombie(int x, int y) {
 		Random random = new Random();
-		// String[] zombieTypes = {"Normal", "Football", "Conehead", "Buckethead", "Screendoor", "Polevault", "Newspaper", "Duckytube", "Dolphin"};
-		String[] zombieTypes = {"Polevault", "Duckytube", "Dolphin"};
+		String[] zombieTypes = {"Normal", "Football", "Conehead", "Buckethead", "Screendoor", "Polevault", "Newspaper", "Duckytube", "Dolphin"};
+		// String[] zombieTypes = {"Polevault", "Duckytube", "Dolphin"};
 		int zombieType = random.nextInt(zombieTypes.length);
 		Zombie zom = ZombieFactory.CreateZombie(zombieTypes[zombieType], x, y);
 		
